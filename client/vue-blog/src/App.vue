@@ -1,36 +1,50 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <div>
-      <p>
-        If iView is successfully added to this project, you'll see an
-        <code v-text="'<Button>'"></code>
-        below
-      </p>
-      <Button type="primary">Button</Button>
-    </div>
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <!-- <img src="./assets/logo.png"> -->
+    <!-- <HelloWorld msg="Welcome to Your Vue.js App" /> -->
+    <Layout>
+      <Header>
+        <blog-header></blog-header>
+      </Header>
+      <Layout>
+        <sider hide-trigger>Sider</sider>
+        <Content>
+          <transition name="fade">
+            <router-view class="router-view"></router-view>
+          </transition>
+        </Content>
+        <sider hide-trigger>Sider</sider>
+      </Layout>
+      <Footer>
+        <blog-footer></blog-footer>
+      </Footer>
+    </Layout>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import BlogHeader from '@/components/Header'
+import BlogFooter from '@/components/Footer'
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    BlogHeader,
+    BlogFooter
   }
 }
 </script>
 
-<style>
+<style scoped lang="less">
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  background: white;
+
+  [class*="ivu-layout"] {
+    background: white;
+  }
+  /* color: #2c3e50; */
 }
 </style>

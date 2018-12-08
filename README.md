@@ -8,3 +8,24 @@ blog 是使用 Node.js + MongoDB + 其它客户端框架开发的个人博客系
 UI: iview
 
 ps: 博客就是用来检验所学知识的产物
+
+一些灵感： animation gameful 音乐播放 视屏播放
+![](2018-12-08-20-14-17.png)
+首页代码动画找到了 ： https://github.com/STRML/strml.net
+![](2018-12-08-20-16-15.png)
+![](2018-12-08-20-19-18.png)
+
+头部固定 分类标签首页 关于 搜索
+侧边栏 音乐 游戏 3d游览
+右下角 添加博客 草稿箱等功能
+page组件 总共有xx条 你还有xx条未读
+pvuv
+评论
+文件上传
+todolist
+自己写的工具
+gitbooks
+live2d
+
+
+管理员可登陆 可修改删除新增帖子 评论删除等
