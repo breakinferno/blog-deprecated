@@ -1,7 +1,6 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <Button type="error">Test iview</Button>
   </div>
 </template>
 

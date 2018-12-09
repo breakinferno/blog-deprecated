@@ -1,24 +1,32 @@
 <template>
   <div id="app">
-    <!-- <img src="./assets/logo.png"> -->
-    <!-- <HelloWorld msg="Welcome to Your Vue.js App" /> -->
-    <Layout>
-      <Header>
+    <!-- <img src="./assets/logo.png">
+    <div>
+      <p>
+        If Element is successfully added to this project, you'll see an
+        <code v-text="'<el-button>'"></code>
+        below
+      </p>
+      <el-button>el-button</el-button>
+    </div>
+    <HelloWorld msg="Welcome to Your Vue.js App"/> -->
+    <el-container>
+      <el-header>
         <blog-header></blog-header>
-      </Header>
-      <Layout>
-        <sider hide-trigger>Sider</sider>
-        <Content>
-          <transition name="fade">
-            <router-view class="router-view"></router-view>
-          </transition>
-        </Content>
-        <sider hide-trigger>Sider</sider>
-      </Layout>
-      <Footer>
+      </el-header>
+      <el-main>
+        <el-container>
+          <el-aside>left aside</el-aside>
+          <!-- <router-view name="left-sider"></router-view> -->
+          <router-view></router-view>
+          <!-- <router-view name="right-sider"></router-view> -->
+          <el-aside>right aside</el-aside>
+        </el-container>
+      </el-main>
+      <el-footer>
         <blog-footer></blog-footer>
-      </Footer>
-    </Layout>
+      </el-footer>
+    </el-container>
   </div>
 </template>
 
@@ -28,23 +36,19 @@ import BlogFooter from '@/components/Footer'
 export default {
   name: 'app',
   components: {
+    // HelloWorld
     BlogHeader,
     BlogFooter
   }
 }
 </script>
 
-<style scoped lang="less">
+<style>
 #app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  background: white;
-
-  [class*="ivu-layout"] {
-    background: white;
-  }
-  /* color: #2c3e50; */
+  color: #2c3e50;
 }
 </style>
