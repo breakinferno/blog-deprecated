@@ -1,0 +1,41 @@
+// 一些全局样式
+.center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fillAll {
+    width: 100%;
+    height: 100%;
+}
+
+.word{
+    word-wrap: break-word;
+    word-break: break-all;
+}
+
+.inline-block(@height: 30px; @width: 60px) {
+    display: inline-block;
+    height: @height;
+    width: @width;
+    color: white;
+    font-size: 14px;
+    line-height: @height;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    padding: 0px;
+    margin: 0px;
+}
+
+.rFont(@size: 16px) {
+    font-size: @size;
+    line-height: @size * 1.5;
+}
+
+/** Variable **/
+@blue: #399EF4;
+@fontBlack: #101010;
+@fontGray: #acacac;
+@cardPadding: 2px 4px;

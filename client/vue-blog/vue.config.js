@@ -1,3 +1,4 @@
+var path = require('path')
 var Config = require('./config')
 module.exports = {
   //   configureWebpack: {
@@ -7,6 +8,14 @@ module.exports = {
   //       })
   //     ]
   //   }
+  // 发现并没有蛇皮用
+  // css: {
+  //   loaderOptions: {
+  //     css: {
+  //       exclude: path.resolve(__dirname, 'src/assets/bg-stylecss')
+  //     }
+  //   }
+  // },
   chainWebpack: config => {
     config
       .plugin('html')
@@ -16,5 +25,24 @@ module.exports = {
         args[0].title = Config.html.title
         return args
       })
+    // 自定义 raw-loader
+    config.module
+      .rule('txt')
+      .test(/\.(txt|css)$/)
+      .include
+      .add(path.resolve(__dirname, 'src/assets/bg-stylecss'))
+      .add(path.resolve(__dirname, 'src/assets/bg-txt'))
+      .end()
+      // Even create named uses (loaders)
+      .use('raw-loader')
+      .loader('raw-loader')
+      .end()
+  },
+
+  pluginOptions: {
+    'style-resources-loader': {
+      preProcessor: 'less',
+      patterns: [path.resolve(__dirname, './public/global.less')]
+    }
   }
 }

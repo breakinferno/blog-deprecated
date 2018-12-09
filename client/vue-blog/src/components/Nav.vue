@@ -115,8 +115,8 @@ export default {
 </script>
 <style lang="less" scoped>
 #nav {
-  position: sticky;
-
+  position: absolute;
+  width: 100%;
   .blog-nav {
     width: 100%;
     display: flex;
