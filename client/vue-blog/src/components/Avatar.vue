@@ -1,17 +1,17 @@
 <template>
-    <span :class="classes">
-        <img :src="src"
-             v-if="src">
-        <Icon :type="icon"
-              :custom="customIcon"
-              v-else-if="icon"></Icon>
-        <span ref="children"
-              :class="[prefixCls + '-string']"
-              :style="childrenStyle"
-              v-else>
-            <slot></slot>
-        </span>
+  <span :class="classes">
+    <img :src="src"
+         v-if="src">
+    <Icon :type="icon"
+          :custom="customIcon"
+          v-else-if="icon"></Icon>
+    <span ref="children"
+          :class="[prefixCls + '-string']"
+          :style="childrenStyle"
+          v-else>
+      <slot></slot>
     </span>
+  </span>
 </template>
 
 <script>
@@ -123,6 +123,9 @@ export default {
 
   &-image {
     background: 0 0;
+    img {
+      height: 100%;
+    }
   }
 
   &-large {
