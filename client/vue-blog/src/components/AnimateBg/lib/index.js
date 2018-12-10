@@ -6,15 +6,13 @@ import writeChar, {
   handleChar
 } from './writeChar'
 import getPrefix from './getPrefix'
-// import workText from '../assets/bg-txt/work.txt'
-// import preStyles from '../assets/bg-stylecss/pre.css'
-import workText from '../assets/bg-txt/work.txt'
-import preStyles from '../assets/bg-stylecss/pre.txt'
+import workText from '../txt/bg-txt/work.txt'
+import preStyles from '../txt/bg-stylecss/pre.txt'
 // const workText = require('raw-loader!../assets/bg-txt/work.txt')
 // const preStyles = require('raw-loader!../assets/bg-stylecss/pre.txt')
 const md = Markdown.markdown.toHTML
 let styleText = [0, 1, 2, 3].map(function (i) {
-  return require('../assets/bg-stylecss/style' + i + '.txt')
+  return require('../txt/bg-stylecss/style' + i + '.txt')
 })
 
 // polyfill
@@ -46,12 +44,16 @@ export default function () {
 async function startAnimation () {
   try {
     await writeTo(styleEl, styleText[0], 0, speed, true, 1)
-    debugger
+    // markdown 编辑区
     await writeTo(workEl, workText, 0, speed, false, 1)
+    // markdown 样式
     await writeTo(styleEl, styleText[1], 0, speed, true, 1)
-    // 新建一个markdown
+    // markdown显示区
     createWorkBox()
-    await Promise.delay(1000)
+    await new Promise(resolve => setTimeout(() => {
+      flip()
+      resolve()
+    }, 200))
     await writeTo(styleEl, styleText[2], 0, speed, true, 1)
     await writeTo(styleEl, styleText[3], 0, speed, true, 1)
     console.log('animate end')
@@ -69,7 +71,6 @@ async function surprisinglyShortAttentionSpan () {
   done = true
   let txt = styleText.join('\n')
 
-  // The work-text animations are rough
   style.textContent = '#work-text * { ' + browserPrefix + 'transition: none; }'
   style.textContent += txt
   let styleHTML = ''
@@ -79,7 +80,6 @@ async function surprisinglyShortAttentionSpan () {
   styleEl.innerHTML = styleHTML
   createWorkBox()
 
-  // There's a bit of a scroll problem with this thing
   let start = Date.now()
   while (Date.now() - 1000 > start) {
     workEl.scrollTop = Infinity
@@ -92,13 +92,12 @@ async function surprisinglyShortAttentionSpan () {
  * Helpers
  */
 
-let endOfSentence = /[\.\?\!]\s$/
-let comma = /\D[\,]\s$/
-let endOfBlock = /[^\/]\n\n$/
+let endOfSentence = /[.?!]\s$/
+let comma = /\D[,]\s$/
+let endOfBlock = /[^/]\n\n$/
 
 /**
  *写dom内容
- *
  * @param {*} el                  dom对象
  * @param {*} message             字符串
  * @param {*} index               从第几个字符开始
@@ -138,6 +137,7 @@ async function writeTo (el, message, index, interval, mirrorToStyle, charsPerInt
   }
 }
 
+// 浏览器前缀
 function getBrowserPrefix () {
   browserPrefix = getPrefix()
   styleText = styleText.map(function (text) {
@@ -145,8 +145,8 @@ function getBrowserPrefix () {
   })
 }
 
+// 获取dom元素
 function getEls () {
-  // We're cheating a bit on styles.
   let preStyleEl = document.createElement('style')
   preStyleEl.textContent = preStyles
   document.head.insertBefore(preStyleEl, document.getElementsByTagName('style')[0])
@@ -157,10 +157,6 @@ function getEls () {
   styleEl = document.getElementById('style-text')
   //
   workEl = document.getElementById('work-text')
-  // 跳过dom
-  //   skipAnimationEl = document.getElementById('skip-animation')
-  // 暂停dom
-  //   pauseEl = document.getElementById('pause-resume')
 }
 
 // 事件处理
@@ -174,6 +170,12 @@ function createEventHandlers () {
   skipAnimationEl && skipAnimationEl.addEventListener('click', function (e) {
     e.preventDefault()
     animationSkipped = true
+  })
+
+  // 翻转
+  workEl && workEl.addEventListener('dblclick', function (e) {
+    e.preventDefault()
+    flip()
   })
 
   // 暂停
@@ -194,28 +196,13 @@ function createEventHandlers () {
  */
 function createWorkBox () {
   if (workEl.classList.contains('flipped')) return
-  workEl.innerHTML = '<div class="text">' + replaceURLs(workText) + '</div>' +
+  // 添加内容
+  workEl.innerHTML = '<div class="text" contenteditable>' + replaceURLs(workText) + '</div>' +
     '<div class="md">' + replaceURLs(md(workText)) + '<div>'
+  // Promise.delay(100)
+}
 
-  workEl.classList.add('flipped')
-  workEl.scrollTop = 9999
-
-  // 翻转
-  let flipping = 0
-  require('mouse-wheel')(workEl, async function (dx, dy) {
-    if (flipping) return
-    let flipped = workEl.classList.contains('flipped')
-    let half = (workEl.scrollHeight - workEl.clientHeight) / 2
-    let pastHalf = flipped ? workEl.scrollTop < half : workEl.scrollTop > half
-
-    if (pastHalf) {
-      workEl.classList.toggle('flipped')
-      flipping = true
-      await Promise.delay(500)
-      workEl.scrollTop = flipped ? 0 : 9999
-      flipping = false
-    }
-
-    workEl.scrollTop += (dy * (flipped ? -1 : 1))
-  }, true)
+function flip () {
+  // 添加flipped标志
+  workEl.classList.toggle('flipped')
 }

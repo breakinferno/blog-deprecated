@@ -1,0 +1,40 @@
+/**
+ * That markdown on the left doesn't look great. Let's render it.
+ */
+#work-text {
+    position: relative;
+}
+#work-text.flipped .text {
+    transform: rotateY(200deg);
+}
+#work-text.flipped .md {
+    transform: rotateY(20deg);
+}
+#work-text .text{
+    position: absolute;
+    padding: inherit;
+    width: 100%;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+    z-index: 2;
+}
+#work-text div{
+    backface-visibility: hidden
+}
+#work-text .md {
+    position: relative;
+    transform: rotateY(200deg);
+}
+
+/**
+   * Alright. We're ready.
+   *
+   * 3...
+   * 2...
+   * 1...
+   * ....faked you out.
+   *
+   * Okay here we go!
+   *
+   */

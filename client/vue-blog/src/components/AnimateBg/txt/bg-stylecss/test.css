@@ -1,0 +1,29 @@
+* {
+    -webkit-transform: translateX(0) rotateY(-10deg);
+    transform: translateX(0) rotateY(-10deg);
+    -webkit-transform-origin: right;
+    -ms-transform-origin: right;
+    transform-origin: right;
+
+}
+
+#work-text.flipped {
+    -webkit-transform: rotateX(0deg) rotateY(184deg) rotateZ(180deg);
+}
+
+#work-text .md {
+    -webkit-transform: rotateY(184deg) rotateZ(180deg);
+    margin-top: 800px;
+}
+
+#work-text div {
+    -webkit-perspective: 1000;
+}
+
+#work-text.flipped .text {
+    transform: rotateY(184deg);
+}
+
+#work-text.flipped .md {
+    transform: rotateY(6deg);
+}

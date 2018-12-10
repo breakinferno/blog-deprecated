@@ -1,15 +1,16 @@
 /**
  *
- * Hey. My name's Samuel Reed. I'm CTO of BitMEX.com and frequent
- * open source contributor.
+ * Hey. I'm breakinferno, a essential web frontend developer.
  *
- * I build interactive websites.
+ * I want to recording what I've learned in my blog!
  *
- * How about some live coding?
+ * And as you can see, this is the introduction for my blog.
  */
 
 /**
- * Let's begin. We start by animating... well, everything.
+ * Well, I want the background to animate.
+ *
+ * That's what I hope.
  */
 
 * {
@@ -37,25 +38,26 @@ a {
 }
 
 /**
-   * That's better. Sorry about your eyes.
+   * That's better. 
    *
    * Working in this big empty space is tough.
    *
-   * I'm going to make a nice area for us to work in.
+   * I'm going to make a nice area for me to work in.
    */
 
 pre:not(:empty) {
     overflow: auto;
     background: rgb(48, 48, 48);
     border: 1px solid #ccc;
-    max-height: 44.6%;
-    width: 49%;
+    width: 50%;
     font-size: 14px;
     font-family: monospace;
     padding: 10px 10px 20px;
     box-shadow: -4px 4px 2px 0 rgba(0, 0, 0, 0.3);
     white-space: pre-wrap;
     outline: 0;
+    transform-style: preserve-3d;
+
 }
 
 /**
@@ -64,7 +66,7 @@ pre:not(:empty) {
    */
 
 #style-text {
-    -webkit-transform: translateX(95%);
+    -webkit-transform: translateX(100%);
     position: absolute;
 }
 
@@ -102,15 +104,14 @@ pre:not(:empty) {
    * Now we're getting somewhere.
    * Time to get a little perspective.
    */
-
-body {
-    -webkit-perspective: 1000px;
+body{
+    perspective: 1000px;
 }
 
+
 #style-text {
-    -webkit-transform: translateX(98.5%) rotateY(-10deg);
+    -webkit-transform: translateX(100%) rotateY(-20deg);
     -webkit-transform-origin: right;
-    max-height: 94.5%;
 }
 
 /**
@@ -119,6 +120,6 @@ body {
    */
 
 pre:not(#style-text) {
-    -webkit-transform: rotateY(10deg);
+    -webkit-transform: rotateY(20deg);
     -webkit-transform-origin: left;
 }

@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { oneOf } from '../utils/array.js'
+import { oneOf } from '@/utils/array.js'
 
 const prefixCls = 'blog-avatar'
 
