@@ -30,8 +30,8 @@ module.exports = {
       .rule('txt')
       .test(/\.(txt|css)$/)
       .include
-      .add(path.resolve(__dirname, 'src/assets/bg-stylecss'))
-      .add(path.resolve(__dirname, 'src/assets/bg-txt'))
+      .add(path.resolve(__dirname, 'src/components/AnimateBg/txt'))
+      // .add(path.resolve(__dirname, 'src/assets/bg-txt'))
       .end()
       // Even create named uses (loaders)
       .use('raw-loader')

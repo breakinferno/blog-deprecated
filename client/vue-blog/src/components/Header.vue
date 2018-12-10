@@ -1,22 +1,19 @@
 <template>
   <div id="blog-header">
-    <blog-nav></blog-nav>
-    <div class="blog-header-content">
-      <div class="background-wrap">
-        <!-- <img src="" /> -->
-        <pre contenteditable
-             id="style-text"></pre>
-        <pre id="work-text"></pre>
-      </div>
-      <div class="text-wrap">
-        <Avatar shape="circle"
-                size="large"
-                :src="avatarSrc" />
-        <h1 class="headline">{{headline}}</h1>
-        <p class="subline">{{subline}}</p>
-      </div>
-      <div class="pointer-wrap">
-        <i class="el-icon-arrow-down"></i>
+    <animate-bg class="blog-animate-bg"></animate-bg>
+    <div v-show="false">
+      <blog-nav></blog-nav>
+      <div class="blog-header-content">
+        <div class="text-wrap">
+          <Avatar shape="circle"
+                  size="large"
+                  :src="avatarSrc" />
+          <h1 class="headline">{{headline}}</h1>
+          <p class="subline">{{subline}}</p>
+        </div>
+        <div class="pointer-wrap">
+          <i class="el-icon-arrow-down"></i>
+        </div>
       </div>
     </div>
   </div>
@@ -24,19 +21,20 @@
 <script>
 import BlogNav from './Nav'
 import Config from '../config'
-import BgAnimate from '../lib/bg-animate'
+import AnimateBg from './AnimateBg'
 export default {
   components: {
-    BlogNav
+    BlogNav,
+    AnimateBg
   },
   data () {
     return {
-      ...Config.User
+      ...Config.User,
+      isAnimateOver: false
     }
   },
   mounted () {
-    console.log('mounted!! start animate~~')
-    BgAnimate()
+    // BgAnimate()
     // console.dir(BgAnimate)
     // debugger
   }
@@ -76,14 +74,6 @@ export default {
       bottom: 60px;
       position: absolute;
       font-size: 36px;
-    }
-    .background-wrap {
-      .fillAll();
-      position: absolute;
-      z-index: 10;
-      pre {
-        .fillAll();
-      }
     }
   }
 }

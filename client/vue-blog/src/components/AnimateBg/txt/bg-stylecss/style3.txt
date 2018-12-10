@@ -1,0 +1,19 @@
+/**
+ * We're almost done.
+ */
+
+pre:hover {
+    box-shadow: 0px 0px 40px 5px rgba(255, 255, 255, 0.4);
+}
+
+#skip-animation,
+#pause-resume {
+    display: none;
+}
+
+
+/**
+  * Try it out! There's lots you can do.
+  * Try playing with text sizes, shadows, animations, or just
+  * break the page. I won't hold it against you.
+  */
