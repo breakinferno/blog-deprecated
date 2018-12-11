@@ -1,27 +1,34 @@
 <template>
-  <div id="background-wrap"
-       @click.prevent="postInit">
-    <pre contenteditable
-         ref="styleEl"
-         id="style-text"
-         @input="styleInput"></pre>
-    <pre id="work-text"
-         ref="workEl"
-         @dblclick="flip()"></pre>
+  <div id="background-wrap">
+    <pre
+      contenteditable
+      ref="styleEl"
+      id="style-text"
+      @input="styleInput"
+    ></pre>
+    <pre
+      id="work-text"
+      ref="workEl"
+      @dblclick="flip()"
+    ></pre>
     <div id="background-control">
-      <span v-show="paused"
-            @click.prevent="resumeAnimation">
+      <span
+        v-show="paused"
+        @click.prevent="resumeAnimation"
+      >
         <icon-svg icon-class="kaishi"></icon-svg>
       </span>
-      <span v-show="!paused"
-            @click.prevent="pauseAnimation">
+      <span
+        v-show="!paused"
+        @click.prevent="pauseAnimation"
+      >
         <icon-svg icon-class="zanting"></icon-svg>
       </span>
       <span @click.prevent="skipAnimation">
         <icon-svg icon-class="tiaoguo"></icon-svg>
       </span>
     </div>
-    <mc-character></mc-character>
+    <mc-character :ready="done"></mc-character>
   </div>
 </template>
 <script>
@@ -73,6 +80,21 @@ export default {
     console.log('mounted!! start animate~~')
     this.init()
   },
+  watch: {
+    done (n, o) {
+      if (n) {
+        // if (document.querySelector('.post-style')) {
+        //   return
+        // }
+        // let styles = document.querySelectorAll('head style')
+        // let postStyleEl = document.createElement('style')
+        // postStyleEl.textContent = '* { ' + browserPrefix + 'transition: none; }'
+        // postStyleEl.classList.add('post-style')
+        // // 结束就去除所有过渡
+        // document.head.insertBefore(postStyleEl, styles[styles.length - 1])
+      }
+    }
+  },
   methods: {
     init () {
       console.log('start animate...')
@@ -81,14 +103,13 @@ export default {
       this.startAnimation()
     },
     preInit () {
+      if (document.querySelector('.pre-style')) {
+        return
+      }
       let preStyleEl = document.createElement('style')
       preStyleEl.textContent = preStyles
+      preStyleEl.classList.add('pre-style')
       document.head.insertBefore(preStyleEl, document.getElementsByTagName('style')[0])
-    },
-    postInit () {
-      if (this.done) {
-
-      }
     },
     pauseAnimation () {
       this.paused = true
@@ -121,6 +142,8 @@ export default {
         await this.writeTo(this.$refs.styleEl, styleText[2], 0, this.speed, true, 1)
         await this.writeTo(this.$refs.styleEl, styleText[3], 0, this.speed, true, 1)
         console.log('animate end')
+        this.done = true
+        // 去除过度
       } catch (e) {
         if (e.message === 'SKIP IT') {
           this.surprisinglyShortAttentionSpan()
@@ -168,20 +191,18 @@ export default {
         if (comma.test(thisSlice)) thisInterval = interval * 30
         if (endOfBlock.test(thisSlice)) thisInterval = interval * 50
         if (endOfSentence.test(thisSlice)) thisInterval = interval * 70
-        // if (this.paused) {
-        //   console.log('write pause')
-        // }
         // 暂停就一直等着 并且在这里才进行切换，
         do {
+          // console.log('test: ' + this.paused)
           await Promise.delay(thisInterval)
         } while (this.paused)
+        // debugger
 
         return this.writeTo(el, message, index, interval, mirrorToStyle, charsPerInterval)
       }
     },
     async  surprisinglyShortAttentionSpan () {
       if (this.done) return
-      this.done = true
       let txt = styleText.join('\n')
 
       style.textContent = '#work-text * { ' + browserPrefix + 'transition: none; }'
@@ -200,6 +221,7 @@ export default {
         this.$refs.styleEl.scrollTop = Infinity
         await Promise.delay(16)
       }
+      this.done = true
     }
   }
 }
@@ -213,6 +235,7 @@ export default {
   top: 0px;
   bottom: 0px;
   display: flex;
+  perspective: 2400px;
   .fillAll();
   pre {
     max-width: 50%;

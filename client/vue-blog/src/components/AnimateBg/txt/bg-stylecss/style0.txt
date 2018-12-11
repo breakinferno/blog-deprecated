@@ -100,15 +100,6 @@ pre:not(:empty) {
     color: #F92772;
 }
 
-/**
-   * Now we're getting somewhere.
-   * Time to get a little perspective.
-   */
-body{
-    perspective: 1000px;
-}
-
-
 #style-text {
     -webkit-transform: translateX(100%) rotateY(-20deg);
     -webkit-transform-origin: right;
