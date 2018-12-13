@@ -125,10 +125,13 @@ export default {
       this.character.classList.remove('move')
       await Promise.delay(10)
       this.character.classList.add('openDoor')
+      this.$emit('moveEnd')
       await Promise.delay(1500)
     },
     async postMove () {
       console.log('post move')
+      this.character.classList.add('post-move')
+      await Promise.delay(1500)
     }
   },
   mounted () {
@@ -198,14 +201,12 @@ export default {
     // 前进一点
     &.pre-move {
       transition: all 4s linear;
-      transform: rotateY(180deg) rotateX(-5deg) translateY(-240px);
+      transform: rotateY(180deg) rotateX(-5deg) translateY(-240px) scale(0.9);
     }
     // 再前进一点
     &.moving {
       transition: all 1s linear;
-      transform: rotateY(180deg) rotateX(-5deg) translateY(-300px);
-    }
-    &.post-move {
+      transform: rotateY(180deg) rotateX(-5deg) translateY(-300px) scale(0.875);
     }
     // 开门
     &.openDoor {
@@ -216,7 +217,25 @@ export default {
         -webkit-transform-origin-x: 20px;
       }
     }
+    // 进入门内
+    &.post-move {
+      transition: all 10s linear;
+      .left-leg {
+        animation: LegsAlt 1s infinite;
+      }
+      .right-leg {
+        animation: Legs 1s infinite;
+      }
+      // 双臂张开
+      .left-arm {
+        transform: rotateX(120deg) rotateZ(15deg);
 
+      }
+      .right-arm {
+        transform: rotateX(120deg) rotateZ(-12deg);
+      }
+      transform: rotateY(180deg) rotateX(-5deg) translateY(-900px) scale(0.75);
+    }
     // 转头
     &.turnHead {
       .head {

@@ -1,14 +1,16 @@
 <template>
-  <div id="background-wrap">
+  <div id="background-wrap" >
     <pre
       contenteditable
       ref="styleEl"
       id="style-text"
+      :class="{fade: faded}"
       @input="styleInput"
     ></pre>
     <pre
       id="work-text"
       ref="workEl"
+      :class="{fade: faded}"
       @dblclick="flip()"
     ></pre>
     <div id="background-control">
@@ -28,7 +30,7 @@
         <icon-svg icon-class="tiaoguo"></icon-svg>
       </span>
     </div>
-    <mc-character :ready="done"></mc-character>
+    <mc-character :ready="done" @moveEnd="handleMoveEnd"></mc-character>
   </div>
 </template>
 <script>
@@ -70,7 +72,8 @@ export default {
       paused: false,
       skip: false,
       speed: 0,
-      done: false
+      done: false,
+      faded: false
     }
   },
   components: {
@@ -167,6 +170,29 @@ export default {
       this.$refs.workEl.innerHTML = '<div class="text" contenteditable>' + replaceURLs(workText) + '</div>' +
         '<div class="md">' + replaceURLs(md(workText)) + '<div>'
     },
+    handleMoveEnd () {
+      console.log('get signal');
+      this.fade()
+    },
+    // 设置消失
+    fade () {
+      this.faded = true
+    },
+    // reWriteTo(){
+    //   if (this.skip) {
+    //     console.warn('Skip!!')
+    //     await this.surprisinglyShortAttentionSpan()
+    //     return
+    //   }
+    //   if (index < message.length) {
+    //     let thisInterval = interval
+    //     let thisSlice = message.slice(index - 2, index + 1)
+    //     if (comma.test(thisSlice)) thisInterval = interval * 30
+    //     if (endOfBlock.test(thisSlice)) thisInterval = interval * 50
+    //     if (endOfSentence.test(thisSlice)) thisInterval = interval * 70
+    //     return new Promise()
+    //   }
+    // },
     async  writeTo (el, message, index, interval, mirrorToStyle, charsPerInterval) {
       if (this.skip) {
         console.warn('Skip!!')
@@ -243,6 +269,17 @@ export default {
     white-space: pre-wrap;
     box-sizing: border-box;
     height: 100%;
+  }
+  pre.fade{
+    transition: all 3s linear;
+  }
+
+  #style-text.fade{
+    transform: translateX(100%) rotateY(-150deg);
+  }
+
+  #work-text.fade{
+    transform: rotateY(150deg);
   }
 
   #background-control {
