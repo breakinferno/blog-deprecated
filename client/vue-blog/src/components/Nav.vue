@@ -1,23 +1,35 @@
 <template>
   <div id="nav">
-    <el-menu :default-active="activeIndex"
-             class="blog-nav"
-             mode="horizontal"
-             @select="handleSelect">
-      <el-menu-item v-for="menu in menus"
-                    :key="menu.name"
-                    index="menu.name">
-        <router-link class="nav-item"
-                     :to="{name: menu.name}">{{menu.description}}</router-link>
+    <el-menu
+      :default-active="activeIndex"
+      class="blog-nav"
+      mode="horizontal"
+      @select="handleSelect"
+    >
+      <el-menu-item
+        v-for="menu in menus"
+        :key="menu.name"
+        index="menu.name"
+      >
+        <router-link
+          class="nav-item"
+          :to="{name: menu.name}"
+        >{{menu.description}}</router-link>
       </el-menu-item>
-      <el-menu-item v-if="!isLogin"
-                    index="login">
-        <router-link class="nav-item"
-                     :to="{name: 'login'}">登录</router-link>
+      <el-menu-item
+        v-if="!isLogin"
+        index="login"
+      >
+        <router-link
+          class="nav-item"
+          :to="{name: 'login'}"
+        >登录</router-link>
       </el-menu-item>
-      <el-menu-item v-else
-                    @click="handleLogout"
-                    index="logout">注销</el-menu-item>
+      <el-menu-item
+        v-else
+        @click="handleLogout"
+        index="logout"
+      >注销</el-menu-item>
       <!-- <el-submenu index="2">
     <template slot="title">我的工作台</template>
     <el-menu-item index="2-1">选项1</el-menu-item>
@@ -124,10 +136,15 @@ export default {
     border: none;
   }
   .el-menu,
-  .el-menu--horizontal>.el-menu-item:not(.is-disabled):focus,
-  .el-menu--horizontal>.el-menu-item:not(.is-disabled):hover,
-  .el-menu--horizontal>.el-submenu .el-submenu__title:hover{
+  .el-menu--horizontal > .el-menu-item:not(.is-disabled):focus,
+  .el-menu--horizontal > .el-menu-item:not(.is-disabled):hover,
+  .el-menu--horizontal > .el-submenu .el-submenu__title:hover {
     background-color: inherit;
+  }
+
+  .el-menu--horizontal .el-menu-item:not(.is-disabled):focus,
+  .el-menu--horizontal .el-menu-item:not(.is-disabled):hover {
+    color: white;
   }
 }
 </style>
