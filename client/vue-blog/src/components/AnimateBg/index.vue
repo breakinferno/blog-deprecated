@@ -1,16 +1,16 @@
 <template>
-  <div id="background-wrap" >
+  <div id="background-wrap" :class="{fade: faded}">
     <pre
       contenteditable
       ref="styleEl"
       id="style-text"
-      :class="{fade: faded}"
+      :class="{open: openDoor}"
       @input="styleInput"
     ></pre>
     <pre
       id="work-text"
       ref="workEl"
-      :class="{fade: faded}"
+      :class="{open: openDoor}"
       @dblclick="flip()"
     ></pre>
     <div id="background-control">
@@ -30,7 +30,7 @@
         <icon-svg icon-class="tiaoguo"></icon-svg>
       </span>
     </div>
-    <mc-character :ready="done" @moveEnd="handleMoveEnd"></mc-character>
+    <mc-character :ready="done" @moveEnd="handleMoveEnd" @openDoor="handleOpenDoor"></mc-character>
   </div>
 </template>
 <script>
@@ -66,14 +66,15 @@ let endOfBlock = /[^/]\n\n$/
 const style = document.getElementById('style-tag')
 
 export default {
-
+  props: ['forceSkip'],
   data () {
     return {
       paused: false,
-      skip: false,
+      isSkip: false,
       speed: 0,
       done: false,
-      faded: false
+      faded: false,
+      openDoor: false
     }
   },
   components: {
@@ -123,8 +124,8 @@ export default {
       console.log('resume!')
     },
     skipAnimation () {
-      this.skip = true
-      console.log('skip')
+      this.isSkip = true
+      // console.log('skip')
     },
     styleInput () {
       style.textContent = this.$refs.styleEl.textContent
@@ -170,13 +171,20 @@ export default {
       this.$refs.workEl.innerHTML = '<div class="text" contenteditable>' + replaceURLs(workText) + '</div>' +
         '<div class="md">' + replaceURLs(md(workText)) + '<div>'
     },
-    handleMoveEnd () {
-      console.log('get signal');
+    async handleMoveEnd () {
       this.fade()
+      await Promise.delay(1500)
+      this.$emit('animateEnd')
+    },
+    handleOpenDoor () {
+      this.open()
     },
     // 设置消失
     fade () {
       this.faded = true
+    },
+    open () {
+      this.openDoor = true
     },
     // reWriteTo(){
     //   if (this.skip) {
@@ -195,7 +203,7 @@ export default {
     // },
     async  writeTo (el, message, index, interval, mirrorToStyle, charsPerInterval) {
       if (this.skip) {
-        console.warn('Skip!!')
+        // console.warn('Skip!!')
         await this.surprisinglyShortAttentionSpan()
         return
       }
@@ -249,6 +257,11 @@ export default {
       }
       this.done = true
     }
+  },
+  computed: {
+    skip () {
+      return this.isSkip || this.forceSkip
+    }
   }
 }
 </script>
@@ -263,6 +276,10 @@ export default {
   display: flex;
   perspective: 2400px;
   .fillAll();
+  &.fade{
+    animation: getIntoRoom 1.5s both;
+  }
+
   pre {
     max-width: 50%;
     word-break: break-word;
@@ -270,15 +287,15 @@ export default {
     box-sizing: border-box;
     height: 100%;
   }
-  pre.fade{
+  pre.open{
     transition: all 3s linear;
   }
 
-  #style-text.fade{
+  #style-text.open{
     transform: translateX(100%) rotateY(-150deg);
   }
 
-  #work-text.fade{
+  #work-text.open{
     transform: rotateY(150deg);
   }
 
@@ -298,6 +315,17 @@ export default {
         width: 32px;
         height: 32px;
       }
+    }
+  }
+
+  @keyframes getIntoRoom {
+    from {
+        transform: scale(1) translateZ(0);
+        opacity: 1;
+    }
+    to {
+        transform: scale(1.5) translateZ(40px);
+        opacity: 0;
     }
   }
 }
