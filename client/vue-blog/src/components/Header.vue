@@ -1,17 +1,36 @@
 <template>
-  <div id="blog-header" @dblclick.prevent="skipAnimate">
-    <animate-bg :forceSkip="isAnimateOver" class="blog-animate-bg"  v-show="!isAnimateOver" @animateEnd="skipAnimate"></animate-bg>
-    <div v-show="isAnimateOver" class="blog-header-wrapper">
-      <blog-nav></blog-nav>
-      <div class="blog-header-content">
+  <div
+    id="blog-header"
+    @dblclick.prevent="skipAnimate"
+  >
+    <animate-bg
+      :forceSkip="isAnimateOver"
+      class="blog-animate-bg"
+      v-show="!isAnimateOver"
+      @animateEnd="skipAnimate"
+    ></animate-bg>
+    <div
+      v-show="isAnimateOver"
+      class="blog-header-wrapper"
+    >
+      <blog-nav :modify="stepInto"></blog-nav>
+      <div
+        class="blog-header-content"
+        :class="{modify: stepInto}"
+      >
         <div class="text-wrap">
-          <Avatar shape="circle"
-                  size="large"
-                  :src="avatarSrc" />
+          <Avatar
+            shape="circle"
+            size="large"
+            :src="avatarSrc"
+          />
           <h1 class="headline">{{headline}}</h1>
           <p class="subline">{{subline}}</p>
         </div>
-        <div class="pointer-wrap">
+        <div
+          class="pointer-wrap"
+          @click.prevent="handlePointerClick"
+        >
           <i class="el-icon-arrow-down"></i>
         </div>
       </div>
@@ -30,7 +49,8 @@ export default {
   data () {
     return {
       ...Config.User,
-      isAnimateOver: false
+      isAnimateOver: false,
+      stepInto: false
     }
   },
   mounted () {
@@ -42,6 +62,9 @@ export default {
     skipAnimate () {
       console.log('skip all')
       this.isAnimateOver = true
+    },
+    handlePointerClick () {
+      this.stepInto = true
     }
   }
 }
@@ -51,7 +74,7 @@ export default {
 #blog-header {
   background: #0000003b;
   height: 100%;
-  .blog-header-wrapper{
+  .blog-header-wrapper {
     height: 100%;
   }
   .blog-header-content {
@@ -61,7 +84,7 @@ export default {
       .fillAll();
     }
 
-    div{
+    div {
       color: white;
     }
     .text-wrap {
