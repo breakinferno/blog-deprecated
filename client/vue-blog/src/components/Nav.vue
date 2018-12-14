@@ -123,5 +123,11 @@ export default {
     justify-content: flex-end;
     border: none;
   }
+  .el-menu,
+  .el-menu--horizontal>.el-menu-item:not(.is-disabled):focus,
+  .el-menu--horizontal>.el-menu-item:not(.is-disabled):hover,
+  .el-menu--horizontal>.el-submenu .el-submenu__title:hover{
+    background-color: inherit;
+  }
 }
 </style>

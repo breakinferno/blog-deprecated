@@ -125,12 +125,12 @@ export default {
       this.character.classList.remove('move')
       await Promise.delay(10)
       this.character.classList.add('openDoor')
-      this.$emit('moveEnd')
+      this.$emit('openDoor')
       await Promise.delay(1500)
     },
     async postMove () {
-      console.log('post move')
       this.character.classList.add('post-move')
+      this.$emit('moveEnd')
       await Promise.delay(1500)
     }
   },

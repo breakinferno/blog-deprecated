@@ -1,7 +1,7 @@
 <template>
-  <div id="blog-header">
-    <animate-bg class="blog-animate-bg"></animate-bg>
-    <div v-show="false">
+  <div id="blog-header" @dblclick.prevent="skipAnimate">
+    <animate-bg :forceSkip="isAnimateOver" class="blog-animate-bg"  v-show="!isAnimateOver" @animateEnd="skipAnimate"></animate-bg>
+    <div v-show="isAnimateOver" class="blog-header-wrapper">
       <blog-nav></blog-nav>
       <div class="blog-header-content">
         <div class="text-wrap">
@@ -37,6 +37,12 @@ export default {
     // BgAnimate()
     // console.dir(BgAnimate)
     // debugger
+  },
+  methods: {
+    skipAnimate () {
+      console.log('skip all')
+      this.isAnimateOver = true
+    }
   }
 }
 </script>
@@ -45,6 +51,9 @@ export default {
 #blog-header {
   background: #0000003b;
   height: 100%;
+  .blog-header-wrapper{
+    height: 100%;
+  }
   .blog-header-content {
     height: 100%;
     .center();
@@ -52,6 +61,9 @@ export default {
       .fillAll();
     }
 
+    div{
+      color: white;
+    }
     .text-wrap {
       position: relative;
       top: -30px;
@@ -74,6 +86,19 @@ export default {
       bottom: 60px;
       position: absolute;
       font-size: 36px;
+      cursor: pointer;
+      animation: bounce 1.4s infinite;
+    }
+    @keyframes bounce {
+      0% {
+        bottom: 60px;
+      }
+      50% {
+        bottom: 80px;
+      }
+      100% {
+        bottom: 60px;
+      }
     }
   }
 }
