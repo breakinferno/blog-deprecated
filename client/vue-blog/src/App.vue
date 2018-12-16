@@ -1,9 +1,11 @@
 <template>
   <div id="app">
     <el-container>
-      <el-header>
-        <blog-header></blog-header>
-      </el-header>
+      <transition>
+        <el-header :class="{modify}">
+          <blog-header @modify="handleModify"></blog-header>
+        </el-header>
+      </transition>
       <el-main>
         <el-container>
           <el-aside>left aside</el-aside>
@@ -25,10 +27,20 @@ import BlogHeader from '@/components/Header'
 import BlogFooter from '@/components/Footer'
 export default {
   name: 'app',
+  data () {
+    return {
+      modify: false
+    }
+  },
   components: {
     // HelloWorld
     BlogHeader,
     BlogFooter
+  },
+  methods: {
+    handleModify () {
+      this.modify = true
+    }
   }
 }
 </script>
@@ -47,9 +59,15 @@ export default {
   .el-header {
     padding: 0px;
     height: 100% !important;
+    transition: all 1.5s ease;
+    &.modify {
+      height: 60px !important;
+    }
   }
   .el-container {
     height: 100%;
+    display: flex;
+    justify-content: space-between;
   }
 }
 </style>

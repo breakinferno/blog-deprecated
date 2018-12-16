@@ -1,36 +1,32 @@
 <template>
-  <div id="background-wrap" :class="{fade: faded}">
-    <pre
-      contenteditable
-      ref="styleEl"
-      id="style-text"
-      :class="{open: openDoor}"
-      @input="styleInput"
-    ></pre>
-    <pre
-      id="work-text"
-      ref="workEl"
-      :class="{open: openDoor}"
-      @dblclick="flip()"
-    ></pre>
+  <div id="background-wrap"
+       :class="{fade: faded}">
+    <pre contenteditable
+         ref="styleEl"
+         id="style-text"
+         :class="{open: openDoor}"
+         @input="styleInput"></pre>
+    <pre id="work-text"
+         ref="workEl"
+         :class="{open: openDoor}"
+         @dblclick="flip()"></pre>
     <div id="background-control">
-      <span
-        v-show="paused"
-        @click.prevent="resumeAnimation"
-      >
+      <span v-show="paused"
+            @click.prevent="resumeAnimation">
         <icon-svg icon-class="kaishi"></icon-svg>
       </span>
-      <span
-        v-show="!paused"
-        @click.prevent="pauseAnimation"
-      >
+      <span v-show="!paused"
+            @click.prevent="pauseAnimation">
         <icon-svg icon-class="zanting"></icon-svg>
       </span>
       <span @click.prevent="skipAnimation">
         <icon-svg icon-class="tiaoguo"></icon-svg>
       </span>
     </div>
-    <mc-character :ready="done" @moveEnd="handleMoveEnd" @openDoor="handleOpenDoor"></mc-character>
+    <mc-character :ready="done"
+                  @moveEnd="handleMoveEnd"
+                  @openDoor="handleOpenDoor">
+    </mc-character>
   </div>
 </template>
 <script>
@@ -276,7 +272,7 @@ export default {
   display: flex;
   perspective: 2400px;
   .fillAll();
-  &.fade{
+  &.fade {
     animation: getIntoRoom 1.5s both;
   }
 
@@ -287,15 +283,15 @@ export default {
     box-sizing: border-box;
     height: 100%;
   }
-  pre.open{
+  pre.open {
     transition: all 3s linear;
   }
 
-  #style-text.open{
+  #style-text.open {
     transform: translateX(100%) rotateY(-150deg);
   }
 
-  #work-text.open{
+  #work-text.open {
     transform: rotateY(150deg);
   }
 
@@ -320,12 +316,12 @@ export default {
 
   @keyframes getIntoRoom {
     from {
-        transform: scale(1) translateZ(0);
-        opacity: 1;
+      transform: scale(1) translateZ(0);
+      opacity: 1;
     }
     to {
-        transform: scale(1.5) translateZ(40px);
-        opacity: 0;
+      transform: scale(1.5) translateZ(40px);
+      opacity: 0;
     }
   }
 }

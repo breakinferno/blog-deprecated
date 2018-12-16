@@ -1,35 +1,24 @@
 <template>
-  <div id="nav">
-    <el-menu
-      :default-active="activeIndex"
-      class="blog-nav"
-      mode="horizontal"
-      @select="handleSelect"
-    >
-      <el-menu-item
-        v-for="menu in menus"
-        :key="menu.name"
-        index="menu.name"
-      >
-        <router-link
-          class="nav-item"
-          :to="{name: menu.name}"
-        >{{menu.description}}</router-link>
+  <div id="nav"
+       :class="{modify}">
+    <el-menu :default-active="activeIndex"
+             class="blog-nav"
+             mode="horizontal"
+             @select="handleSelect">
+      <el-menu-item v-for="menu in menus"
+                    :key="menu.name"
+                    :index="menu.name">
+        <router-link class="nav-item"
+                     :to="{name: menu.name}">{{menu.description}}</router-link>
       </el-menu-item>
-      <el-menu-item
-        v-if="!isLogin"
-        index="login"
-      >
-        <router-link
-          class="nav-item"
-          :to="{name: 'login'}"
-        >登录</router-link>
+      <el-menu-item v-if="!isLogin"
+                    index="login">
+        <router-link class="nav-item"
+                     :to="{name: 'login'}">登录</router-link>
       </el-menu-item>
-      <el-menu-item
-        v-else
-        @click="handleLogout"
-        index="logout"
-      >注销</el-menu-item>
+      <el-menu-item v-else
+                    @click="handleLogout"
+                    index="logout">注销</el-menu-item>
       <!-- <el-submenu index="2">
     <template slot="title">我的工作台</template>
     <el-menu-item index="2-1">选项1</el-menu-item>
@@ -66,6 +55,12 @@ const menus = {
   }
 }
 export default {
+  props: {
+    modify: {
+      type: Boolean,
+      default: false
+    }
+  },
   data () {
     return {
       nav: 'nav',
@@ -119,8 +114,8 @@ export default {
       //   type: 'success'
       // })
     },
-    handleSelect () {
-      console.log('select')
+    handleSelect (key, keyPath) {
+      console.log(key, keyPath)
     }
   }
 }
@@ -141,10 +136,29 @@ export default {
   .el-menu--horizontal > .el-submenu .el-submenu__title:hover {
     background-color: inherit;
   }
-
+  .el-menu--horizontal > .el-menu-item.is-active {
+    color: white;
+    border: none;
+  }
   .el-menu--horizontal .el-menu-item:not(.is-disabled):focus,
   .el-menu--horizontal .el-menu-item:not(.is-disabled):hover {
     color: white;
+    font-size: 18px;
+  }
+  .el-menu--horizontal > .el-menu-item {
+    border: none;
+  }
+  &.modify {
+    background: white;
+    border-bottom: 1px solid #00000033;
+    .el-menu--horizontal > .el-menu-item.is-active {
+      color: black;
+      font-size: 18px;
+    }
+    .el-menu--horizontal .el-menu-item:not(.is-disabled):focus,
+    .el-menu--horizontal .el-menu-item:not(.is-disabled):hover {
+      color: black;
+    }
   }
 }
 </style>

@@ -1,11 +1,9 @@
 <template>
   <div id="mc-character">
-    <div
-      ref="character"
-      class="character"
-      v-show="ready"
-      transition="character-action"
-    >
+    <div ref="character"
+         class="character"
+         v-show="ready"
+         transition="character-action">
       <div class="header-wrapper">
         <div class="head">
           <div class="head-top mc-bg"></div>
@@ -229,7 +227,6 @@ export default {
       // 双臂张开
       .left-arm {
         transform: rotateX(120deg) rotateZ(15deg);
-
       }
       .right-arm {
         transform: rotateX(120deg) rotateZ(-12deg);
@@ -509,7 +506,7 @@ export default {
   }
   .mc-bg {
     background: red;
-    background-image: url("../../assets/mc-character.png");
+    background-image: url('../../assets/mc-character.png');
   }
 
   @keyframes HeadAnimation {
