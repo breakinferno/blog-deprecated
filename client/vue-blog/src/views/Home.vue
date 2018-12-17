@@ -3,11 +3,12 @@
     <!-- <img alt="Vue logo"
          src="../assets/logo.png"> -->
     <timeline :dataList="dataList">
-      <!-- 可扩展插槽 -->
+      <!-- 可扩展插槽okok这里可自定义 -->
       <!-- <div slot-scope="slotProps">
         {{slotProps.item.title}}
       </div> -->
     </timeline>
+    <card></card>
   </div>
 </template>
 
