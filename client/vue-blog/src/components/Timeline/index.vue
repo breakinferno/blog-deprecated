@@ -1,30 +1,30 @@
 <template>
-    <div id="time-line"
-         :class="classObj">
-        <!-- <slot> -->
-        <div class="timeline-row"
-             v-for="(item, index) in dataList"
-             :key="index">
-            <!-- 默认插槽内容 -->
-            <slot :item="item">
-                <div class="timeline-img">
-                    <avatar :shape="shape"
-                            :src="item.img"
-                            v-if="item.img"></avatar>
-                    <avatar :shape="shape">{{item.time | formatDate}}</avatar>
-                </div>
-                <div class="timeline-content">
-                    <div class="content-body">
-                        <h2>{{ item.title }}</h2>
-                        <p>
-                            {{ item.content }}
-                        </p>
-                    </div>
-                </div>
-            </slot>
+  <div id="time-line"
+       :class="classObj">
+    <!-- <slot> -->
+    <div class="timeline-row"
+         v-for="(item, index) in dataList"
+         :key="index">
+      <!-- 默认插槽内容 -->
+      <slot :item="item">
+        <div class="timeline-img">
+          <avatar :shape="shape"
+                  :src="item.img"
+                  v-if="item.img"></avatar>
+          <avatar :shape="shape">{{item.time | formatDate}}</avatar>
         </div>
-        <!-- </slot> -->
+        <div class="timeline-content">
+          <div class="content-body">
+            <h2>{{ item.title }}</h2>
+            <p>
+              {{ item.content }}
+            </p>
+          </div>
+        </div>
+      </slot>
     </div>
+    <!-- </slot> -->
+  </div>
 </template>
 <script>
 // 支持插槽扩展
@@ -91,9 +91,23 @@ export default {
 #time-line {
   display: flex;
   flex-direction: column;
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 18px;
+    height: 100%;
+    width: 2px;
+    background: #2f648a;
+  }
   .timeline-row {
     display: flex;
     position: relative;
+    margin-bottom: 40px;
+    &:last-child{
+      margin-bottom: 0px;
+    }
     .timeline-img {
       position: absolute;
       top: 0px;
@@ -108,7 +122,7 @@ export default {
       padding: 1em;
       box-shadow: 0px 4px 15px 0px rgba(0, 0, 0, 0.75);
       &::before {
-        content: '';
+        content: "";
         position: absolute;
         top: 16px;
         right: 100%;
@@ -118,7 +132,7 @@ export default {
         border-right: 7px solid white;
       }
       &::after {
-        content: '';
+        content: "";
         display: table;
         clear: both;
       }

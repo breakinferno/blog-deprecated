@@ -3,8 +3,14 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import CommonComponents from './components/Common'
+import Directives from './directives'
 import './plugins/element.js'
-
+import 'tui-editor/dist/tui-editor.css'
+import 'tui-editor/dist/tui-editor-contents.css'
+import 'codemirror/lib/codemirror.css'
+import {
+  Editor
+} from '@toast-ui/vue-editor'
 // import './registerServiceWorker'
 // console.log(BlogComponents)
 
@@ -14,6 +20,12 @@ Vue.config.productionTip = false
 for (let comp of Object.keys(CommonComponents)) {
   Vue.component(comp, CommonComponents[comp])
 }
+// 一些公共指令
+for (let dir of Object.keys(Directives)) {
+  Vue.directive(dir, Directives[dir])
+}
+
+Vue.use(Editor)
 
 new Vue({
   router,
