@@ -4,19 +4,25 @@
     <el-container>
       <transition>
         <el-header :class="{modify}">
-          <blog-header @modify="handleModify"
-                       :awake="awake"></blog-header>
+          <blog-header ref="header"
+                       @modify="handleModify"></blog-header>
         </el-header>
       </transition>
       <div class="wrapper">
         <el-main>
           <el-container>
             <!-- <div class="wrapper"></div> -->
-            <el-aside>left aside</el-aside>
+            <el-aside class="left-aside">
+              <introduction></introduction>
+            </el-aside>
             <!-- <router-view name="left-sider"></router-view> -->
-            <router-view></router-view>
+            <div class="content">
+              <router-view></router-view>
+            </div>
             <!-- <router-view name="right-sider"></router-view> -->
-            <el-aside>right aside</el-aside>
+            <el-aside class="right-aside">
+              <panel></panel>
+            </el-aside>
           </el-container>
         </el-main>
       </div>
@@ -31,27 +37,29 @@
 <script>
 import BlogHeader from '@/components/Header'
 import BlogFooter from '@/components/Footer'
+import Introduction from '@/components/Introduction'
 export default {
   name: 'app',
   data () {
     return {
-      modify: false,
-      awake: false
+      modify: false
     }
   },
   components: {
     // HelloWorld
     BlogHeader,
-    BlogFooter
+    BlogFooter,
+    Introduction
   },
   methods: {
     handleModify () {
       this.modify = true
     },
     handleScroll (evt, el, binding, last, cb) {
-      if (window.scrollY - last > 100) {
+      if (window.scrollY - last > 50) {
         // 唤醒header
-        this.awake = true
+        // this.awake = true
+        this.$refs.header.handleTimeout()
       }
       if (this.timer) {
         clearTimeout(this.timer)
@@ -77,9 +85,18 @@ export default {
     width: 100%;
     background-image: url("./assets/bg.png");
     background-repeat: no-repeat;
-    z-index: -1;
     background-size: cover;
     background-attachment: fixed;
+    padding-top: 30px;
+    .el-container {
+      justify-content: center;
+    }
+    .content {
+      max-width: 900px;
+      min-width: 600px;
+      flex: 1;
+      padding: 0 45px;
+    }
   }
   .el-main {
     overflow: visible;
@@ -89,12 +106,20 @@ export default {
     padding: 0px;
     height: 100% !important;
     transition: all 1.5s ease;
+    z-index: 1;
     &.modify {
       height: 60px !important;
-      position: absolute;
+      position: fixed;
       width: 100%;
       // z-index: -1;
     }
+  }
+  .el-aside {
+    background: white;
+    align-self: self-start;
+  }
+  .el-aside.left-aside {
+    width: 200px !important;
   }
   & > .el-container {
     // position: absolute;
@@ -106,6 +131,22 @@ export default {
     height: 100%;
     display: flex;
     justify-content: space-between;
+    min-width: 1220px;
+  }
+}
+
+@media screen and (max-device-width: 1000px) {
+  #app {
+    background: red;
+    .el-aside {
+      display: none;
+    }
+  }
+}
+
+@media screen and (max-device-width: 640px) {
+  #app {
+    background: black;
   }
 }
 </style>
