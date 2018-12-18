@@ -2,23 +2,23 @@
   <div class="home">
     <!-- <img alt="Vue logo"
          src="../assets/logo.png"> -->
-    <timeline :dataList="dataList">
-      <!-- 可扩展插槽okok这里可自定义 -->
-      <!-- <div slot-scope="slotProps">
+    <!-- <timeline :dataList="dataList"> -->
+    <!-- 可扩展插槽okok这里可自定义 -->
+    <!-- <div slot-scope="slotProps">
         {{slotProps.item.title}}
       </div> -->
-    </timeline>
+    <!-- </timeline> -->
     <card></card>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import Timeline from '@/components/Timeline'
+// import Timeline from '@/components/Timeline'
 export default {
   name: 'home',
   components: {
-    Timeline
+    // Timeline
   },
   data () {
     return {
@@ -33,6 +33,5 @@ export default {
 </script>
 <style lang="less" scoped>
 .home {
-  flex: 1;
 }
 </style>

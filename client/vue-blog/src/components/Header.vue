@@ -1,7 +1,9 @@
 <template>
   <div id="blog-header"
        @dblclick.prevent="skipAnimate"
-       :class="{modify: stepInto, timeout}">
+       :class="{modify: stepInto, timeout: isHide}"
+       @mouseover.prevent="hoverHeader(true)"
+       @mouseleave.prevent="hoverHeader(false)">
     <!--导航栏-->
     <blog-nav :modify="stepInto"
               v-show="isAnimateOver"></blog-nav>
@@ -52,7 +54,8 @@ export default {
       ...Config.User,
       isAnimateOver: false, // 控制背景墙的显示
       stepInto: false, // 进入主界面
-      timeout: this.awake
+      timeout: false, // 是否隐藏header
+      isHover: false
     }
   },
   props: {
@@ -175,7 +178,15 @@ export default {
       dieY = h / 2 / opts.len
     })
   },
+  computed: {
+    isHide () {
+      return this.timeout && !this.isHover
+    }
+  },
   methods: {
+    hoverHeader (flag) {
+      this.isHover = flag
+    },
     skipAnimate () {
       if (this.isAnimateOver) {
         return
@@ -189,9 +200,9 @@ export default {
     handleTimeout () {
       if (this.timeout) {
         this.timeout = false
+        clearTimeout(this.timer)
       }
-      setTimeout(() => {
-        console.log('timeout')
+      this.timer = setTimeout(() => {
         this.timeout = true
       }, 2000)
     },
@@ -202,16 +213,15 @@ export default {
     handleStepInto () {
       console.log('after leave')
       this.$emit('modify')
-
       // this.$emit('stepped')
     }
-  },
-  watch: {
-    awake () {
-      this.timeout = this.awake
-      this.handleTimeout()
-    }
   }
+  // watch: {
+  //   awake (n, o) {
+  //     console.log('new is:' + n + ', old is:' + o)
+  //     this.handleTimeout()
+  //   }
+  // }
 }
 </script>
 
