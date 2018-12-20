@@ -82,16 +82,21 @@ export default {
   background: white;
   position: relative;
   margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  min-height: 400px;
   &:last-child {
     margin: 0px;
   }
   .card-img {
     width: 100%;
-    height: 0;
-    padding-bottom: 40%;
+    // height: 0;
+    // padding-bottom: 40%;
     position: relative;
     box-sizing: border-box;
     background-size: cover;
+    flex-grow: 1;
     .img-header {
       background: #00000099;
       color: white;

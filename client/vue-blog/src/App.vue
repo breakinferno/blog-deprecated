@@ -93,7 +93,7 @@ export default {
     }
     .content {
       max-width: 900px;
-      min-width: 600px;
+      // min-width: 600px;
       flex: 1;
       padding: 0 45px;
     }
@@ -117,6 +117,9 @@ export default {
   .el-aside {
     background: white;
     align-self: self-start;
+    @media screen and (max-width: 1000px) {
+      display: none;
+    }
   }
   .el-aside.left-aside {
     width: 200px !important;
@@ -131,22 +134,7 @@ export default {
     height: 100%;
     display: flex;
     justify-content: space-between;
-    min-width: 1220px;
-  }
-}
-
-@media screen and (max-device-width: 1000px) {
-  #app {
-    background: red;
-    .el-aside {
-      display: none;
-    }
-  }
-}
-
-@media screen and (max-device-width: 640px) {
-  #app {
-    background: black;
+    // min-width: 1220px;
   }
 }
 </style>
