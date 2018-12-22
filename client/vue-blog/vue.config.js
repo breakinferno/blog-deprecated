@@ -42,7 +42,13 @@ module.exports = {
   pluginOptions: {
     'style-resources-loader': {
       preProcessor: 'less',
-      patterns: [path.resolve(__dirname, './public/global.less')]
+      patterns: [
+        '/Users/mistaky/Desktop/blog/client/vue-blog/public/global.less'
+      ]
+    },
+    apollo: {
+      enableMocks: true,
+      enableEngine: true
     }
   }
 }
