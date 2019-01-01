@@ -9,5 +9,6 @@ export const Redis = {
 
 export const System = {
     db_type: 'mongodb',
-    version: '1.0'
+    version: '1.0',
+    port: 8888
 }
