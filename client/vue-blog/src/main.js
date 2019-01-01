@@ -13,7 +13,9 @@ import {
   Editor
 } from '@toast-ui/vue-editor'
 
-import { createProvider } from './vue-apollo'
+import {
+  createProvider
+} from './vue-apollo'
 // import './registerServiceWorker'
 // console.log(BlogComponents)
 
@@ -33,7 +35,15 @@ Vue.use(Editor)
 new Vue({
   router,
   store,
+  <<
+  <<
+  << < HEAD
   apolloProvider: createProvider(),
+  ===
+  ===
+  = >>>
+  >>>
+  > e211233796d4580a0064893025d6eb7a6cecd1d2
   render: h => h(App)
 }).$mount('#app')
 
