@@ -42,7 +42,11 @@ module.exports = {
   pluginOptions: {
     'style-resources-loader': {
       preProcessor: 'less',
-      patterns: [path.resolve(__dirname, './public/global.less')]
+      patterns:  [path.resolve(__dirname, './public/global.less')]
+    },
+    apollo: {
+      enableMocks: true,
+      enableEngine: true
     }
   }
 }

@@ -14,7 +14,7 @@
     <div class="card-content">
       <div class="card-detail">
         <div class="card-detail-content">
-          {{item.content}}
+          &emsp;{{item.content}}
         </div>
         <span class="card-header-tag">
           <tag :tags="item.tags"></tag>
@@ -35,6 +35,10 @@
       <div class="date-month">{{extractDate(item.time, 'm')}}月</div>
       <div class="date-day">{{extractDate(item.time, 'd')}}</div>
     </div>
+    <div class="card-category"
+         v-if="item.category">
+      <a :href="'/categories/' + item.category">{{item.category}}</a>
+    </div>
     <div class="card-bdage"></div>
   </article>
 </template>
@@ -45,14 +49,15 @@ export default {
       item: {
         title: 'mdzz this is title',
         tags: ['science', 'technology', 'game'],
-        content: '测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试',
+        content: '测试内容测试内容测试内容测试内容测试内容测试内容内容测试内容测试内容测试内容内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测内容试内容测内容试测内容试测试测试',
         img: '../../assets/images/7.jpg',
         avatar: '',
         time: '2018-2-23',
         view: 233,
         comment: 23,
         star: 22,
-        share: 232
+        share: 232,
+        category: 'test'
       }
     }
   },
@@ -114,7 +119,13 @@ export default {
   }
 
   .card-content {
-    padding: 20px 0px;
+    // padding: 20px 0px;
+    .card-detail-content {
+      padding: 20px;
+      text-align: left;
+      min-height: 56px;
+      box-sizing: border-box;
+    }
   }
 
   .card-date {
@@ -141,6 +152,38 @@ export default {
     .date-day {
       font-size: 20px;
       font-weight: 700;
+    }
+  }
+  .card-category {
+    position: absolute;
+    left: -16px;
+    top: 105px;
+    border-color: #47456d;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+      0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+    background-color: #97dffd;
+    margin: 5px 0;
+    font-size: 14px;
+    border-radius: 0 4px 4px 0;
+    display: inline-block;
+    padding: 7px 11px 7px 32px;
+    line-height: 1;
+    &::after {
+      position: absolute;
+      content: '';
+      top: 100%;
+      left: 0;
+      border-top: 0 solid transparent;
+      border-right-width: 1em;
+      border-right-color: inherit;
+      border-right-style: solid;
+      border-bottom: 1em solid transparent;
+      border-left: 0 solid transparent;
+      width: 0;
+      height: 0;
+    }
+    a {
+      color: #fff;
     }
   }
 }

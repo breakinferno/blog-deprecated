@@ -46,7 +46,7 @@ export default {
     }
   },
   components: {
-    // HelloWorld
+    // ApolloExample
     BlogHeader,
     BlogFooter,
     Introduction
