@@ -1,0 +1,26 @@
+enum Gendor {
+  FEMALE
+  MALE
+}
+
+type UserMeta {
+  gendor: Gendor
+  age: Int
+  location: String
+  job: String
+  hobby: String
+  description: String
+}
+
+type User {
+  nick: String!
+  avatar: String
+  createdAt: Date
+  updatedAt: Date
+  meta: UserMeta
+}
+
+extend type Query{
+  user(nick: String): User
+  users: [User!]!
+}

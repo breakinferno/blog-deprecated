@@ -2,11 +2,7 @@
 import Koa from 'koa'
 import KoaStatic from 'koa-static'
 import bodyParser from 'koa-bodyparser'
-import {
-    ApolloServer,
-    gql
-} from 'apollo-server-koa'
-
+import apolloServer from './graphql'
 import auth from './middleware/auth'
 import {
     System
@@ -14,28 +10,9 @@ import {
 import db from './db'
 import routes from './router'
 
-// The GraphQL schema
-const typeDefs = gql `
-  type Query {
-    "A simple type for getting started!"
-    hello: String
-  }
-`;
-
-// A map of functions which return data for the schema.
-const resolvers = {
-    Query: {
-        hello: () => 'world',
-    },
-};
-
-const server = new ApolloServer({
-    typeDefs,
-    resolvers,
-});
-
 const app = new Koa()
-server.applyMiddleware({
+// 应用graphql
+apolloServer.applyMiddleware({
     app
 });
 

@@ -1,5 +1,0 @@
-interface content {
-    title: String!
-    content: String!
-    
-}
