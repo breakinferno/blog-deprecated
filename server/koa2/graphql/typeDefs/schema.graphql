@@ -4,16 +4,11 @@ scalar Date
 
 scalar ObjectId
 
-type Root {
-    _id: ObjectId
-    user(nick: String): User
-    users: [User!]!
-}
-
 type Query {
-    root: Root
+  user(nick: String): User
+  users: [User!]!
 }
 
 type Mutation {
-    Root(_id: ID): Root
+    addUser(nick: String!): User
 }

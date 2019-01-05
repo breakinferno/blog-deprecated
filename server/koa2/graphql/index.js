@@ -5,24 +5,13 @@ import {
   gql
 } from 'apollo-server-koa'
 
-// The GraphQL schema
-const typeDefs = gql `
-  type Query {
-    "A simple type for getting started!"
-    hello: String
-  }
-`;
+import resolvers from './resolvers'
+import defs from './typeDefs'
 
-// A map of functions which return data for the schema.
-const resolvers = {
-    Query: {
-        hello: () => 'hello world',
-    },
-};
-
+let typeDefs = gql `${defs}`
 const server = new ApolloServer({
-    typeDefs,
-    resolvers,
+  typeDefs,
+  resolvers,
 });
 
 export default server

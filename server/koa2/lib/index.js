@@ -52,10 +52,44 @@ export function paramHandler(ctx) {
 }
 
 
-export default {
-    getObjValue,
-    checkFields,
-    getFields,
-    errorHandler,
-    paramHandler
+export function transformDocToObj(doc, ignore = []) {
+    let ret
+    let origin = {
+        ...doc.toObject()
+    }
+    let mustOmit = ['_id', '__v'].concat(ignore)
+    ret = Object.keys(origin).reduce((o, p) => {
+        if (!mustOmit.includes(p)) {
+            o[p] = origin[p]
+        }
+        return o
+    }, {})
+    return ret
 }
+
+export function composeResolver(resolvers = []) {
+    let ret = {
+        Query: {},
+        Mutation: {}
+    }
+    resolvers.forEach(resolver => {
+        resolver.Query && (ret.Query = {
+            ...ret.Query,
+            ...resolver.Query
+        })
+        resolver.Mutation && (ret.Mutation = {
+            ...ret.Mutation,
+            ...resolver.Mutation
+        })
+    })
+    return ret
+}
+
+// export default {
+//     getObjValue,
+//     checkFields,
+//     getFields,
+//     errorHandler,
+//     paramHandler,
+//     transformDocToObj
+// }

@@ -1,3 +1,17 @@
+import {
+  GraphQLScalarType
+} from 'graphql'
+import {
+  Kind
+} from 'graphql/language'
+import mongoose from 'mongoose'
+
+import User from './user'
+import {
+  composeResolver
+} from '../../lib'
+const ObjectId = mongoose.Types.ObjectId
+
 const Date = new GraphQLScalarType({
   name: 'Date',
   description: 'Date Type',
@@ -31,3 +45,13 @@ const ObjectIdType = new GraphQLScalarType({
     return null;
   }
 });
+
+let resolvers = {
+  ObjectId: ObjectIdType,
+  Date,
+  ...composeResolver([User])
+}
+
+
+
+export default resolvers

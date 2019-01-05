@@ -1,14 +1,19 @@
-import User from '../../model/user'
-module.exports = {
+import Services from '../../services'
+
+const {
+  User
+} = Services
+export default {
   Query: {
-    rooms: (root, args, context, info) => {
-      return Room.find({})
-    },
-    user: (root, args) => {
-      return
+    user: (root, {
+      nick
+    }) => {
+      return User.GetByNick(nick)
     }
   },
   Mutation: {
-
+    addUser: (root, args) => {
+      User.Create(args)
+    }
   }
 }

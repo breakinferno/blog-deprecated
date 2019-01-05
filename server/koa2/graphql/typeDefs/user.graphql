@@ -19,8 +19,3 @@ type User {
   updatedAt: Date
   meta: UserMeta
 }
-
-extend type Query{
-  user(nick: String): User
-  users: [User!]!
-}

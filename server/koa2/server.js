@@ -32,7 +32,7 @@ app.use(auth())
 // 使用 bodyParser 和 KoaStatic 中间件
 app.use(bodyParser());
 app.use(KoaStatic(__dirname + '/public'));
-console.log(routes)
+// console.log(routes)
 app.use(routes)
 
 app.listen(System.port);
