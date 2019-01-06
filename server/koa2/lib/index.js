@@ -37,10 +37,30 @@ export function errorHandler(err) {
     console.log(err);
 }
 
-export function paramHandler(ctx) {
+export function paramHandler(ctx, type = ['body']) {
     let data // 请求数据
     try {
-        data = ctx.request.body
+        if (type.length === 1) {
+            if (type.includes('body')) {
+                data = ctx.request.body || {}
+            }
+            if (type.includes('query')) {
+                data = ctx.query || {}
+            }
+            if (type.includes('params')) {
+                data = ctx.params || {}
+            }
+        } else {
+            if (type.includes('body')) {
+                data['body'] = ctx.request.body || {}
+            }
+            if (type.includes('query')) {
+                data['query'] = ctx.query || {}
+            }
+            if (type.includes('params')) {
+                data['params'] = ctx.params || {}
+            }
+        }
     } catch (e) {
         errorHandler(e)
         ctx.response.status = 400

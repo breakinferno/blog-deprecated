@@ -95,8 +95,27 @@ async function GetByID(id) {
     }
 }
 
+async function DeleteById(id) {
+    if (id) {
+        const userdoc = await User.findOneAndDelete().where('id').equals(id).exec()
+        return {
+            code: 200,
+            payload: {
+                msg: "Delete User Successfully",
+                data: transformDocToObj(userdoc)
+            }
+        };
+    }
+    return {
+        code: 400,
+        payload: {
+            msg: "Invalid Parameter"
+        }
+    }
+}
 
 export default {
     Create,
-    GetByID
+    GetByID,
+    DeleteById
 }

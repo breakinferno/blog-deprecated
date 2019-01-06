@@ -1,10 +1,5 @@
 import UserServices from '../services/user'
 import {
-    errHandler,
-    getObjValue,
-    checkFields,
-    getFields,
-    errorHandler,
     paramHandler
 } from '../lib'
 
@@ -17,8 +12,20 @@ async function Delete(target) {
 
 }
 // 获取资源
-async function Get(ctx) {
-    ctx.body = "test user"
+async function GetById(ctx) {
+    const { id } = paramHandler(ctx, ['params'])
+    if (!id) {
+        ctx.response.status = 400
+        return ctx.body = {
+            msg: 'Invalid Parameter!'
+        }
+    }
+    await UserServices.GetByID(id).then(ret => {
+        ctx.body = ret.payload
+    }).catch(err => {
+        ctx.body = ret.payload
+        ctx.response.status = ret.code
+    })
 }
 // 新建资源
 async function Post(ctx, next) {
@@ -43,7 +50,24 @@ async function Patch(target, fieldMap) {
 
 }
 
+async function DeleteById(ctx) {
+    const { id } = paramHandler(ctx, ['params'])
+    if (!id) {
+        ctx.response.status = 400
+        return ctx.body = {
+            msg: 'Invalid Parameter!'
+        }
+    }
+    await UserServices.DeleteById(id).then(ret => {
+        ctx.body = ret.payload
+    }).catch(err => {
+        ctx.body = ret.payload
+        ctx.response.status = ret.code
+    })
+}
+
 export default {
     Post,
-    Get
+    GetById,
+    DeleteById
 }

@@ -6,6 +6,7 @@ const router = new KoaRouter({
 })
 router
     .post('/', controllers.User.Post)
-    .get('/', controllers.User.Get)
+    .get('/:id', controllers.User.GetById)
+    .delete('/:id', controllers.User.DeleteById)
 
 export default router
