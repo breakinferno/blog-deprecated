@@ -12,10 +12,37 @@ type UserMeta {
   description: String
 }
 
+input UserMetaInput {
+  gendor: Gendor
+  age: Int
+  location: String
+  job: String
+  hobby: String
+  description: String
+}
+
 type User {
+  id: String!
   nick: String!
   avatar: String
   createdAt: Date
   updatedAt: Date
   meta: UserMeta
+}
+
+input UserInput {
+  nick: String!
+  avatar: String
+  meta: UserMetaInput
+}
+
+type Query {
+  user(id: String): User!
+  users: [User!]!
+}
+
+type Mutation {
+  addUser(input: UserInput!): User!
+  deleteUser(id: String!): User!
+  updateUser(id: String!, input: UserInput): User!
 }

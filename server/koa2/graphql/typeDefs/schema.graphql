@@ -1,14 +1,4 @@
-
-# import User from 'user.graphql'
+# import Query.*, Mutation.*, * from 'user.graphql'
 scalar Date
 
 scalar ObjectId
-
-type Query {
-  user(nick: String): User
-  users: [User!]!
-}
-
-type Mutation {
-    addUser(nick: String!): User
-}

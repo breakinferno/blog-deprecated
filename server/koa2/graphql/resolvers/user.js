@@ -1,19 +1,27 @@
 import Services from '../../services'
-
-const {
-  User
-} = Services
+import { graphqlHanlder } from '../../lib'
+const { User } = Services
 export default {
-  Query: {
-    user: (root, {
-      nick
-    }) => {
-      return User.GetByNick(nick)
+    Query: {
+        user: async (root, { id }) => {
+            let ret = await User.GetByID(id)
+            return graphqlHanlder(ret)
+        }
+    },
+    Mutation: {
+        addUser: async (root, { input }) => {
+            let ret = await User.Create(input)
+            return graphqlHanlder(ret)
+        },
+        deleteUser: (root, { id }) => {
+            User.Delete(id)
+        }
+    },
+    User: {
+        avatar: () => "test"
+    },
+    Gendor: {
+        FEMALE: "female",
+        MALE: "male"
     }
-  },
-  Mutation: {
-    addUser: (root, args) => {
-      User.Create(args)
-    }
-  }
 }

@@ -1,6 +1,4 @@
-import User, {
-    origin
-} from '../model/user'
+import UserServices from '../services/user'
 import {
     errHandler,
     getObjValue,
@@ -24,41 +22,17 @@ async function Get(ctx) {
 }
 // 新建资源
 async function Post(ctx, next) {
-    let data = paramHandler(ctx)
     try {
-        if (checkFields(data, ['nick'])) {
-            let nick = getObjValue(data, 'nick')
-            const userDoc = await User.findOne()
-                .where('nick').equals(nick)
-                .exec((err, user) => {
-                    if (err) errorHandler(err)
-                })
-            if (userDoc) {
-                ctx.body = {
-                    err: 'The user has already exist'
-                }
-                ctx.response.status = 400
-                return
-            }
-            // 先试试默认值
-            await origin.save(function (err, user) {
-                if (err) {
-                    errHandler(err)
-                }
-            })
-            ctx.body = {
-                data: origin
-            }
-        } else {
-            ctx.body = {
-                err: 'require necessary filed'
-            }
-            ctx.response.status = 422
-            return
-        }
+        let data = paramHandler(ctx)
     } catch (err) {
-        errHandler(err);
+        return
     }
+    await UserServices.Create(data).then(ret => {
+        ctx.body = ret.payload
+    }).catch(err => {
+        ctx.body = ret.payload
+        ctx.response.status = ret.code
+    })
 }
 // 全部更改
 async function Put(target, obj) {

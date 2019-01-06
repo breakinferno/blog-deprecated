@@ -43,14 +43,23 @@ export function paramHandler(ctx) {
         data = ctx.request.body
     } catch (e) {
         errorHandler(e)
-        ctx.response.status = 500
+        ctx.response.status = 400
         ctx.body = {
-            err: '请求错误'
+            msg: 'Invalid Parameter!'
         }
     }
     return data;
 }
 
+
+export function Omit(obj, ignore = []) {
+    return Object.keys(obj).reduce((o, p) => {
+        if (!ignore.includes(p)) {
+            o[p] = obj[p]
+        }
+        return o
+    }, {})
+}
 
 export function transformDocToObj(doc, ignore = []) {
     let ret
@@ -58,12 +67,7 @@ export function transformDocToObj(doc, ignore = []) {
         ...doc.toObject()
     }
     let mustOmit = ['_id', '__v'].concat(ignore)
-    ret = Object.keys(origin).reduce((o, p) => {
-        if (!mustOmit.includes(p)) {
-            o[p] = origin[p]
-        }
-        return o
-    }, {})
+    ret = Omit(origin, mustOmit)
     return ret
 }
 
@@ -81,8 +85,21 @@ export function composeResolver(resolvers = []) {
             ...ret.Mutation,
             ...resolver.Mutation
         })
+        ret = {
+            ...ret,
+            ...Omit(resolver, ["Query", "Mutation"])
+        }
     })
+
     return ret
+}
+
+export function graphqlHanlder(ret) {
+    if (ret.code === 200) {
+        return ret.payload.data || {}
+    } else {
+        throw new Error('Interval Error')
+    }
 }
 
 // export default {
