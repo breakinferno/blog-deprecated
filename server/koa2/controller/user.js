@@ -1,9 +1,6 @@
 import UserServices from '../services/user'
 import { paramHandler } from '../lib'
 
-function save() {
-
-}
 
 // 删除
 async function Delete(target) {
