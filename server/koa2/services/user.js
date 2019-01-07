@@ -1,11 +1,7 @@
 import User from '../model/user'
 import uuidv4 from 'uuid/v4'
-import {
-    transformDocToObj,
-    getObjValue,
-    errorHandler,
-    checkFields
-} from '../lib'
+import { transformDocToObj, getObjValue, errorHandler, checkFields } from '../lib'
+import { failedPromise, successPromise } from '../lib/p'
 // 新建资源
 async function Create(data) {
     let nick
@@ -14,16 +10,9 @@ async function Create(data) {
             nick = getObjValue(data, 'nick')
             const userDoc = await User.findOne()
                 .where('nick').equals(nick)
-                .exec((err, user) => {
-                    if (err) errorHandler(err)
-                })
+                .exec()
             if (userDoc) {
-                return Promise.reject({
-                    code: 400,
-                    payload: {
-                        msg: 'The user has already exist'
-                    }
-                })
+                return failedPromise(400, 'The user has already exist')
             }
             let model = new User({
                 id: uuidv4(),
@@ -39,78 +28,45 @@ async function Create(data) {
                 }
             })
             let ret = await model.save().then(ret => {
-                return {
-                    code: 200,
-                    payload: {
-                        msg: "Create User Successfully!",
-                        data: ret
-                    }
-                }
+                return successPromise(200, "Create User Successfully!", transformDocToObj(ret))
             }, err => {
                 errorHandler(err)
-                return Promise.reject({
-                    code: 500,
-                    payload: {
-                        msg: "Internal error, save failed"
-                    }
-                })
+                return failedPromise()
             })
             return ret
         } else {
-            return Promise.reject({
-                code: 422,
-                payload: {
-                    msg: 'require necessary filed'
-                }
-            })
+            return failedPromise(422, 'require necessary field')
         }
     } catch (err) {
         errorHandler(err);
-        return Promise.reject({
-            code: 500,
-            payload: {
-                msg: 'Internal Error!'
-            }
-        })
+        return failedPromise()
     }
 }
 
 
 async function GetByID(id) {
-    if (id) {
-        const userdoc = await User.findOne().where('id').equals(id).exec()
-        return {
-            code: 200,
-            payload: {
-                msg: "Get User Successfully",
-                data: transformDocToObj(userdoc)
-            }
-        };
-    }
-    return {
-        code: 400,
-        payload: {
-            msg: "Invalid Parameter"
+    try {
+        if (id) {
+            const userdoc = await User.findOne().where('id').equals(id).exec()
+            return successPromise(200, "Get User Successfully", transformDocToObj(userdoc))
         }
+        return failedPromise(400, "Invalid Parameter")
+    } catch (err) {
+        errorHandler(err);
+        return failedPromise()
     }
 }
 
 async function DeleteById(id) {
-    if (id) {
-        const userdoc = await User.findOneAndDelete().where('id').equals(id).exec()
-        return {
-            code: 200,
-            payload: {
-                msg: "Delete User Successfully",
-                data: transformDocToObj(userdoc)
-            }
-        };
-    }
-    return {
-        code: 400,
-        payload: {
-            msg: "Invalid Parameter"
+    try {
+        if (id) {
+            const userdoc = await User.findOne().where('id').equals(id).exec()
+            return successPromise(200, "Delete User Successfully", transformDocToObj(userdoc))
         }
+        return failedPromise(400, "Invalid Parameter")
+    } catch (err) {
+        errorHandler(err);
+        return failedPromise()
     }
 }
 

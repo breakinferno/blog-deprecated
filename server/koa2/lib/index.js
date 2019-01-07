@@ -34,7 +34,7 @@ export function getFields(obj, fields) {
 }
 
 export function errorHandler(err) {
-    console.log(err);
+    console.log("[ErrorHanlder]:" + err);
 }
 
 export function paramHandler(ctx, type = ['body']) {

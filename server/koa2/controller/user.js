@@ -1,7 +1,5 @@
 import UserServices from '../services/user'
-import {
-    paramHandler
-} from '../lib'
+import { paramHandler } from '../lib'
 
 function save() {
 
@@ -29,16 +27,18 @@ async function GetById(ctx) {
 }
 // 新建资源
 async function Post(ctx, next) {
+    let data
     try {
-        let data = paramHandler(ctx)
+        data = paramHandler(ctx)
     } catch (err) {
+        console.log(err)
         return
     }
     await UserServices.Create(data).then(ret => {
         ctx.body = ret.payload
     }).catch(err => {
-        ctx.body = ret.payload
-        ctx.response.status = ret.code
+        ctx.body = err.payload
+        ctx.response.status = err.code
     })
 }
 // 全部更改
