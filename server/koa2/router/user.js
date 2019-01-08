@@ -1,12 +1,12 @@
 import KoaRouter from 'koa-router'
 import controllers from '../controller/index.js'
-
+import validator from '../middleware/auth'
 const router = new KoaRouter({
     prefix: '/users'
 })
 router
-    .post('/', controllers.User.Post)
-    .get('/:id', controllers.User.GetById)
-    .delete('/:id', controllers.User.DeleteById)
+    .post('/', validator(), controllers.User.Post)
+    .get('/:id', validator(), controllers.User.GetById)
+    .delete('/:id', validator(), controllers.User.DeleteById)
 
 export default router

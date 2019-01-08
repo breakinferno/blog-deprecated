@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/breakinferno/blog#readme",
   "dependencies": {
+    "bcrypt": "^3.0.3",
     "vue-smooth-dnd": "^0.2.8"
   }
 }

@@ -1,7 +1,11 @@
-import User from '../model/user'
-import uuidv4 from 'uuid/v4'
+import User, { generateUser } from '../model/user'
 import { transformDocToObj, getObjValue, errorHandler, checkFields } from '../lib'
 import { failedPromise, successPromise } from '../lib/p'
+import jwt from 'jsonwebtoken'
+import fs from 'fs'
+import path from 'path'
+const key = fs.readFileSync(path.resolve(__dirname, '../keys/key.pub'))
+
 // 新建资源
 async function Create(data) {
     let nick
@@ -14,21 +18,9 @@ async function Create(data) {
             if (userDoc) {
                 return failedPromise(400, 'The user has already exist')
             }
-            let model = new User({
-                id: uuidv4(),
-                nick: nick,
-                avatar: data.avatar || '',
-                meta: {
-                    gendor: getObjValue(data, 'meta.gendor') || 'male',
-                    age: getObjValue(data, 'meta.age') || 0,
-                    description: getObjValue(data, 'meta.description') || "init",
-                    job: getObjValue(data, 'meta.job') || "frontend",
-                    location: getObjValue(data, 'meta.location') || 'Sichuan',
-                    hobby: getObjValue(data, 'meta.hobby') || ['game', 'music']
-                }
-            })
+            let model = generateUser(data)
             let ret = await model.save().then(ret => {
-                return successPromise(200, "Create User Successfully!", transformDocToObj(ret))
+                return successPromise(200, "Create User Successfully!", transformDocToObj(ret, ['password']))
             }, err => {
                 errorHandler(err)
                 return failedPromise()
@@ -43,11 +35,24 @@ async function Create(data) {
     }
 }
 
-
+// 获取资源
 async function GetByID(id) {
     try {
         if (id) {
             const userdoc = await User.findOne().where('id').equals(id).exec()
+            return successPromise(200, "Get User Successfully", transformDocToObj(userdoc, ['password']))
+        }
+        return failedPromise(400, "Invalid Parameter")
+    } catch (err) {
+        errorHandler(err);
+        return failedPromise()
+    }
+}
+// 获取资源
+async function GetByNick(nick = '') {
+    try {
+        if (nick) {
+            const userdoc = await User.findOne().where('nick').equals(nick).exec()
             return successPromise(200, "Get User Successfully", transformDocToObj(userdoc))
         }
         return failedPromise(400, "Invalid Parameter")
@@ -56,6 +61,33 @@ async function GetByID(id) {
         return failedPromise()
     }
 }
+
+
+async function validAuth({ nick, password = "" } = {}) {
+    try {
+        if (nick) {
+            const userdoc = await User.findOne().where('nick').equals(nick).exec()
+            const info = transformDocToObj(userdoc, ['password']);
+            const isMatched = await userdoc.comparePassword(password)
+            if (isMatched) {
+                let token = jwt.sign({
+                    ...info
+                }, key, { expiresIn: '24h' })
+                return successPromise(200, 'Valid Successfully', {
+                    ...info,
+                    token
+                })
+            } else {
+                return failedPromise(200, "Incorrect Password!")
+            }
+        }
+        return failedPromise(400, "Invalid Parameter")
+    } catch (err) {
+        errorHandler(err);
+        return failedPromise()
+    }
+}
+
 
 async function DeleteById(id) {
     try {
@@ -73,5 +105,7 @@ async function DeleteById(id) {
 export default {
     Create,
     GetByID,
+    GetByNick,
+    validAuth,
     DeleteById
 }

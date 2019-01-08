@@ -1,5 +1,7 @@
 import mongoose from 'mongoose'
 import uuidv4 from 'uuid/v4'
+import bcrypt from 'bcrypt'
+import { getObjValue } from '../lib'
 const UserSchema = mongoose.Schema({
     id: {
         type: String,
@@ -9,6 +11,10 @@ const UserSchema = mongoose.Schema({
         type: String,
         required: true,
         trim: true
+    },
+    password: {
+        type: String,
+        required: true
     },
     avatar: String,
     meta: {
@@ -35,33 +41,64 @@ const UserSchema = mongoose.Schema({
 })
 
 UserSchema.pre('save', function(next) {
-    console.log(this.isNew)
     try {
         if (this.isNew) {
             this.createdAt = this.updatedAt = Date.now()
         } else {
             this.updatedAt = Date.now()
         }
+        if (this.isNew || this.isModified('password')) {
+            // 加密密码
+            let user = this
+            bcrypt.genSalt(10, function(err, salt) {
+                if (err) {
+                    return next(err)
+                }
+                bcrypt.hash(user.password, salt, function(err, hash) {
+                    if (err) {
+                        return next(err)
+                    }
+                    user.password = hash
+                    next()
+                })
+            })
+        } else {
+            return next()
+        }
     } catch (e) {
         console.log('[mongoose]:pre save failed!')
+        return next()
     }
-    next()
 })
+
+UserSchema.methods.comparePassword = function(passw) {
+    return new Promise((resolve, reject) => {
+        bcrypt.compare(passw, this.password, (err, isMatch) => {
+            if (err) {
+                reject()
+            }
+            resolve(isMatch)
+        })
+    })
+}
 
 const model = mongoose.model('User', UserSchema, 'user')
 
-export const origin = new model({
-    id: uuidv4(),
-    nick: 'origin',
-    avatar: '',
-    meta: {
-        gendor: ['female', 'male'][Math.floor(Math.random() * 2)],
-        age: 18,
-        description: 'day day up',
-        job: ['frontend'],
-        location: 'Sichuan',
-        hobby: ['game']
-    }
-})
+export function generateUser(data = {}) {
+    return new model({
+        id: uuidv4(),
+        nick: data.nick,
+        password: data.password || 'test',
+        avatar: data.avatar || '',
+        meta: {
+            gendor: getObjValue(data, 'meta.gendor') || 'male',
+            age: getObjValue(data, 'meta.age') || 0,
+            description: getObjValue(data, 'meta.description') || "init",
+            job: getObjValue(data, 'meta.job') || "frontend",
+            location: getObjValue(data, 'meta.location') || 'Sichuan',
+            hobby: getObjValue(data, 'meta.hobby') || ['game', 'music']
+        }
+    })
+}
 
 export default model

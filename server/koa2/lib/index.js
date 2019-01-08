@@ -62,11 +62,11 @@ export function paramHandler(ctx, type = ['body']) {
             }
         }
     } catch (e) {
-        errorHandler(e)
         ctx.response.status = 400
         ctx.body = {
             msg: 'Invalid Parameter!'
         }
+        throw new Error('Invalid Parameter!')
     }
     return data;
 }

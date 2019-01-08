@@ -1,14 +1,18 @@
 import UserServices from '../services/user'
 import { paramHandler } from '../lib'
-
-
 // 删除
 async function Delete(target) {
 
 }
 // 获取资源
 async function GetById(ctx) {
-    const { id } = paramHandler(ctx, ['params'])
+    let data
+    try {
+        data = paramHandler(ctx, ['params'])
+    } catch (err) {
+        return console.log(err)
+    }
+    const { id } = data
     if (!id) {
         ctx.response.status = 400
         return ctx.body = {
@@ -18,8 +22,8 @@ async function GetById(ctx) {
     await UserServices.GetByID(id).then(ret => {
         ctx.body = ret.payload
     }).catch(err => {
-        ctx.body = ret.payload
-        ctx.response.status = ret.code
+        ctx.body = err.payload
+        ctx.response.status = err.code
     })
 }
 // 新建资源
@@ -28,8 +32,7 @@ async function Post(ctx, next) {
     try {
         data = paramHandler(ctx)
     } catch (err) {
-        console.log(err)
-        return
+        return console.log(err)
     }
     await UserServices.Create(data).then(ret => {
         ctx.body = ret.payload
@@ -48,7 +51,13 @@ async function Patch(target, fieldMap) {
 }
 
 async function DeleteById(ctx) {
-    const { id } = paramHandler(ctx, ['params'])
+    let data
+    try {
+        data = paramHandler(ctx, ['params'])
+    } catch (err) {
+        return console.log(err)
+    }
+    const { id } = data
     if (!id) {
         ctx.response.status = 400
         return ctx.body = {
@@ -58,8 +67,8 @@ async function DeleteById(ctx) {
     await UserServices.DeleteById(id).then(ret => {
         ctx.body = ret.payload
     }).catch(err => {
-        ctx.body = ret.payload
-        ctx.response.status = ret.code
+        ctx.body = err.payload
+        ctx.response.status = err.code
     })
 }
 
