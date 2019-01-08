@@ -3,7 +3,11 @@ export const MongoDB = {
     // 初始的管理员账号密码
     admin: {
         nick: 'root',
-        password: '18dq128nfbreakIN'
+        password: '18dq128nfbreakIN',
+        privilege: {
+            level: 'admin',
+            scope: ['UPDATE', 'CREATE', 'DELETE', 'RETRIEVE']
+        }
     }
 }
 

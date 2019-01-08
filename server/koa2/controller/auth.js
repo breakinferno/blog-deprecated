@@ -3,7 +3,6 @@ import { paramHandler } from '../lib'
 import jwt from 'jsonwebtoken'
 import fs from 'fs'
 import path from 'path'
-const key = fs.readFileSync(path.resolve(__dirname, '../keys/key.pub'))
 async function Login(ctx) {
     let data
     try {

@@ -20,7 +20,7 @@ async function Create(data) {
             }
             let model = generateUser(data)
             let ret = await model.save().then(ret => {
-                return successPromise(200, "Create User Successfully!", transformDocToObj(ret, ['password']))
+                return successPromise(200, "Create User Successfully!", transformDocToObj(ret, ['password', 'privilege']))
             }, err => {
                 errorHandler(err)
                 return failedPromise()
@@ -40,7 +40,7 @@ async function GetByID(id) {
     try {
         if (id) {
             const userdoc = await User.findOne().where('id').equals(id).exec()
-            return successPromise(200, "Get User Successfully", transformDocToObj(userdoc, ['password']))
+            return successPromise(200, "Get User Successfully", transformDocToObj(userdoc, ['password', 'privilege']))
         }
         return failedPromise(400, "Invalid Parameter")
     } catch (err) {
@@ -53,7 +53,7 @@ async function GetByNick(nick = '') {
     try {
         if (nick) {
             const userdoc = await User.findOne().where('nick').equals(nick).exec()
-            return successPromise(200, "Get User Successfully", transformDocToObj(userdoc))
+            return successPromise(200, "Get User Successfully", transformDocToObj(userdoc, ['password', 'privilege']))
         }
         return failedPromise(400, "Invalid Parameter")
     } catch (err) {
@@ -73,6 +73,8 @@ async function validAuth({ nick, password = "" } = {}) {
                 let token = jwt.sign({
                     ...info
                 }, key, { expiresIn: '24h' })
+                // 去掉权限参数
+                delete info.privilege
                 return successPromise(200, 'Valid Successfully', {
                     ...info,
                     token
@@ -93,7 +95,7 @@ async function DeleteById(id) {
     try {
         if (id) {
             const userdoc = await User.findOne().where('id').equals(id).exec()
-            return successPromise(200, "Delete User Successfully", transformDocToObj(userdoc))
+            return successPromise(200, "Delete User Successfully", transformDocToObj(userdoc, ['password', 'privilege']))
         }
         return failedPromise(400, "Invalid Parameter")
     } catch (err) {

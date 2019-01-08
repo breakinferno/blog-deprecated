@@ -2,6 +2,9 @@ import mongoose from 'mongoose'
 import uuidv4 from 'uuid/v4'
 import bcrypt from 'bcrypt'
 import { getObjValue } from '../lib'
+// 简单的权限管理：管理员，用户级别，访客级别
+// scope 权限的具体修正 默认具有增改查权限
+
 const UserSchema = mongoose.Schema({
     id: {
         type: String,
@@ -15,6 +18,10 @@ const UserSchema = mongoose.Schema({
     password: {
         type: String,
         required: true
+    },
+    privilege: {
+        level: String,
+        scope: [String]
     },
     avatar: String,
     meta: {
@@ -90,6 +97,10 @@ export function generateUser(data = {}) {
         nick: data.nick,
         password: data.password || 'test',
         avatar: data.avatar || '',
+        privilege: data.privilege || {
+            level: 'user',
+            scope: ['UPDATE', 'CREATE', 'RETRIEVE']
+        },
         meta: {
             gendor: getObjValue(data, 'meta.gendor') || 'male',
             age: getObjValue(data, 'meta.age') || 0,
