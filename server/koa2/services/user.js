@@ -39,7 +39,7 @@ async function Create(data) {
 async function GetByID(id) {
     try {
         if (id) {
-            const userdoc = await User.findOne().where('id').equals(id).exec()
+            const userdoc = await User.findById(id).exec()
             return successPromise(200, "Get User Successfully", transformDocToObj(userdoc, ['password', 'privilege']))
         }
         return failedPromise(400, "Invalid Parameter")
@@ -94,7 +94,7 @@ async function validAuth({ nick, password = "" } = {}) {
 async function DeleteById(id) {
     try {
         if (id) {
-            const userdoc = await User.findOne().where('id').equals(id).exec()
+            const userdoc = await User.DeleteById(id).exec()
             return successPromise(200, "Delete User Successfully", transformDocToObj(userdoc, ['password', 'privilege']))
         }
         return failedPromise(400, "Invalid Parameter")

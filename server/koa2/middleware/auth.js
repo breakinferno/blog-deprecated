@@ -14,6 +14,11 @@ export default () => {
                 let result = validatePermission(ctx.decodedToken.privilege, ctx)
                 if (result) {
                     console.log('validate permission success!')
+                    await next()
+                } else {
+                    return ctx.body = {
+                        msg: "No permission to access!"
+                    }
                 }
             } catch (err) {
                 // 验证失败
@@ -24,6 +29,5 @@ export default () => {
         } else {
             return ctx.redirect('/login')
         }
-        await next()
     }
 }

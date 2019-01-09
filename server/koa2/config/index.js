@@ -19,5 +19,22 @@ export const Redis = {
 export const System = {
     db_type: 'mongodb',
     version: '1.0',
-    port: 8888
+    port: 8888,
+}
+
+export const Common = {
+    post_overview_length: 200,
+    privileges: {
+        level: {
+            admin: 'admin',
+            user: 'user',
+            visitor: 'visitor'
+        },
+        scope: {
+            create: 'CREATE',
+            update: 'UPDATE',
+            retrieve: 'RETRIEVE',
+            delete: 'DELETE'
+        }
+    }
 }

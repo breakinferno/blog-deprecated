@@ -1,5 +1,5 @@
 //一些共有的工具方法
-
+import { Common } from '../config'
 export function getObjValue(obj, path) {
     const arrayRegx = /(\[)(\d+)(\])/g;
     path = Array.isArray(path) ? path.join('.') : path;
@@ -86,6 +86,7 @@ export function transformDocToObj(doc, ignore = []) {
     let origin = {
         ...doc.toObject()
     }
+    origin['id'] = origin['_id']
     let mustOmit = ['_id', '__v'].concat(ignore)
     ret = Omit(origin, mustOmit)
     return ret
@@ -112,6 +113,18 @@ export function composeResolver(resolvers = []) {
     })
 
     return ret
+}
+
+export function mapRequestAction(method) {
+    const { scope } = Common.privileges
+    let map = {
+        get: scope.retrieve,
+        post: scope.create,
+        patch: scope.update,
+        put: scope.update,
+        delete: scope.delete
+    }
+    return map[method.toLowerCase()]
 }
 
 export function graphqlHanlder(ret) {
