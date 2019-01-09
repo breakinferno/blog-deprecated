@@ -67,6 +67,9 @@ async function validAuth({ nick, password = "" } = {}) {
     try {
         if (nick) {
             const userdoc = await User.findOne().where('nick').equals(nick).exec()
+            if (!userdoc) {
+                return failedPromise(404, 'no user found!')
+            }
             const info = transformDocToObj(userdoc, ['password']);
             const isMatched = await userdoc.comparePassword(password)
             if (isMatched) {
@@ -94,7 +97,7 @@ async function validAuth({ nick, password = "" } = {}) {
 async function DeleteById(id) {
     try {
         if (id) {
-            const userdoc = await User.DeleteById(id).exec()
+            const userdoc = await User.findByIdAndRemove(id).exec()
             return successPromise(200, "Delete User Successfully", transformDocToObj(userdoc, ['password', 'privilege']))
         }
         return failedPromise(400, "Invalid Parameter")

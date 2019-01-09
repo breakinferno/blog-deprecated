@@ -34,6 +34,13 @@ async function Post(ctx, next) {
     } catch (err) {
         return console.log(err)
     }
+    const { nick } = ctx.decodedToken
+    if (!nick) {
+      return ctx.body = {
+        msg: 'invalid token'
+      }
+    }
+    data.author = nick
     await PostServices.Create(data).then(ret => {
         ctx.body = ret.payload
     }).catch(err => {

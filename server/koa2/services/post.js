@@ -4,13 +4,13 @@ import { failedPromise, successPromise } from '../lib/p'
 
 // 新建资源
 async function Create(data) {
-    try {
+  try {
         if (checkFields(data, ['author', 'title'])) {
             let post = new Post({
                 author: data.author,
                 title: data.title,
                 content: data.content || '',
-                categories: ['default']
+                categories: data.categories || ['default']
             })
             let ret = await post.save().then((ret) => {
                 return successPromise(200, "Create Post Successfully!", transformDocToObj(ret))
@@ -32,21 +32,8 @@ async function Create(data) {
 async function GetByID(id) {
     try {
         if (id) {
-            const userdoc = await Post.findById(id).exec()
-            return successPromise(200, "Get User Successfully", transformDocToObj(userdoc, ['password', 'privilege']))
-        }
-        return failedPromise(400, "Invalid Parameter")
-    } catch (err) {
-        errorHandler(err);
-        return failedPromise()
-    }
-}
-// 获取资源
-async function GetByNick(nick = '') {
-    try {
-        if (nick) {
-            const userdoc = await Post.findOne().where('nick').equals(nick).exec()
-            return successPromise(200, "Get User Successfully", transformDocToObj(userdoc, ['password', 'privilege']))
+            const postdoc = await Post.findById(id).exec()
+            return successPromise(200, "Get Post Successfully", transformDocToObj(postdoc))
         }
         return failedPromise(400, "Invalid Parameter")
     } catch (err) {
@@ -58,8 +45,8 @@ async function GetByNick(nick = '') {
 async function DeleteById(id) {
     try {
         if (id) {
-            const userdoc = await Post.DeleteById(id).exec()
-            return successPromise(200, "Delete User Successfully", transformDocToObj(userdoc, ['password', 'privilege']))
+            const postdoc = await Post.findByIdAndRemove(id).exec()
+            return successPromise(200, "Delete Post Successfully", transformDocToObj(postdoc))
         }
         return failedPromise(400, "Invalid Parameter")
     } catch (err) {
@@ -71,6 +58,5 @@ async function DeleteById(id) {
 export default {
     Create,
     GetByID,
-    GetByNick,
     DeleteById
 }
