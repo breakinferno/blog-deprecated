@@ -1,14 +1,21 @@
 import mongoose from 'mongoose'
 import { Common } from '../config'
 const Schema = mongoose.Schema
-
-const ArticleSchema = new Schema({
+// 文章 一篇文章只能有一个分类 但是可以有多个标签
+const PostSchema = new Schema({
     author: String,
     title: String,
     content: String,
     length: Number,
     overview: String,
-    categories: [String],
+    categories: {
+        type: Schema.Types.ObjectId,
+        ref: 'Category'
+    },
+    tags: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Tag'
+    }],
     meta: {
         like: {
             type: Number,
@@ -42,7 +49,7 @@ const ArticleSchema = new Schema({
     }
 })
 
-ArticleSchema.pre('save', function (next) {
+PostSchema.pre('save', function (next) {
     console.log(this.isNew)
     try {
         if (this.isNew) {
@@ -60,4 +67,4 @@ ArticleSchema.pre('save', function (next) {
     next()
 })
 
-export default mongoose.model('Article', ArticleSchema, 'article')
+export default mongoose.model('Post', PostSchema, 'post')

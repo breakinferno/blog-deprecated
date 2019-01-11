@@ -5,12 +5,16 @@ import { failedPromise, successPromise } from '../lib/p'
 // 新建资源
 async function Create(data) {
   try {
-        if (checkFields(data, ['author', 'title'])) {
+      if (checkFields(data, ['author', 'title', 'category'])) {
+            // 校验分类
+            
+            // 新建tags
             let post = new Post({
                 author: data.author,
                 title: data.title,
                 content: data.content || '',
-                categories: data.categories || ['default']
+                categories: data.category,
+                tags: data.tags || []
             })
             let ret = await post.save().then((ret) => {
                 return successPromise(200, "Create Post Successfully!", transformDocToObj(ret))

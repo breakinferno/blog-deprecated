@@ -3,8 +3,9 @@ import mongoose from 'mongoose'
 import bcrypt from 'bcrypt'
 import { getObjValue } from '../lib'
 import { Common } from '../config'
-// 简单的权限管理：管理员，用户级别，访客级别
+// 简单的权限管理：管理员，用户级别，访客级别 以后可以把权限管理抽离出来
 // scope 权限的具体修正 默认具有增改查权限
+// 用户： 一个用户多个文章
 const Schema = mongoose.Schema
 const { privileges } = Common
 const { level, scope } = privileges
