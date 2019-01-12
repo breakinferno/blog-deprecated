@@ -1,3 +1,7 @@
+需要重构：
+
+要点： 1. 异常处理 2. log 处理
+
 采取 es6 语法
 
 校验方式 cookie+session 或者 token
@@ -26,10 +30,9 @@ put(target, obj)
 
 patch(target, fieldMap)
 
-
 ## 概览
 
-既支持restful风格api ，也支持Graphql请求
+既支持 restful 风格 api ，也支持 Graphql 请求
 
 ## 开始
 
@@ -38,14 +41,15 @@ npm run dev
 ```
 
 ## Restful
- 
+
 `GET => localhost:8888/users/b9c2c8e7-0351-4b3b-a7a6-a189a2c81126`
 
 ## Graphql
 
-进入`localhost:8888/graphql`,输入对应的query语句或者mutation语句即可
+进入`localhost:8888/graphql`,输入对应的 query 语句或者 mutation 语句即可
 
 ### query
+
 ```
 {
   user(id: "b9c2c8e7-0351-4b3b-a7a6-a189a2c81126"){
@@ -79,4 +83,3 @@ mutation {
 }
 
 ```
-

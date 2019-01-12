@@ -7,10 +7,7 @@ const CategorySchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Post'
     }],
-    tags: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Tag'
-    }],
+    tags: [String],
     createdAt: {
         type: Date,
         default: Date.now()
@@ -22,7 +19,6 @@ const CategorySchema = new Schema({
 })
 
 CategorySchema.pre('save', function(next) {
-    console.log(this.isNew)
     try {
         if (this.isNew) {
             this.createdAt = this.updatedAt = Date.now()

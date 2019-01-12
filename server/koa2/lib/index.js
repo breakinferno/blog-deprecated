@@ -13,10 +13,10 @@ export function getObjValue(obj, path) {
 export function checkFields(obj, fields) {
     if (Array.isArray(fields)) {
         return fields.every(field => {
-            return getObjValue(obj, field) !== 'undefined'
+            return typeof getObjValue(obj, field) !== 'undefined'
         })
     } else if (typeof fields === 'string') {
-        return getObjValue(obj, fields) === 'undefined' ? false : true
+        return typeof getObjValue(obj, fields) === 'undefined' ? false : true
     } else {
         throw new Error('[checkFields]: fields must be array or string...')
     }
@@ -135,12 +135,3 @@ export function graphqlHanlder(ret) {
         throw new Error('Interval Error')
     }
 }
-
-// export default {
-//     getObjValue,
-//     checkFields,
-//     getFields,
-//     errorHandler,
-//     paramHandler,
-//     transformDocToObj
-// }

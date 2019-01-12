@@ -1,4 +1,5 @@
 import Post from '../model/post'
+import Tag from '../model/tag'
 import Category from '../model/category'
 import { transformDocToObj, getObjValue, errorHandler, checkFields } from '../lib'
 import { failedPromise, successPromise } from '../lib/p'
@@ -36,7 +37,6 @@ async function Create(data) {
             if (!state) {
                 return failedPromise(Code.UNPROCESSIBLE, 'Exist unknown tag(s)')
             }
-
             // 新建tags
             let post = new Post({
                 author: data.author,
@@ -45,14 +45,17 @@ async function Create(data) {
                 category: data.category,
                 tags: tags
             })
+            // bug 可能在后续操作失败了但是文章仍然保存了
             let ret = await post.save().then(async (ret) => {
                 let p = transformDocToObj(ret)
                 // 将该文章插入category 和 tags
-                await CategoryService.AddPost(data.category, p.id)
-                await TagService.AddPost(tags, p.id)
+                try {
+                    await Promise.all([CategoryService.AddPost(p), TagService.AddPost(p)])
+                } catch (err) {
+                    await Post.findByIdAndRemove(p.id).exec()
+                }
                 return successPromise(Code.OK, "Create Post Successfully!", p)
             }).catch((err) => {
-                category
                 errorHandler(err)
                 return failedPromise()
             });
@@ -83,6 +86,8 @@ async function GetByID(id) {
 async function DeleteById(id) {
     try {
         if (id) {
+            let post = await Post.findById(id).exec()
+            await Promise.all([CategoryService.DeletePost(post), TagService.DeletePost(post)])
             const postdoc = await Post.findByIdAndRemove(id).exec()
             return successPromise(Code.OK, "Delete Post Successfully", transformDocToObj(postdoc))
         }

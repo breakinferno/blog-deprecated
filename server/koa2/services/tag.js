@@ -52,7 +52,7 @@ async function GetPosts(name) {
 }
 
 // 添加文章
-async function AddPost(tags, postId) {
+async function AddPost({ tags, id }) {
     if (!Array.isArray(tags)) {
         if (typeof tags === 'string') {
             tags = [tags]
@@ -66,17 +66,54 @@ async function AddPost(tags, postId) {
                 if (err) {
                     reject('Find Tag error')
                 }
-                doc.posts.concat(new mongoose.Types.ObjectId(postId))
+                doc.posts.push(new mongoose.Types.ObjectId(id))
                 doc.save(((err, ret) => {
                     if (err) {
-                        reject('Save Tag error')
+                        return reject('Save Tag error')
                     }
-                    resolve(res)
+                    resolve(ret)
                 }))
             })
         })
     })).catch(err => {
         console.log('[TagService/AddPost] Error:')
+        console.log(err)
+        throw new Error(err)
+    })
+}
+
+// 添加文章
+async function DeletePost({ tags, id }) {
+    if (!Array.isArray(tags)) {
+        if (typeof tags === 'string') {
+            tags = [tags]
+        } else {
+            return failedPromise(Code.BAD_REQUEST, 'Tags must be string array or just string')
+        }
+    }
+    return Promise.all(tags.map(tag => {
+        return new Promise((resolve, reject) => {
+            Tag.findOne({ name: tag }, (err, doc) => {
+                if (err) {
+                    reject('Find Tag error')
+                }
+                let index
+                for (let i = 0; i < doc.posts.length; i++) {
+                    if (doc.posts[i].toString() === id) {
+                        index = i
+                    }
+                }
+                doc.posts.splice(index, 1)
+                doc.save(((err, ret) => {
+                    if (err) {
+                        return reject('Save Tag error')
+                    }
+                    resolve(ret)
+                }))
+            })
+        })
+    })).catch(err => {
+        console.log('[TagService/DeletePost] Error:')
         console.log(err)
         throw new Error(err)
     })
@@ -122,6 +159,7 @@ export default {
     Create,
     GetPosts,
     AddPost,
+    DeletePost,
     GetTags,
     Delete
 }

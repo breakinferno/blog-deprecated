@@ -18,7 +18,6 @@ const TagSchema = new Schema({
 })
 
 TagSchema.pre('save', function(next) {
-    console.log(this.isNew)
     try {
         if (this.isNew) {
             this.createdAt = this.updatedAt = Date.now()

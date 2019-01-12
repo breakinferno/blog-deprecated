@@ -4,6 +4,7 @@ import { transformDocToObj, getObjValue, errorHandler, checkFields } from '../li
 import { failedPromise, successPromise } from '../lib/p'
 import Code from '../constant/httpStatus'
 import { MongoDB } from '../config'
+import mongoose from 'mongoose'
 // 新建资源
 async function Create(data) {
     try {
@@ -11,7 +12,7 @@ async function Create(data) {
             // 校验分类
             let categoryDoc = await Category.findOne().where('name').equals(data.name).exec()
             if (categoryDoc) {
-                return failedPromise(Code.EXISTED, "category is now exsited!")
+                return failedPromise(Code.EXISTED, "Category is now exsited!")
             }
             // 新建tags
             let category = new Category({
@@ -20,7 +21,7 @@ async function Create(data) {
                 tags: []
             })
             let ret = await category.save().then((ret) => {
-                return successPromise(Code.OK, "Create Post Successfully!", transformDocToObj(ret))
+                return successPromise(Code.OK, "Create Category Successfully!", transformDocToObj(ret))
             }).catch((err) => {
                 errorHandler(err)
                 return failedPromise()
@@ -66,25 +67,19 @@ async function GetTags(name) {
     }
 }
 // 添加文章
-async function AddPost(category, postId) {
-    if (!Array.isArray(tags)) {
-        if (typeof tags === 'string') {
-            tags = [tags]
-        } else {
-            return failedPromise(Code.BAD_REQUEST, 'Tags must be string array or just string')
-        }
-    }
+async function AddPost({ category, id, tags }) {
     return new Promise((resolve, reject) => {
         Category.findOne({ name: category }, (err, doc) => {
             if (err) {
                 reject('[CategoryService/AddPost] Error:Find Category error')
             }
-            doc.posts.concat(new mongoose.Types.ObjectId(postId))
+            doc.posts.push(new mongoose.Types.ObjectId(id))
+            doc.tags = Array.from(new Set([...doc.tags, ...tags]))
             doc.save(((err, ret) => {
                 if (err) {
-                    reject('[CategoryService/AddPost] Error: Save Category error')
+                    return reject('[CategoryService/AddPost] Error: Save Category error')
                 }
-                resolve(res)
+                resolve(ret)
             }))
         })
     }).catch(err => {
@@ -93,12 +88,59 @@ async function AddPost(category, postId) {
         throw new Error(err)
     })
 }
+// 删除文章
+async function DeletePost({ category, id, tags }) {
+    return new Promise((resolve, reject) => {
+        Category.findOne({ name: category }, (err, doc) => {
+            if (err) {
+                reject('[CategoryService/DeletePost] Error:Find Category error')
+            }
+            let index
+            for (let i = 0; i < doc.posts.length; i++) {
+                if (doc.posts[i].toString() === id) {
+                    index = i
+                }
+            }
+            doc.posts.splice(index, 1)
+            // 找本目录下所有除该文章之外的tag即可
+            let targetPostIds = doc.posts
+            Promise.all(targetPostIds.map(postId => {
+                return new Promise((r, j) => {
+                    Post.findById(postId.toString(), (err, p) => {
+                        if (err) {
+                            return j()
+                        }
+                        r(p.tags)
+                    })
+                })
+            })).then(tags => {
+                let ret = []
+                tags.forEach(tag => {
+                    ret = [...ret, ...tag]
+                })
+                doc.tags = Array.from(new Set(ret))
+                doc.save(((err, ret) => {
+                    if (err) {
+                        reject('[CategoryService/DeletePost] Error: Save Category error')
+                    }
+                    // console.log('successfully')
+                    resolve(ret)
+                }))
+            })
+        })
+    }).catch(err => {
+        console.log('[CategoryService/AddPost] Error:')
+        console.log(err)
+        throw new Error(err)
+    })
+}
+
 // 获取所有目录
 async function GetCategories() {
     try {
         const categories = await Category.find({}).exec()
         let ret = categories.map(cat => {
-            return transformDocToObj(categories, ['tags', 'posts'])
+            return transformDocToObj(cat, ["id", 'tags', 'posts', 'createdAt', 'updatedAt']).name
         })
         return successPromise(Code.OK, "Get Post Successfully", ret)
     } catch (err) {
@@ -134,6 +176,7 @@ export default {
     GetPosts,
     GetTags,
     AddPost,
+    DeletePost,
     GetCategories,
     Delete
 }
