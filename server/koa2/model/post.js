@@ -8,14 +8,8 @@ const PostSchema = new Schema({
     content: String,
     length: Number,
     overview: String,
-    categories: {
-        type: Schema.Types.ObjectId,
-        ref: 'Category'
-    },
-    tags: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Tag'
-    }],
+    category: String,
+    tags: [String],
     meta: {
         like: {
             type: Number,
@@ -36,8 +30,7 @@ const PostSchema = new Schema({
         imgUrl: {
             type: String,
             default: ''
-        },
-        tags: [String]
+        }
     },
     createdAt: {
         type: Date,
@@ -49,7 +42,7 @@ const PostSchema = new Schema({
     }
 })
 
-PostSchema.pre('save', function (next) {
+PostSchema.pre('save', function(next) {
     console.log(this.isNew)
     try {
         if (this.isNew) {

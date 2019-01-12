@@ -1,5 +1,7 @@
 import UserServices from '../services/user'
 import { paramHandler } from '../lib'
+import Code from '../constant/httpStatus'
+
 // 删除
 async function Delete(target) {
 
@@ -14,7 +16,7 @@ async function GetById(ctx) {
     }
     const { id } = data
     if (!id) {
-        ctx.response.status = 400
+        ctx.response.status = Code.BAD_REQUEST
         return ctx.body = {
             msg: 'Invalid Parameter!'
         }
@@ -59,7 +61,7 @@ async function DeleteById(ctx) {
     }
     const { id } = data
     if (!id) {
-        ctx.response.status = 400
+        ctx.response.status = Code.BAD_REQUEST
         return ctx.body = {
             msg: 'Invalid Parameter!'
         }

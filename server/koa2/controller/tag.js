@@ -1,26 +1,10 @@
-import PostServices from '../services/post'
+import TagService from '../services/tag'
 import { paramHandler } from '../lib'
 import Code from '../constant/httpStatus'
-// 删除
-async function Delete(target) {
 
-}
 // 获取资源
-async function GetById(ctx) {
-    let data
-    try {
-        data = paramHandler(ctx, ['params'])
-    } catch (err) {
-        return console.log(err)
-    }
-    const { id } = data
-    if (!id) {
-        ctx.response.status = Code.BAD_REQUEST
-        return ctx.body = {
-            msg: 'Invalid Parameter!'
-        }
-    }
-    await PostServices.GetByID(id).then(ret => {
+async function GetAll(ctx) {
+    await TagService.GetTags().then(ret => {
         ctx.body = ret.payload
     }).catch(err => {
         ctx.body = err.payload
@@ -35,44 +19,30 @@ async function Post(ctx, next) {
     } catch (err) {
         return console.log(err)
     }
-    const { nick } = ctx.decodedToken
-    if (!nick) {
-        return ctx.body = {
-            msg: 'invalid token'
-        }
-    }
-    data.author = nick
-    await PostServices.Create(data).then(ret => {
+    await TagService.Create(data).then(ret => {
         ctx.body = ret.payload
     }).catch(err => {
         ctx.body = err.payload
         ctx.response.status = err.code
     })
 }
-// 全部更改
-async function Put(target, obj) {
 
-}
-// 部分更改
-async function Patch(target, fieldMap) {
 
-}
-
-async function DeleteById(ctx) {
+async function Delete(ctx) {
     let data
     try {
         data = paramHandler(ctx, ['params'])
     } catch (err) {
         return console.log(err)
     }
-    const { id } = data
-    if (!id) {
+    const { name } = data
+    if (!name) {
         ctx.response.status = Code.BAD_REQUEST
         return ctx.body = {
             msg: 'Invalid Parameter!'
         }
     }
-    await PostServices.DeleteById(id).then(ret => {
+    await TagService.Delete(name).then(ret => {
         ctx.body = ret.payload
     }).catch(err => {
         ctx.body = err.payload
@@ -82,7 +52,6 @@ async function DeleteById(ctx) {
 
 export default {
     Post,
-    GetById,
-    DeleteById,
-    Patch
+    GetAll,
+    Delete
 }
