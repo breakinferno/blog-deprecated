@@ -104,19 +104,15 @@ async function DeletePost({ tags, id }) {
                     }
                 }
                 doc.posts.splice(index, 1)
-                doc.save(((err, ret) => {
+                doc.save((err, ret) => {
                     if (err) {
                         return reject('Save Tag error')
                     }
                     resolve(ret)
-                }))
+                })
             })
         })
-    })).catch(err => {
-        console.log('[TagService/DeletePost] Error:')
-        console.log(err)
-        throw new Error(err)
-    })
+    }))
 }
 
 // 获取所有目录

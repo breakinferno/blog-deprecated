@@ -43,7 +43,8 @@ async function initDB() {
 export default {
     start: () => {
         mongoose.connect(MongoDB.url, {
-            useNewUrlParser: true
+            useNewUrlParser: true,
+            useFindAndModify: false
         }).then(async () => {
             await initDB()
         }).catch(err => {

@@ -130,15 +130,38 @@ async function DeleteById(id) {
 
 
 // 删除文章以及删除引用
+
 async function DeleteByCategory(category) {
     try {
         if (category) {
-            let post = await Post.findById(id).exec()
-            await Promise.all([CategoryService.DeletePost(post), TagService.DeletePost(post)])
-            const postdoc = await Post.findByIdAndRemove(id).exec()
-            return successPromise(Code.OK, "[PostService/DeleteByCategory] Error: Delete Post Successfully", transformDocToObj(postdoc))
+            let categorydoc = await Category.findOne({ name: category }).exec()
+            let posts = categorydoc.posts
+            // 删除文章
+            let ret = []
+            // await Promise.all(posts.map(async id => {
+            //     ret.push(id.toString())
+            //     // await Post.findByIdAndDelete(post).exec()
+            //     let post = await Post.findById(id).exec()
+            //     await Promise.all([CategoryService.DeletePost(post), TagService.DeletePost(post)])
+            //     await Post.findByIdAndRemove(id).exec()
+            // }))
+            for (let id of posts) {
+                ret.push(id.toString())
+                // await Post.findByIdAndDelete(post).exec()
+                let post = await Post.findById(id).exec()
+                if (post) {
+                    await Promise.all([CategoryService.DeletePost(post), TagService.DeletePost(post)])
+                    await Post.findByIdAndRemove(id).exec()
+                } else {
+                    await CategoryService.DeletePost({ id, category })
+                }
+            }
+            return successPromise(Code.OK, `Delete Posts in ${category}  successfully`, {
+                posts: ret,
+                total: ret.length
+            })
         }
-        return failedPromise(Code.BAD_REQUEST, "[PostService/DeleteByCategory] Error: Invalid Parameter")
+        return failedPromise(Code.BAD_REQUEST, `Delete Posts in ${category}  failed`)
     } catch (err) {
         errorHandler(err);
         return failedPromise()
@@ -148,13 +171,33 @@ async function DeleteByCategory(category) {
 // 删除文章以及删除引用
 async function DeleteByTag(tag) {
     try {
-        if (tag) {
+        let tagdoc = await Tag.findOne({ name: tag }).exec()
+        let posts = tagdoc.posts
+        // 删除文章
+        let ret = []
+        // await Promise.all(posts.map(async id => {
+        //     ret.push(id.toString())
+        //     // await Post.findByIdAndDelete(post).exec()
+        //     let post = await Post.findById(id).exec()
+        //     await Promise.all([CategoryService.DeletePost(post), TagService.DeletePost(post)])
+        //     await Post.findByIdAndRemove(id).exec()
+        // }))
+        // promise all 可能导致冲突
+        for (let id of posts) {
+            ret.push(id.toString())
+            // await Post.findByIdAndDelete(post).exec()
             let post = await Post.findById(id).exec()
-            await Promise.all([CategoryService.DeletePost(post), TagService.DeletePost(post)])
-            const postdoc = await Post.findByIdAndRemove(id).exec()
-            return successPromise(Code.OK, "[PostService/DeleteByTag] Error: Delete Post Successfully", transformDocToObj(postdoc))
+            if (post) {
+                await Promise.all([CategoryService.DeletePost(post), TagService.DeletePost(post)])
+                await Post.findByIdAndRemove(id).exec()
+            } else {
+                await TagService.DeletePost({ id, tags: [tag] })
+            }
         }
-        return failedPromise(Code.BAD_REQUEST, "[PostService/DeleteByTag] Error: Invalid Parameter")
+        return successPromise(Code.OK, `Delete Posts in ${tag}  successfully`, {
+            posts: ret,
+            total: ret.length
+        })
     } catch (err) {
         errorHandler(err);
         return failedPromise()

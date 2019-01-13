@@ -89,7 +89,7 @@ async function AddPost({ category, id, tags }) {
         throw new Error(err)
     })
 }
-// 删除文章
+// 删除文章 更新posts字段和tags字段
 async function DeletePost({ category, id, tags }) {
     return new Promise((resolve, reject) => {
         Category.findOne({ name: category }, (err, doc) => {
@@ -105,33 +105,36 @@ async function DeletePost({ category, id, tags }) {
             doc.posts.splice(index, 1)
             // 找本目录下所有除该文章之外的tag即可
             let targetPostIds = doc.posts
-            Promise.all(targetPostIds.map(postId => {
+            let ps = targetPostIds.map(postId => {
                 return new Promise((r, j) => {
-                    Post.findById(postId.toString(), (err, p) => {
+                    Post.findById(postId, (err, p) => {
                         if (err) {
                             return j()
                         }
-                        r(p.tags)
+                        if (p) {
+                            return r(p.tags)
+                        }
+                        return r([])
                     })
                 })
-            })).then(tags => {
+            })
+            Promise.all(ps).then(tags => {
                 let ret = []
                 tags.forEach(tag => {
                     ret = [...ret, ...tag]
                 })
                 doc.tags = Array.from(new Set(ret))
-                doc.save(((err, ret) => {
+                doc.save((err, ret) => {
                     if (err) {
                         reject('[CategoryService/DeletePost] Error: Save Category error')
                     }
                     // console.log('successfully')
                     resolve(ret)
-                }))
+                })
             })
         })
     }).catch(err => {
-        console.log('[CategoryService/AddPost] Error:')
-        console.log(err)
+        console.log(err);
         throw new Error(err)
     })
 }
