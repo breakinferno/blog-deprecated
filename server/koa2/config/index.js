@@ -1,7 +1,7 @@
 export const MongoDB = {
     url: 'mongodb://localhost/blog', // 如果host没配localhost会报错 请注意这一点
     delete_category: '废纸篓',
-    default_tag_name: 'default',
+    delete_tag_name: 'default',
     // 初始的管理员账号密码
     admin: {
         nick: 'root',

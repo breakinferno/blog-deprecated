@@ -7,6 +7,7 @@ const router = new KoaRouter({
 router
     .post('/', validator(), controllers.Tag.Post)
     .get('/', controllers.Tag.GetAll)
-    .delete('/:name', validator(), controllers.Tag.Delete)
+    .get('/:name/posts', controllers.Tag.GetPosts)
+    .delete('/:name', validator(), controllers.Tag.Delete) // 删除某个标签，移除之下所有的文章标签
 
 export default router

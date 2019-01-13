@@ -6,6 +6,7 @@ import { failedPromise, successPromise } from '../lib/p'
 import Code from '../constant/httpStatus'
 import CategoryService from './category'
 import TagService from './tag'
+import { resolve } from 'dns';
 // 新建资源 必须提供author title category tags
 async function Create(data) {
     try {
@@ -69,6 +70,35 @@ async function Create(data) {
     }
 }
 
+// 更新文档
+async function Update(id, payload) {
+    try {
+        if (id) {
+            const postdoc = await new Promise((resolve, reject) => {
+                Post.findById(id, (err, post) => {
+                    if (err) {
+                        return reject("[PostService/Updage] Error: find post failed")
+                    }
+                    for (let key of Object.keys(payload)) {
+                        post[key] = payload[key]
+                    }
+                    post.save((err, p) => {
+                        if (err) {
+                            return reject("[PostService/Updage] Error: post save failed")
+                        }
+                        resolve(p)
+                    })
+                })
+            })
+            return successPromise(Code.OK, "Update Post Successfully", transformDocToObj(postdoc))
+        }
+        return failedPromise(Code.BAD_REQUEST, "Invalid Parameter")
+    } catch (err) {
+        errorHandler(err);
+        return failedPromise()
+    }
+}
+
 // 获取资源
 async function GetByID(id) {
     try {
@@ -98,8 +128,44 @@ async function DeleteById(id) {
     }
 }
 
+
+// 删除文章以及删除引用
+async function DeleteByCategory(category) {
+    try {
+        if (category) {
+            let post = await Post.findById(id).exec()
+            await Promise.all([CategoryService.DeletePost(post), TagService.DeletePost(post)])
+            const postdoc = await Post.findByIdAndRemove(id).exec()
+            return successPromise(Code.OK, "[PostService/DeleteByCategory] Error: Delete Post Successfully", transformDocToObj(postdoc))
+        }
+        return failedPromise(Code.BAD_REQUEST, "[PostService/DeleteByCategory] Error: Invalid Parameter")
+    } catch (err) {
+        errorHandler(err);
+        return failedPromise()
+    }
+}
+
+// 删除文章以及删除引用
+async function DeleteByTag(tag) {
+    try {
+        if (tag) {
+            let post = await Post.findById(id).exec()
+            await Promise.all([CategoryService.DeletePost(post), TagService.DeletePost(post)])
+            const postdoc = await Post.findByIdAndRemove(id).exec()
+            return successPromise(Code.OK, "[PostService/DeleteByTag] Error: Delete Post Successfully", transformDocToObj(postdoc))
+        }
+        return failedPromise(Code.BAD_REQUEST, "[PostService/DeleteByTag] Error: Invalid Parameter")
+    } catch (err) {
+        errorHandler(err);
+        return failedPromise()
+    }
+}
+
 export default {
     Create,
     GetByID,
-    DeleteById
+    DeleteById,
+    DeleteByTag,
+    DeleteByCategory,
+    Update
 }

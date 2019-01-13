@@ -49,13 +49,29 @@ async function Post(ctx, next) {
         ctx.response.status = err.code
     })
 }
-// 全部更改
-async function Put(target, obj) {
 
-}
 // 部分更改
-async function Patch(target, fieldMap) {
-
+async function Patch(ctx) {
+    let data, payload
+    try {
+        data = paramHandler(ctx, ['params'])
+        payload = paramHandler(ctx)
+    } catch (err) {
+        return console.log(err)
+    }
+    const { id } = data
+    if (!id || payload.tags || payload.category) {
+        ctx.response.status = Code.BAD_REQUEST
+        return ctx.body = {
+            msg: 'Invalid Parameter!'
+        }
+    }
+    await PostServices.Update(id, payload).then(ret => {
+        ctx.body = ret.payload
+    }).catch(err => {
+        ctx.body = err.payload
+        ctx.response.status = err.code
+    })
 }
 
 async function DeleteById(ctx) {
@@ -80,9 +96,58 @@ async function DeleteById(ctx) {
     })
 }
 
+// 根据目录删除
+async function DeleteByCategory(ctx) {
+    let data
+    try {
+        data = paramHandler(ctx, ['params'])
+    } catch (err) {
+        return console.log(err)
+    }
+    const { name } = data
+    if (!name) {
+        ctx.response.status = Code.BAD_REQUEST
+        return ctx.body = {
+            msg: 'Invalid Parameter!'
+        }
+    }
+    await PostServices.DeleteByCategory(name).then(ret => {
+        ctx.body = ret.payload
+    }).catch(err => {
+        ctx.body = err.payload
+        ctx.response.status = err.code
+    })
+}
+
+//根据标签删除
+async function DeleteByTag(ctx) {
+    let data
+    try {
+        data = paramHandler(ctx, ['params'])
+    } catch (err) {
+        return console.log(err)
+    }
+    const { name } = data
+    if (!name) {
+        ctx.response.status = Code.BAD_REQUEST
+        return ctx.body = {
+            msg: 'Invalid Parameter!'
+        }
+    }
+    await PostServices.DeleteByTag(name).then(ret => {
+        ctx.body = ret.payload
+    }).catch(err => {
+        ctx.body = err.payload
+        ctx.response.status = err.code
+    })
+}
+
 export default {
     Post,
     GetById,
     DeleteById,
-    Patch
+    Patch,
+    // Put,
+    DeleteByCategory,
+    DeleteByTag
 }

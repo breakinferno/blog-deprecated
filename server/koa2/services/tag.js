@@ -39,7 +39,7 @@ async function Create(data) {
 async function GetPosts(name) {
     try {
         if (name) {
-            const tagdoc = await Tag.findOne({ name }).populate('posts', '_id title author').exec()
+            const tagdoc = await Tag.findOne({ name }).populate('posts', '_id title author content overview').exec()
             const postdoc = tagdoc.posts
             let ret = postdoc.map(doc => transformDocToObj(doc))
             return successPromise(Code.OK, "Get Posts Successfully", ret)
@@ -82,7 +82,7 @@ async function AddPost({ tags, id }) {
     })
 }
 
-// 添加文章
+// 删除文章
 async function DeletePost({ tags, id }) {
     if (!Array.isArray(tags)) {
         if (typeof tags === 'string') {
@@ -140,13 +140,34 @@ async function Delete(name) {
             const tagdoc = await Tag.findOne({ name }).exec()
             const posts = tagdoc.posts
             if (posts) {
-                await Promise.all(posts.map(async postId => {
-                    await Post.findByIdAndUpdate(postId, { category: MongoDB.delete_category }).exec()
+                await Promise.all(posts.map(postId => {
+                    // await Post.findByIdAndUpdate(postId, { tags: MongoDB.delete_tag_name }).exec()
+                    return new Promise((resolve, reject) => {
+                        Post.findById(postId.toString(), (err, post) => {
+                            if (err) {
+                                return reject("[TagService/Delete] Error: post.findById error")
+                            }
+                            let tags = post.tags
+                            let index = tags.indexOf(name)
+                            if (index > -1) {
+                                post.tags.splice(index, 1)
+                            } else {
+                                return reject("[TagService/Delete] Error: No tag matched with post[" + postId.toString() + "]")
+                            }
+                            post.save((e, p) => {
+                                if (e) {
+                                    reject("[TagService/Delete] Error: save post failed")
+                                }
+                                resolve()
+                            })
+                        })
+                    })
                 }))
+                await Tag.findOneAndDelete({ name }).exec()
             } else {
                 return failedPromise(Code.INTERNAL_ERROR, "Unknown error")
             }
-            return successPromise(Code.OK, "Delete Category Successfully")
+            return successPromise(Code.OK, "Delete Tag Successfully")
         }
         return failedPromise(Code.BAD_REQUEST, "Invalid Parameter")
     } catch (err) {

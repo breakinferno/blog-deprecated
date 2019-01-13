@@ -26,12 +26,12 @@ async function initDB() {
         await doc.save()
         console.log("build delete category successfully")
     }
-    // 创建默认标签
-    // const tag = await Tag.findOne({ name: MongoDB.default_tag_name }).exec()
+    //创建默认标签
+    // const tag = await Tag.findOne({ name: MongoDB.delete_tag_name }).exec()
     // if (!tag) {
     //     console.log('try to build default tag!')
     //     let doc = new Tag({
-    //         name: MongoDB.default_tag_name,
+    //         name: MongoDB.delete_tag_name,
     //         posts: []
     //     })
     //     await doc.save()

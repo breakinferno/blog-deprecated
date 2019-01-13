@@ -5,6 +5,7 @@ import { failedPromise, successPromise } from '../lib/p'
 import Code from '../constant/httpStatus'
 import { MongoDB } from '../config'
 import mongoose from 'mongoose'
+import config from '../config'
 // 新建资源
 async function Create(data) {
     try {
@@ -40,7 +41,7 @@ async function Create(data) {
 async function GetPosts(name) {
     try {
         if (name) {
-            const categorydoc = await Category.find({ name }).populate('posts', '_id title author').exec()
+            const categorydoc = await Category.findOne({ name }).populate('posts', '_id title author content overview').exec()
             const postdoc = categorydoc.posts
             let ret = postdoc.map(doc => transformDocToObj(doc))
             return successPromise(Code.OK, "Get Posts Successfully", ret)
@@ -55,10 +56,10 @@ async function GetPosts(name) {
 async function GetTags(name) {
     try {
         if (name) {
-            const categorydoc = await Category.find({ name }).populate('tags', '_id name').exec()
-            const tagdoc = categorydoc.tags
-            let ret = tagdoc.map(doc => transformDocToObj(doc))
-            return successPromise(Code.OK, "Get Tags Successfully", ret)
+            const categorydoc = await Category.findOne({ name }).exec()
+            // const tagdoc = categorydoc.tags
+            // let ret = tagdoc.map(doc => transformDocToObj(doc))
+            return successPromise(Code.OK, "Get Tags Successfully", categorydoc.tags)
         }
         return failedPromise(Code.BAD_REQUEST, "Invalid Parameter")
     } catch (err) {
@@ -153,12 +154,17 @@ async function GetCategories() {
 async function Delete(name) {
     try {
         if (name) {
-            const categorydoc = await Category.find({ name }).exec()
+            if (name === config.delete_category) {
+                return failedPromise(Code.METHOD_NOT_ALLOWED, "You can't delete the default category")
+            }
+            const categorydoc = await Category.findOne({ name }).exec()
             const posts = categorydoc.posts
             if (posts) {
                 await Promise.all(posts.map(async postId => {
-                    await Post.findByIdAndUpdate(postId, { category: MongoDB.delete_category }).exec()
+                    let p = await Post.findByIdAndUpdate(postId, { category: MongoDB.delete_category }).exec()
+                    await AddPost({ category: MongoDB.delete_category, id: postId, tags: p.tags })
                 }))
+                await Category.findOneAndDelete({ name }).exec()
             } else {
                 return failedPromise(Code.INTERNAL_ERROR, "Unknown error")
             }

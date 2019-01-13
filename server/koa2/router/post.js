@@ -9,6 +9,8 @@ router
     .get('/:id', controllers.Post.GetById)
     .post('/', validator(), controllers.Post.Post)
     .delete('/:id', validator(), controllers.Post.DeleteById)
+    .delete('/tags/:name', validator(), controllers.Post.DeleteByTag)
+    .delete('/category/:name', validator(), controllers.Post.DeleteByCategory)
     .patch('/:id', validator(), controllers.Post.Patch)
 
 export default router
