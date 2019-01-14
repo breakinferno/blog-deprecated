@@ -1,5 +1,5 @@
 export const MongoDB = {
-    url: 'mongodb://localhost/blog', // 如果host没配localhost会报错 请注意这一点
+    url: 'mongodb://127.0.0.1/blog', // 如果host没配localhost会报错 请注意这一点 一般是内存溢出
     delete_category: '废纸篓',
     delete_tag_name: 'default',
     // 初始的管理员账号密码
