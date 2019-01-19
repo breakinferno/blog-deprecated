@@ -6,7 +6,7 @@ import { failedPromise, successPromise } from '../lib/p'
 import Code from '../constant/httpStatus'
 import CategoryService from './category'
 import TagService from './tag'
-import { resolve } from 'dns';
+import logger from '../lib/log'
 // 新建资源 必须提供author title category tags
 async function Create(data) {
     try {
@@ -113,6 +113,65 @@ async function GetByID(id) {
     }
 }
 
+/**
+ *根据query 查找文章
+ *createdTime: {from: 2323323, to: wew}
+ * @param {*} query {createdTime(ms), updatedTime, page , size, title, author}
+ * @returns
+ */
+async function GetByQuery(query) {
+    try {
+        if (query) {
+            // 处理query 参数
+            let conditions = {}
+            let options = {}
+            let startTime, endTime
+            let { createdTime, updatedTime, page, size = 10, title, author } = query
+            // 创建时间
+            if (createdTime) {
+                startTime = createdTime.from
+                endTime = createdTime.to || new Date()
+                if (!startTime) {
+                    logger('error', 'services/GetByQuery', 'you must have a startTime')
+                    throw new Error('Invalid Params in GetByQuery with services')
+                }
+                conditions['createdAt'] = { "$gte": startTime, "lt": endTime }
+            }
+            // 更新时间
+            if (updatedTime) {
+                startTime = updatedTime.from
+                endTime = updatedTime.to || new Date()
+                if (!startTime) {
+                    logger('error', 'services/GetByQuery', 'you must have a startTime')
+                    throw new Error('Invalid Params in GetByQuery with services')
+                }
+                conditions['updatedAt'] = { "$gte": startTime, "lt": endTime }
+            }
+            // page
+            if (!page) {
+                page = 1
+            }
+            if (page) {
+                options['skip'] = (page - 1) * size
+            }
+            // title
+            if (title) {
+                conditions['title'] = new RegExp(title, 'ig')
+            }
+            if (author) {
+                conditions['author'] = author
+            }
+            const postdocs = await Post.find(conditions, null, options).exec()
+            let ret = postdocs.map(post => transformDocToObj(post))
+            return successPromise(Code.OK, "Get Posts Successfully", ret)
+        }
+        return failedPromise(Code.BAD_REQUEST, "Invalid Parameter")
+    } catch (err) {
+        logger('error', 'services/GetByQuery', err);
+        return failedPromise()
+    }
+}
+
 async function DeleteById(id) {
     try {
         if (id) {
@@ -207,6 +266,7 @@ async function DeleteByTag(tag) {
 export default {
     Create,
     GetByID,
+    GetByQuery,
     DeleteById,
     DeleteByTag,
     DeleteByCategory,

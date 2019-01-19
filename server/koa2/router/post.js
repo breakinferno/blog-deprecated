@@ -7,6 +7,7 @@ const router = new KoaRouter({
 })
 router
     .get('/:id', controllers.Post.GetById)
+    .get('/', controllers.Post.GetByQuery)
     .post('/', validator(), controllers.Post.Post)
     .delete('/:id', validator(), controllers.Post.DeleteById)
     .delete('/tags/:name', validator(), controllers.Post.DeleteByTag)

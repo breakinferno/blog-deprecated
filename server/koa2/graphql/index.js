@@ -9,6 +9,7 @@ let typeDefs = gql `${defs}`
 const server = new ApolloServer({
     typeDefs,
     resolvers,
+    playground: true
 });
 
 export default server

@@ -27,6 +27,27 @@ async function GetById(ctx) {
         ctx.response.status = err.code
     })
 }
+
+async function GetByQuery(ctx) {
+    let data
+    try {
+        data = paramHandler(ctx, ['query'])
+    } catch (err) {
+        return console.log(err)
+    }
+    if (!data) {
+        //默认pageSize 10
+        data = { page: 1, size: 10 }
+    }
+    await PostServices.GetByQuery(data).then(ret => {
+        ctx.body = ret.payload
+    }).catch(err => {
+        console.log(err)
+        ctx.body = err.payload
+        ctx.response.status = err.code
+    })
+}
+
 // 新建资源
 async function Post(ctx, next) {
     let data
@@ -145,6 +166,7 @@ async function DeleteByTag(ctx) {
 export default {
     Post,
     GetById,
+    GetByQuery,
     DeleteById,
     Patch,
     // Put,
