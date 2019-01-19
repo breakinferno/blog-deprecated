@@ -1,5 +1,6 @@
 <template>
-  <article class="blog-card">
+  <article class="blog-card"
+           @click="handleCard({path: '/posts/mdzz'})">
     <div class="card-header"
          v-if="!imgUrl">
       <h3 class="card-header-title">this is title</h3>
@@ -17,6 +18,10 @@
           &emsp;{{item.content}}
         </div>
         <span class="card-header-tag">
+          <span>阅读全文
+            <i>></i>
+            <i>></i>
+          </span>
           <tag :tags="item.tags"></tag>
         </span>
         <div class="card-detail-info">
@@ -78,11 +83,22 @@ export default {
         'y': d[0],
         'd': d[2]
       }[flag] || 1
+    },
+    handleCard (route) {
+      this.$router.push({ ...route })
     }
   }
 }
 </script>
 <style lang="less" scoped>
+@keyframes next {
+  0% {
+    color: #68c4f3;
+  }
+  100% {
+    color: black;
+  }
+}
 .blog-card {
   background: white;
   position: relative;
@@ -91,6 +107,38 @@ export default {
   flex-direction: column;
   align-items: stretch;
   min-height: 400px;
+  .card-detail-info {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 30px;
+    button:nth-child(2) {
+      right: 100px;
+    }
+    button:nth-child(3) {
+      right: 160px;
+    }
+    button:nth-child(4) {
+      right: 220px;
+    }
+    .el-button--primary {
+      background: none;
+      border: none;
+      color: black;
+      padding: 0;
+      margin: 0;
+      position: absolute;
+      &:hover {
+        background: none;
+        border: none;
+        color: black;
+        font-size: 16px;
+        font-weight: bold;
+      }
+    }
+  }
+
   &:last-child {
     margin: 0px;
   }
@@ -115,6 +163,9 @@ export default {
       line-height: 50px;
       padding-left: 20px;
       box-sizing: border-box;
+      span {
+        font-weight: bold;
+      }
     }
   }
 
@@ -125,6 +176,23 @@ export default {
       text-align: left;
       min-height: 56px;
       box-sizing: border-box;
+      line-height: 20px;
+    }
+    .card-header-tag {
+      display: flex;
+      font-size: 14px;
+      font-weight: bold;
+      align-items: center;
+      justify-content: space-between;
+      padding-left: 20px;
+      text-decoration: underline;
+      cursor: pointer;
+      i:nth-child(1) {
+        animation: next 1s ease-in-out 0s infinite;
+      }
+      i:nth-child(2) {
+        animation: next 1s ease-in-out 0.5s infinite;
+      }
     }
   }
 
@@ -163,7 +231,7 @@ export default {
       0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
     background-color: #97dffd;
     margin: 5px 0;
-    font-size: 14px;
+    font-size: 16px;
     border-radius: 0 4px 4px 0;
     display: inline-block;
     padding: 7px 11px 7px 32px;
@@ -184,6 +252,7 @@ export default {
     }
     a {
       color: #fff;
+      font-weight: bold;
     }
   }
 }

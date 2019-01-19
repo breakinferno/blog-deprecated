@@ -74,7 +74,7 @@ export default {
 
 <style lang="less" scoped>
 #app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -83,11 +83,13 @@ export default {
 
   .wrapper {
     width: 100%;
-    background-image: url("./assets/bg.png");
+    background-image: url('./assets/bg.png');
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
     padding-top: 30px;
+    min-height: 100%;
+    box-sizing: border-box;
     .el-container {
       justify-content: center;
     }
@@ -95,12 +97,12 @@ export default {
       max-width: 900px;
       // min-width: 600px;
       flex: 1;
-      padding: 0 45px;
+      margin: 0 45px;
+      background: #fbfbfb;
     }
   }
   .el-main {
     overflow: visible;
-    height: 1800px;
   }
   .el-header {
     padding: 0px;
@@ -113,6 +115,10 @@ export default {
       width: 100%;
       // z-index: -1;
     }
+  }
+  .el-footer {
+    height: 0 !important;
+    background: none;
   }
   .el-aside {
     background: white;

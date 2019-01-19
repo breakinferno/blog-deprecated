@@ -32,6 +32,8 @@ for (let dir of Object.keys(Directives)) {
 
 Vue.use(Editor)
 
+Vue.prototype.$bus = new Vue()
+
 new Vue({
   router,
   store,

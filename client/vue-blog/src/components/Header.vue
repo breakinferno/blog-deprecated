@@ -196,6 +196,7 @@ export default {
     handlePointerClick () {
       this.stepInto = true
       this.handleTimeout()
+      this.$bus.$emit('headerover', true)
     },
     handleTimeout () {
       if (this.timeout) {
