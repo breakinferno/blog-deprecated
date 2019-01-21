@@ -11,6 +11,9 @@ pre:hover {
     display: none;
 }
 
+* {
+    -webkit-transition: none;
+}
 
 /**
   * Try it out! There's lots you can do.

@@ -242,6 +242,7 @@ export default {
 #blog-header {
   background: #0000003b;
   height: 100%;
+  transition: transform 1s ease-in-out;
   #canvas {
     width: 100%;
     height: 100%;

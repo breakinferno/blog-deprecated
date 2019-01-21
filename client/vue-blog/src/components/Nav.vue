@@ -125,6 +125,9 @@ export default {
   position: absolute;
   width: 100%;
   z-index: 1;
+  .nav-item {
+    transition: all 0.8s ease;
+  }
   .blog-nav {
     width: 100%;
     display: flex;

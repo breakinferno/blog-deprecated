@@ -97,7 +97,6 @@ export default {
   },
   methods: {
     init () {
-      console.log('start animate...')
       this.getBrowserPrefix()
       this.preInit()
       this.startAnimation()
@@ -113,11 +112,9 @@ export default {
     },
     pauseAnimation () {
       this.paused = true
-      console.log('paused!')
     },
     resumeAnimation () {
       this.paused = false
-      console.log('resume!')
     },
     skipAnimation () {
       this.isSkip = true

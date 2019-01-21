@@ -1,6 +1,6 @@
 <template>
   <div class="blog-introduction">
-    <div class="introduction-header"></div>
+    <div class="introduction-header drag-handler"></div>
     <div class="introduction-body">
       <img class="introduction-avatar"
            src="../assets/avatar.png"
@@ -11,17 +11,65 @@
       </div>
     </div>
     <div class="introduction-footer">
-      <a href=""><span class="introduction-num">23</span><span class="introduction-info">文章</span></a>
-      <a href=""><span class="introduction-num">22</span><span class="introduction-info">说说</span></a>
+      <a href="">
+        <span class="introduction-num">23</span>
+        <span class="introduction-info">文章</span>
+      </a>
+      <a href="">
+        <span class="introduction-num">22</span>
+        <span class="introduction-info">说说</span>
+      </a>
+    </div>
+    <div class="geek-info">
+      <span v-for="(geek, index) in geeks"
+            :key="index"
+            @click="handleUrl(geek.url)">
+        {{geek.name}}
+      </span>
     </div>
     <!-- <i class="introduction-icon"></i> -->
   </div>
 </template>
+<script>
+export default {
+  data () {
+    return {
+      geeks: [
+        {
+          name: 'Leetcode',
+          url: '/'
+        }, {
+          name: 'Github',
+          url: '/'
+        }, {
+          name: 'QQ',
+          url: '/'
+        }, {
+          name: 'E-Mail',
+          url: '/'
+        }, {
+          name: 'Weibo',
+          url: '/'
+        }, {
+          name: 'NetEaseMusic',
+          url: '/'
+        }
+      ]
+    }
+  },
+  methods: {
+    handleUrl (url) {
+      window.open(url, '_blank')
+    }
+  }
+}
+</script>
+
 <style lang="less" scoped>
 .blog-introduction {
   position: relative;
   .introduction-header {
-    background-image: url("../assets/thGeneration.jpg");
+    background-image: url('../assets/thGeneration.jpg');
     width: 100%;
     background-size: cover;
     height: 75px;
@@ -50,6 +98,7 @@
       height: 40px;
       top: 65px;
       left: 20px;
+      transition: transform 1s ease;
       &:hover {
         transform: scale(1.3) rotateZ(30deg);
       }
@@ -75,6 +124,18 @@
         margin-top: 10px;
         font-size: 12px;
       }
+    }
+  }
+  .geek-info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    span {
+      display: inline-block;
+      color: black;
+      width: 50%;
+      cursor: pointer;
+      font-size: 14px;
     }
   }
 }

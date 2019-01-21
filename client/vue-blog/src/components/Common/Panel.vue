@@ -1,5 +1,5 @@
 <template>
-  <div class="blog-panel">
+  <div class="blog-panel drag-handler">
     <Container @drop="onDrop">
       <Draggable v-for="item in items"
                  :key="item.id">
