@@ -12,7 +12,8 @@ import {
   Loading,
   Menu,
   MenuItem,
-  MessageBox
+  MessageBox,
+  Tooltip
 } from 'element-ui'
 
 const tModules = [
@@ -25,7 +26,8 @@ const tModules = [
   Footer,
   Main,
   Menu,
-  MenuItem
+  MenuItem,
+  Tooltip
 ]
 
 tModules.forEach((m) => {

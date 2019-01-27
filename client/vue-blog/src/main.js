@@ -10,7 +10,8 @@ import 'tui-editor/dist/tui-editor-contents.css'
 import 'codemirror/lib/codemirror.css'
 
 import {
-  Editor
+  Editor,
+  Viewer
 } from '@toast-ui/vue-editor'
 
 import {
@@ -30,7 +31,8 @@ for (let dir of Object.keys(Directives)) {
   Vue.directive(dir, Directives[dir])
 }
 
-Vue.use(Editor)
+Vue.component('viewer', Viewer)
+Vue.component('editor', Editor)
 
 Vue.prototype.$bus = new Vue()
 

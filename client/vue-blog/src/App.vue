@@ -17,16 +17,16 @@
                        @drag-start="dragStart"
                        class="el-container">
               <!-- <Draggable key="introduction"> -->
-              <el-aside class="left-aside">
+              <el-aside class="left-aside" v-show="showLeftSide">
                 <!-- <introduction></introduction> -->
                 <div :is="scene.children[0].component"></div>
               </el-aside>
               <!-- </Draggable> -->
-              <div class="content">
+              <div class="content" :class="{'fullScreen': !showLeftSide && !showRightSide}">
                 <router-view></router-view>
               </div>
               <!-- <Draggable key="test"> -->
-              <el-aside class="right-aside">
+              <el-aside class="right-aside" v-show="showRightSide">
                 <!-- <panel></panel> -->
                 <div :is="scene.children[1].component"></div>
               </el-aside>
@@ -51,6 +51,8 @@ import BlogHeader from '@/components/Header'
 import BlogFooter from '@/components/Footer'
 import Introduction from '@/components/Introduction'
 import { applyDrag } from '@/utils/dnd'
+import { mapState } from 'vuex'
+
 const draggableComp = [{
   id: `introduction`,
   type: 'container',
@@ -71,6 +73,9 @@ export default {
         children: draggableComp
       }
     }
+  },
+  computed: {
+    ...mapState(['layout', 'showLeftSide', 'showRightSide'])
   },
   components: {
     // ApolloExample
@@ -128,7 +133,7 @@ export default {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  // text-align: center;
   color: #2c3e50;
   height: 100%;
 
@@ -154,6 +159,9 @@ export default {
       margin: 0 45px;
       background: #fbfbfb;
       white-space: normal;
+    }
+    .content.fullScreen{
+      max-width: none;
     }
   }
   .el-main {

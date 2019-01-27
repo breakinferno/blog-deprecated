@@ -77,7 +77,6 @@ export default {
     McCharacter
   },
   mounted () {
-    console.log('mounted!! start animate~~')
     this.init()
   },
   watch: {
@@ -138,7 +137,6 @@ export default {
         }, 200))
         await this.writeTo(this.$refs.styleEl, styleText[2], 0, this.speed, true, 1)
         await this.writeTo(this.$refs.styleEl, styleText[3], 0, this.speed, true, 1)
-        console.log('animate end')
         this.done = true
         // 去除过度
       } catch (e) {
@@ -147,6 +145,9 @@ export default {
         } else {
           throw e
         }
+      } finally {
+        // 清除引入的样式文件，防止对以后带来影响
+        document.querySelector('style#style-tag').remove()
       }
     },
     flip () {

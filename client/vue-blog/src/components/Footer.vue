@@ -30,15 +30,16 @@
 </template>
 <script>
 export default {
-  data () {
-    return {
-      isFixed: false
+
+  // mounted () {
+  //   this.$bus.$on('headerover', (state) => {
+  //     this.isFixed = true
+  //   })
+  // },
+  computed: {
+    isFixed () {
+      return this.$store.state.headerover
     }
-  },
-  mounted () {
-    this.$bus.$on('headerover', (state) => {
-      this.isFixed = true
-    })
   }
 }
 </script>

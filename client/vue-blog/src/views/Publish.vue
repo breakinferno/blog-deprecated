@@ -1,39 +1,26 @@
 <template>
-    <div class="container">
-        <editor ref="tuiEditor"
-                v-model="editorText"
-                :options="editorOptions"
-                :html="editorHtml"
-                :mode="editorMode"
-                :previewStyle="editorPreviewStyle"
-                @load="onEditorLoad"
-                @focus="onEditorFocus"
-                @blur="onEditorBlur"
-                @change="onEditorChange"
-                @stateChange="onEditorStateChange" />
-        <div>
-            <h3>Props Test Buttons</h3>
-            <button @click="changeText">changeText</button>
-            <button @click="changeHtml">changeHtml</button>
-            <button @click="changeMode">changeMode</button>
-            <button @click="changePreviewStyle">changePreviewStyle</button>
-        </div>
-        <div>
-            <h3>Function Test Buttons</h3>
-            <button v-for="method in methodNames"
-                    :key="method"
-                    @click="methodInvoke(method)">
-                {{ method }}
-            </button>
-            <p>Function Result : {{ message }}</p>
-        </div>
-        <viewer class="viewer"
-                :value="viewerText" />
+    <div class="publish" v-if="visible">
+        <el-tooltip placement="top">
+          <div slot="content">多行信息<br/>第二行信息</div>
+          <editor ref="tuiEditor"
+                  v-model="editorText"
+                  height="100%"
+                  style="min-height: 500px"
+                  :options="editorOptions"
+                  :html="editorHtml"
+                  :mode="editorMode"
+                  :previewStyle="editorPreviewStyle"
+                  @load="onEditorLoad"
+                  @focus="onEditorFocus"
+                  @blur="onEditorBlur"
+                  @change="onEditorChange"
+                  @stateChange="onEditorStateChange" />
+        </el-tooltip>
     </div>
 </template>
 
 <script>
-import { Editor, Viewer } from '@toast-ui/vue-editor'
+import { mapMutations } from 'vuex'
 const eventListenr = [
   'onEditorLoad',
   'onEditorFocus',
@@ -42,15 +29,13 @@ const eventListenr = [
   'onEditorStateChange'
 ].reduce((methods, methodName) => {
   methods[methodName] = function () {
-    // eslint-disable-next-line no-console
-    console.log(`[editor] ${methodName}`)
+    // console.log(`[editor] ${methodName}`)
   }
   return methods
 }, {})
 export default {
-  components: {
-    Editor,
-    Viewer
+  mounted () {
+    this.hideBothSides()
   },
   data () {
     return {
@@ -64,10 +49,12 @@ export default {
         'moveCursorToEnd',
         'reset'
       ],
-      viewerText: '# TOAST UI Markdown Viewer + Vue\n This is Viewer.',
       editorText: 'This is initialValue.',
       editorOptions: {
+        minHeight: '500px',
+        useCommandShortcut: true,
         hideModeSwitch: false,
+        usageStatistics: false,
         toolbarItems: [
           'heading',
           'bold',
@@ -91,42 +78,49 @@ export default {
           'codeblock'
         ]
       },
-      editorHeight: '200px',
       editorHtml: '',
       editorMode: 'markdown',
       editorVisible: true,
       editorPreviewStyle: 'vertical'
     }
   },
+  computed: {
+    visible () {
+      return this.$store.state.headerover
+    }
+  },
   methods: Object.assign(eventListenr, {
+    ...mapMutations([
+      'hideLeftSide',
+      'hideRightSide',
+      'hideBothSides'
+    ]),
     methodInvoke (methodName) {
       this.message = this.$refs.tuiEditor.invoke(methodName)
     },
-    changeText () {
-      this.editorText += 'hihi'
-    },
-    changeHtml () {
-      this.editorHtml = '<h1>Hi</h1>'
-    },
-    changeMode () {
-      this.editorMode = this.editorMode === 'wysiwyg' ? 'markdown' : 'wysiwyg'
-    },
+    // changeHtml () {
+    //   this.editorHtml = '<h1>Hi</h1>'
+    // },
     changePreviewStyle () {
       this.editorPreviewStyle = this.editorPreviewStyle === 'tab' ? 'vertical' : 'tab'
     }
   })
 }
 </script>
+<style lang="less" scoped>
+.publish{
+    position: fixed;
+    z-index: 99;
+    top: 50px;
+    left: 65px;
+    right: 65px;
+    bottom: 70px;
+  .tui-editor-contents h1{
+    border-bottom: 0px !important;
+  }
 
-<style>
-@import 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.41.0/codemirror.css';
-@import 'https://uicdn.toast.com/tui-editor/latest/tui-editor-contents.css';
-@import 'https://uicdn.toast.com/tui-editor/latest/tui-editor.css';
-@import 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/github.min.css';
-.container {
-  width: 960px;
-}
-.viewer {
-  background-color: lightpink;
+  & /deep/ .te-preview{
+    background: #fbfbfb !important;
+  }
 }
 </style>

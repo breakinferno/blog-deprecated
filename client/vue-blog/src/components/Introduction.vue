@@ -2,9 +2,10 @@
   <div class="blog-introduction">
     <div class="introduction-header drag-handler"></div>
     <div class="introduction-body">
-      <img class="introduction-avatar"
+      <router-link to="/publish">
+        <img class="introduction-avatar"
            src="../assets/avatar.png"
-           alt="">
+           alt=""></router-link>
       <div style="margin-right: 20px">
         <h3>@斯杜痞德</h3>
         <p>好像看见花开</p>
