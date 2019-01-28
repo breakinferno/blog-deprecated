@@ -1,7 +1,26 @@
 <template>
     <div class="publish" v-if="visible">
-        <el-tooltip placement="top">
-          <div slot="content">多行信息<br/>第二行信息</div>
+          <div class="publish-header" :class="{hide: isHide}">
+        <div class="title">
+          <input placeholder="标题" type="text">
+        </div>
+        <div class="info">
+          <div class="info-detail-wrapper"><label for="">分类：</label>
+              <el-autocomplete   v-model="category"   :fetch-suggestions="querySearchAsync"   placeholder="请输入内容"   @select="handleSelectCategory" ></el-autocomplete>
+          </div>
+          <div class="info-detail-wrapper"><label for="">标签：</label>
+              <el-autocomplete   v-model="tag"   :fetch-suggestions="querySearchAsync"   placeholder="请输入内容"   @select="handleSelectTag" ></el-autocomplete>
+          </div>
+          <div class="info-detail-wrapper"><label for="">重要性：</label>
+              <el-autocomplete   v-model="star"   :fetch-suggestions="querySearchAsync"   placeholder="请输入内容"   @select="handleSelectStar" ></el-autocomplete>
+          </div>
+        </div>
+        <div class="abstract">
+          <label for="abstract">摘要：</label><input id="abstract" placeholder="请输入内容"  type="text">
+        </div>
+      </div>
+        <el-tooltip placement="top end">
+          <div slot="content">dbclick here to change preview style!</div>
           <editor ref="tuiEditor"
                   v-model="editorText"
                   height="100%"
@@ -21,24 +40,39 @@
 
 <script>
 import { mapMutations } from 'vuex'
-const eventListenr = [
-  'onEditorLoad',
-  'onEditorFocus',
-  'onEditorBlur',
-  'onEditorChange',
-  'onEditorStateChange'
-].reduce((methods, methodName) => {
-  methods[methodName] = function () {
-    // console.log(`[editor] ${methodName}`)
+// const methodNames = ['focus', 'getValue', 'getHtml', 'getSelectedText', 'reset', 'moveCursorToStart', 'moveCursorToEnd']
+const initText = 'Say what you want to say...<h3>You can also write html!!!</h3>'
+const noop = () => {}
+const onEditorFocus = function () {
+  if (this.editorText === initText) {
+    this.editorText = ''
   }
-  return methods
-}, {})
+}
+const onEditorBlur = noop
+const onEditorChange = noop
+const onEditorStateChange = noop
+
+const onEditorLoad = function () {
+  let target = document.querySelector('.tui-editor-defaultUI-toolbar')
+  if (target) {
+    target.addEventListener('dblclick', e => this.changePreviewStyle())
+  }
+}
+const eventListenr = {
+  onEditorBlur,
+  onEditorChange,
+  onEditorFocus,
+  onEditorLoad,
+  onEditorStateChange
+}
+
 export default {
-  mounted () {
-    this.hideBothSides()
-  },
   data () {
     return {
+      isHide: false,
+      tag: '',
+      category: '',
+      star: '0',
       message: '',
       methodNames: [
         'focus',
@@ -49,7 +83,7 @@ export default {
         'moveCursorToEnd',
         'reset'
       ],
-      editorText: 'This is initialValue.',
+      editorText: initText,
       editorOptions: {
         minHeight: '500px',
         useCommandShortcut: true,
@@ -89,6 +123,9 @@ export default {
       return this.$store.state.headerover
     }
   },
+  mounted () {
+    this.hideBothSides()
+  },
   methods: Object.assign(eventListenr, {
     ...mapMutations([
       'hideLeftSide',
@@ -96,13 +133,35 @@ export default {
       'hideBothSides'
     ]),
     methodInvoke (methodName) {
-      this.message = this.$refs.tuiEditor.invoke(methodName)
+      return this.$refs.tuiEditor.invoke(methodName)
     },
-    // changeHtml () {
-    //   this.editorHtml = '<h1>Hi</h1>'
-    // },
     changePreviewStyle () {
       this.editorPreviewStyle = this.editorPreviewStyle === 'tab' ? 'vertical' : 'tab'
+    },
+    querySearchAsync (queryString, cb) {
+      let restaurants = [1, 2, 3, 4].map(v => {
+        return { value: '' + v }
+      })
+      let results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants
+
+      clearTimeout(this.timeout)
+      this.timeout = setTimeout(() => {
+        cb(results)
+      }, 100)
+    },
+    createStateFilter (queryString) {
+      return (state) => {
+        return ((state.value + '').toLowerCase().indexOf(queryString.toLowerCase()) === 0)
+      }
+    },
+    handleSelectTag (item) {
+      console.log(item)
+    },
+    handleSelectCategory (item) {
+      console.log(item)
+    },
+    handleSelectStar (item) {
+      console.log(item)
     }
   })
 }
@@ -110,17 +169,38 @@ export default {
 <style lang="less" scoped>
 .publish{
     position: fixed;
-    z-index: 99;
     top: 50px;
     left: 65px;
     right: 65px;
     bottom: 70px;
-  .tui-editor-contents h1{
-    border-bottom: 0px !important;
-  }
+    display: flex;
+    flex-direction: column;
+    .publish-header{
+      margin-bottom: 20px;
+      &.hide{
+        display: none;
+        margin-bottom: 0px;
+      }
+      .info{
+        display: flex;
+      }
+    }
+    & /deep/ .el-tooltip{
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
 
-  & /deep/ .te-preview{
-    background: #fbfbfb !important;
-  }
+      .tui-editor-defaultUI{
+            height: 100%;
+            flex-grow: 1;
+      }
+    }
+    .tui-editor-contents h1{
+      border-bottom: 0px !important;
+    }
+
+    & /deep/ .te-preview{
+      background: #fbfbfb !important;
+    }
 }
 </style>

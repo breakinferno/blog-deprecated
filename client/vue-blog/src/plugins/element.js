@@ -13,7 +13,8 @@ import {
   Menu,
   MenuItem,
   MessageBox,
-  Tooltip
+  Tooltip,
+  Autocomplete
 } from 'element-ui'
 
 const tModules = [
@@ -27,7 +28,8 @@ const tModules = [
   Main,
   Menu,
   MenuItem,
-  Tooltip
+  Tooltip,
+  Autocomplete
 ]
 
 tModules.forEach((m) => {
