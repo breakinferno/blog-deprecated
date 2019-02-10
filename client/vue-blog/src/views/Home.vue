@@ -9,6 +9,9 @@
       </div> -->
     <!-- </timeline> -->
     <card></card>
+    <card></card>
+    <card></card>
+    <card></card>
   </div>
 </template>
 

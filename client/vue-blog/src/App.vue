@@ -17,16 +17,19 @@
                        @drag-start="dragStart"
                        class="el-container">
               <!-- <Draggable key="introduction"> -->
-              <el-aside class="left-aside" v-show="showLeftSide">
+              <el-aside class="left-aside"
+                        v-show="showLeftSide">
                 <!-- <introduction></introduction> -->
                 <div :is="scene.children[0].component"></div>
               </el-aside>
               <!-- </Draggable> -->
-              <div class="content" :class="{'fullScreen': !showLeftSide && !showRightSide}">
+              <div class="content"
+                   :class="{'fullScreen': !showLeftSide && !showRightSide}">
                 <router-view></router-view>
               </div>
               <!-- <Draggable key="test"> -->
-              <el-aside class="right-aside" v-show="showRightSide">
+              <el-aside class="right-aside"
+                        v-show="showRightSide">
                 <!-- <panel></panel> -->
                 <div :is="scene.children[1].component"></div>
               </el-aside>
@@ -160,7 +163,7 @@ export default {
       background: #fbfbfb;
       white-space: normal;
     }
-    .content.fullScreen{
+    .content.fullScreen {
       max-width: none;
     }
   }
@@ -194,16 +197,8 @@ export default {
     width: 200px !important;
   }
   & > .el-container {
-    // position: absolute;
-    // top: 0px;
-    // left: 0px;
-    // width: 100%;
-    // // padding-top: 60px;
-    // bottom: 0px;
-    height: 100%;
     display: flex;
     justify-content: space-between;
-    // min-width: 1220px;
   }
 }
 </style>

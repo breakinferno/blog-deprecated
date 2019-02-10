@@ -11,6 +11,7 @@
     <animate-bg :forceSkip="isAnimateOver"
                 class="blog-animate-bg"
                 v-show="!isAnimateOver"
+                v-if="showAnimationBeforeEnter"
                 @animateEnd="skipAnimate"></animate-bg>
     <!--背景墙-->
     <div v-show="isAnimateOver"
@@ -40,10 +41,13 @@
   </div>
 </template>
 <script>
+import { mapState, mapMutations } from 'vuex'
+// import mapHelpers from '../utils/mapHelper'
 import BlogNav from './Nav'
 import Config from '../config'
 import AnimateBg from './AnimateBg'
 import { insertElement } from '@/utils/insertElement'
+// const { _mapState, _mapMutations } = mapHelpers('header')
 export default {
   components: {
     BlogNav,
@@ -52,7 +56,6 @@ export default {
   data () {
     return {
       ...Config.User,
-      isAnimateOver: false, // 控制背景墙的显示
       stepInto: false, // 进入主界面
       timeout: false, // 是否隐藏header
       isHover: false
@@ -62,9 +65,6 @@ export default {
     awake: Boolean
   },
   mounted () {
-    // BgAnimate()
-    // console.dir(BgAnimate)
-    // debugger
     let c = this.$refs.canvas
     let w = c.width = window.innerWidth
 
@@ -181,17 +181,13 @@ export default {
   computed: {
     isHide () {
       return this.timeout && !this.isHover
-    }
+    },
+    ...mapState('header', ['isAnimateOver', 'isStepIntoMC', 'isStepIntoBG', 'showAnimationBeforeEnter'])
   },
   methods: {
+    ...mapMutations('header', ['doneAnimate', 'skipAnimate', 'animateMC', 'stepIntoBGWall']),
     hoverHeader (flag) {
       this.isHover = flag
-    },
-    skipAnimate () {
-      if (this.isAnimateOver) {
-        return
-      }
-      this.isAnimateOver = true
     },
     handlePointerClick () {
       this.stepInto = true
@@ -221,12 +217,6 @@ export default {
       // this.$emit('stepped')
     }
   }
-  // watch: {
-  //   awake (n, o) {
-  //     console.log('new is:' + n + ', old is:' + o)
-  //     this.handleTimeout()
-  //   }
-  // }
 }
 </script>
 
