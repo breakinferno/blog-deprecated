@@ -23,6 +23,11 @@ export default {
   components: {
     // Timeline
   },
+  beforeMount () {
+    if (this.$store.state.showAnimationBeforeEnter) {
+      this.$router.push('background')
+    }
+  },
   data () {
     return {
       dataList: [

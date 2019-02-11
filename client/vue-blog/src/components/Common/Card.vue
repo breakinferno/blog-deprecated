@@ -102,7 +102,7 @@ export default {
 .blog-card {
   background: white;
   position: relative;
-  margin-bottom: 30px;
+  margin-bottom: 60px;
   display: flex;
   flex-direction: column;
   align-items: stretch;

@@ -15,11 +15,13 @@ export default new Vuex.Store({
     },
     showLeftSide: true,
     showRigthSide: true,
-    headerover: false
+    headerover: false,
+    showHeader: false,
+    showAnimationBeforeEnter: false
   },
   mutations: {
-    emitHeaderOver (state) {
-      state.headerover = true
+    triggerHeader (state, flag) {
+      state.showHeader = flag || false
     },
     hideLeftSide (state) {
       state.showLeftSide = false
@@ -43,6 +45,9 @@ export default new Vuex.Store({
     },
     changeLayout (state, layout) {
       state.layout = { ...state.layout, ...layout }
+    },
+    hideAnimationPage (state) {
+      state.showAnimationBeforeEnter = false
     }
   },
   actions: {

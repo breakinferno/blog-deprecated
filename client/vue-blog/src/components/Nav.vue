@@ -1,6 +1,5 @@
 <template>
-  <div id="nav"
-       :class="{modify}">
+  <div id="nav" class="modify">
     <el-menu :default-active="activeIndex"
              class="blog-nav"
              mode="horizontal"
@@ -56,10 +55,10 @@ const menus = {
 }
 export default {
   props: {
-    modify: {
-      type: Boolean,
-      default: false
-    }
+    // modify: {
+    //   type: Boolean,
+    //   default: false
+    // }
   },
   data () {
     return {

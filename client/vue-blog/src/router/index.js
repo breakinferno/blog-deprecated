@@ -12,6 +12,11 @@ export default new Router({
     component: Home
   },
   {
+    path: '/background',
+    name: 'background',
+    component: () => import(/* webpackChunkName: "background" */ '@/views/Background.vue')
+  },
+  {
     path: '/posts/:id',
     name: 'post',
     component: () => import(/* webpackChunkName: "post" */ '@/views/Post.vue')
