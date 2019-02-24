@@ -123,7 +123,7 @@ export default {
       return this.$store.state.headerover
     }
   },
-  mounted () {
+  created () {
     this.hideBothSides()
   },
   methods: Object.assign(eventListenr, {

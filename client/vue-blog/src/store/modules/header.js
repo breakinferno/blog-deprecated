@@ -22,9 +22,8 @@ export default {
       state.isAnimateOver = true
     },
     skipAnimate (state) {
-      if (state.isAnimateOver) {
-        return
-      }
+      state.isAnimateOver = true
+      state.isStepIntoBG = true
       state.isSkipAnimate = true
     },
     animateMC (state) {
@@ -32,6 +31,9 @@ export default {
     },
     stepIntoBGWall (state) {
       state.stepIntoBG = true
+    },
+    doneWelcome (state) {
+      state.showAnimationBeforeEnter = false
     }
   },
   actions: {},

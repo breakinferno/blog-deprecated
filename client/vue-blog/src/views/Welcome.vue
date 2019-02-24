@@ -1,5 +1,6 @@
 <template>
-  <div id="background">
+  <div id="welcome"
+       @dblclick="handleDBClick">
     <!--开头动画-->
     <animate-bg :forceSkip="isAnimateOver"
                 class="blog-animate-bg"
@@ -9,11 +10,8 @@
     <!--背景墙-->
     <div v-show="isAnimateOver"
          class="blog-header-wrapper">
-      <transition name="modify"
-                  @before-leave="handleBeforeEnter"
-                  @leave="handleStepInto">
-        <div class="blog-header-content"
-             v-if="!stepInto">
+      <transition name="modify">
+        <div class="blog-header-content">
           <div class="text-wrap">
             <Avatar shape="circle"
                     size="large"
@@ -34,12 +32,29 @@
   </div>
 </template>
 <script>
-import AnimateBg from '../components/AnimateBg'
+import { mapState, mapMutations } from 'vuex'
+import Config from '../config'
+import AnimateBg from '@/components/AnimateBg'
 // import { insertElement } from '@/utils/insertElement'
 export default {
   components: {
     AnimateBg
   },
+  data () {
+    return {
+      ...Config.User
+    }
+  },
+  props: {
+    awake: Boolean
+  },
+  // beforeRouteEnter (to, from, next) {
+  //   // if (!this.showAnimationBeforeEnter) {
+  //   //   this.$router.push({
+  //   //     path: '/publish'
+  //   //   })
+  //   // }
+  // },
   mounted () {
     let c = this.$refs.canvas
     let w = c.width = window.innerWidth
@@ -153,12 +168,48 @@ export default {
       dieX = w / 2 / opts.len
       dieY = h / 2 / opts.len
     })
+  },
+  computed: {
+    ...mapState('header', ['isAnimateOver', 'showAnimationBeforeEnter'])
+  },
+  methods: {
+    ...mapMutations('header', ['skipAnimate', 'doneWelcome']),
+    handlePointerClick () {
+      this.doneWelcome()
+      this.$router.push({
+        path: '/publish'
+      })
+    },
+    handleDBClick () {
+      this.skipAnimate()
+    }
   }
 }
 </script>
+
 <style lang="less" scoped>
-#background{
-   #canvas {
+.modify-enter-active {
+  transition: all 1.5s ease;
+}
+.modify-leave-active {
+  transition: all 1.5s ease;
+}
+
+.modify-enter,
+.modify-leave-to {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+#welcome {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  background: #ababab;
+  height: 100%;
+  transition: transform 1s ease-in-out;
+  #canvas {
     width: 100%;
     height: 100%;
     position: absolute;
@@ -166,7 +217,9 @@ export default {
     left: 0px;
     z-index: -1;
   }
-
+  &.timeout {
+    transform: translateY(-60px);
+  }
   .blog-header-wrapper {
     height: 100%;
     position: relative;

@@ -82,15 +82,15 @@ export default {
   watch: {
     done (n, o) {
       if (n) {
-        // if (document.querySelector('.post-style')) {
-        //   return
-        // }
-        // let styles = document.querySelectorAll('head style')
-        // let postStyleEl = document.createElement('style')
-        // postStyleEl.textContent = '* { ' + browserPrefix + 'transition: none; }'
-        // postStyleEl.classList.add('post-style')
-        // // 结束就去除所有过渡
-        // document.head.insertBefore(postStyleEl, styles[styles.length - 1])
+        if (document.querySelector('.post-style')) {
+          return
+        }
+        let styles = document.querySelectorAll('head style')
+        let postStyleEl = document.createElement('style')
+        postStyleEl.textContent = '* { ' + browserPrefix + 'transition: none; }'
+        postStyleEl.classList.add('post-style')
+        // 结束就去除所有过渡
+        document.head.insertBefore(postStyleEl, styles[styles.length - 1])
       }
     }
   },
@@ -145,9 +145,6 @@ export default {
         } else {
           throw e
         }
-      } finally {
-        // 清除引入的样式文件，防止对以后带来影响
-        document.querySelector('style#style-tag').remove()
       }
     },
     flip () {
@@ -168,6 +165,8 @@ export default {
     async handleMoveEnd () {
       this.fade()
       await Promise.delay(1500)
+      // 清除引入的样式文件，防止对以后带来影响
+      document.querySelector('style#style-tag').remove()
       this.$emit('animateEnd')
     },
     handleOpenDoor () {

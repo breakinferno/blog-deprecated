@@ -47,7 +47,7 @@ export default {
 <style lang="less" scoped>
 .footer {
   background: rgba(255, 255, 255, 0.5) none repeat scroll !important;
-  margin-top: 80px;
+  margin-top: 20px;
   padding: 10px 0;
   color: #666;
   font-size: 14px;

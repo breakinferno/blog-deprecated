@@ -10,7 +10,8 @@
 <script>
 import { mapState, mapMutations } from 'vuex'
 import BlogNav from './Nav'
-import { insertElement } from '@/utils/insertElement'
+// import Config from '../config'
+// import { insertElement } from '@/utils/insertElement'
 export default {
   components: {
     BlogNav
@@ -55,10 +56,6 @@ export default {
         this.timeout = true
         this.triggerHeader()
       }, 2000)
-    },
-    handleBeforeEnter () {
-      // 去除hidden
-      insertElement('style', "body, html{overflow: initial; background: url('../assets/bg.png')}", document && document.head)
     }
   }
 }

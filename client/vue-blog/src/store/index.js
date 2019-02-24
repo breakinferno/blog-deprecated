@@ -16,8 +16,7 @@ export default new Vuex.Store({
     showLeftSide: true,
     showRigthSide: true,
     headerover: false,
-    showHeader: false,
-    showAnimationBeforeEnter: false
+    showHeader: false
   },
   mutations: {
     triggerHeader (state, flag) {

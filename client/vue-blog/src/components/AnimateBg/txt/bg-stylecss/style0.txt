@@ -24,8 +24,8 @@
    * so let's do something about it.
    */
 
-html {
-    background: rgb(63, 82, 99);
+#welcome {
+    background: rgb(63, 82, 99) !important;
 }
 
 /***
