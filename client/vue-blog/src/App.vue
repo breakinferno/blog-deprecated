@@ -202,6 +202,7 @@ export default {
   & > .el-container {
     display: flex;
     justify-content: space-between;
+    min-height: calc(100% - 90px);
   }
 }
 </style>

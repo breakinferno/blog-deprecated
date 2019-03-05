@@ -1,6 +1,6 @@
 <template>
-    <div class="publish" v-if="visible">
-          <div class="publish-header" :class="{hide: isHide}">
+    <div class="publish" :style="{height: `${height -220}px`}">
+      <!-- <div class="publish-header" :class="{hide: isHide}">
         <div class="title">
           <input placeholder="标题" type="text">
         </div>
@@ -18,7 +18,7 @@
         <div class="abstract">
           <label for="abstract">摘要：</label><input id="abstract" placeholder="请输入内容"  type="text">
         </div>
-      </div>
+      </div> -->
         <el-tooltip placement="top end">
           <div slot="content">dbclick here to change preview style!</div>
           <editor ref="tuiEditor"
@@ -69,6 +69,7 @@ const eventListenr = {
 export default {
   data () {
     return {
+      height: document.documentElement.clientHeight || window.innerHeight,
       isHide: false,
       tag: '',
       category: '',
@@ -119,9 +120,7 @@ export default {
     }
   },
   computed: {
-    visible () {
-      return this.$store.state.headerover
-    }
+
   },
   created () {
     this.hideBothSides()
@@ -163,16 +162,21 @@ export default {
     handleSelectStar (item) {
       console.log(item)
     }
-  })
+  }),
+  mounted () {
+    window.addEventListener('resize', () => {
+      this.height = document.documentElement.clientHeight || window.innerHeight
+    }, false)
+  }
 }
 </script>
 <style lang="less" scoped>
 .publish{
-    position: fixed;
-    top: 50px;
-    left: 65px;
-    right: 65px;
-    bottom: 70px;
+    // position: fixed;
+    // top: 50px;
+    // left: 65px;
+    // right: 65px;
+    // bottom: 70px;
     display: flex;
     flex-direction: column;
     .publish-header{
