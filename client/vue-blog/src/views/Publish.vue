@@ -1,24 +1,5 @@
 <template>
     <div class="publish" :style="{height: `${height -220}px`}">
-      <!-- <div class="publish-header" :class="{hide: isHide}">
-        <div class="title">
-          <input placeholder="标题" type="text">
-        </div>
-        <div class="info">
-          <div class="info-detail-wrapper"><label for="">分类：</label>
-              <el-autocomplete   v-model="category"   :fetch-suggestions="querySearchAsync"   placeholder="请输入内容"   @select="handleSelectCategory" ></el-autocomplete>
-          </div>
-          <div class="info-detail-wrapper"><label for="">标签：</label>
-              <el-autocomplete   v-model="tag"   :fetch-suggestions="querySearchAsync"   placeholder="请输入内容"   @select="handleSelectTag" ></el-autocomplete>
-          </div>
-          <div class="info-detail-wrapper"><label for="">重要性：</label>
-              <el-autocomplete   v-model="star"   :fetch-suggestions="querySearchAsync"   placeholder="请输入内容"   @select="handleSelectStar" ></el-autocomplete>
-          </div>
-        </div>
-        <div class="abstract">
-          <label for="abstract">摘要：</label><input id="abstract" placeholder="请输入内容"  type="text">
-        </div>
-      </div> -->
         <el-tooltip placement="top end">
           <div slot="content">dbclick here to change preview style!</div>
           <editor ref="tuiEditor"
@@ -123,7 +104,7 @@ export default {
 
   },
   created () {
-    this.hideBothSides()
+    // this.hideBothSides()
   },
   methods: Object.assign(eventListenr, {
     ...mapMutations([
