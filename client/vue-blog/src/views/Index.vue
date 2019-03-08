@@ -7,7 +7,7 @@
                        @modify="handleModify"></blog-header>
         </el-header>
       </transition>
-      <div class="wrapper">
+      <div class="wrapper" :style="{'min-height': `${ch - 90}px`}">
         <el-main>
           <el-container>
             <Container orientation="horizontal"
@@ -69,6 +69,7 @@ export default {
     return {
       modify: false,
       isAnimateOver: false,
+      ch: document.documentElement.clientHeight || window.innerHeight,
       scene: {
         type: 'container',
         children: draggableComp
@@ -126,6 +127,9 @@ export default {
     }
   },
   mounted () {
+    window.onresize = () => {
+      this.ch = document.documentElement.clientHeight || window.innerHeight
+    }
   }
 }
 </script>
@@ -146,7 +150,7 @@ export default {
     // background-size: cover;
     // background-attachment: fixed;
     padding-top: 30px;
-    min-height: 100%;
+    // min-height: calc(100% - 90px);
     box-sizing: border-box;
     padding-bottom: 60px;
     aside {
@@ -201,7 +205,7 @@ export default {
     display: flex;
     justify-content: space-between;
     min-height: calc(100% - 90px);
-    height: 0px;
+    // height: 0px;
   }
 }
 </style>

@@ -154,12 +154,17 @@ export default {
 <style lang="less" scoped>
 .publish{
     // position: fixed;
-    // top: 50px;
+    top: 150px;
     // left: 65px;
     // right: 65px;
     // bottom: 70px;
     display: flex;
     flex-direction: column;
+    opacity: 0.7;
+    width: 80%;
+    margin: 0 auto;
+    position: relative;
+    height: 220px;
     .publish-header{
       margin-bottom: 20px;
       &.hide{

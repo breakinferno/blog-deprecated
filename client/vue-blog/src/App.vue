@@ -12,10 +12,15 @@ export default {
 #app{
   min-height: 100%;
   width: 100%;
-  background-image: url(/img/bg.9c4e4722.png);
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed;
-  height: 100%;
+
+  // height: 100%;
 }
+</style>
+<style>
+  html{
+    background-image: url("./assets/bg.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+  }
 </style>
