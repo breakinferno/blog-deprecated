@@ -1,8 +1,5 @@
 language: node_js
 node_js:
-- "node"
-- "10"
-- "9"
 - "8"
 before_install:
   - chmod 600 ./ci.bash
