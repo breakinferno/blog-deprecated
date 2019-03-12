@@ -4,7 +4,6 @@ node_js:
 - "10"
 - "9"
 - "8"
-cache: npm
 before_install:
   - chomod 600 ./ci.bash
   - npm i -g npm
