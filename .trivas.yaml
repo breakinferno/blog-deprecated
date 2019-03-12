@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+- "node"
+- "10"
+- "9"
+- "8"
+cache: npm
+install:
+- ./ci.bash
+before_install:
+  - chomod 600 ./ci.bash
+  - npm i -g npm
+# after_success:
+# - chmod 600 ~/.ssh/id_rsa
+# - ssh sundogrd@sundogrd.com -o StrictHostKeyChecking=no 'cd ~/content-api && git pull && make build'

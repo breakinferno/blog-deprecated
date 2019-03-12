@@ -19,8 +19,8 @@ module.exports = {
         exec_mode: 'cluster',
         max_memory_restart: '2G',
         //日志地址
-        error_file: `/data/var/nodejs/log/${rootPathObj.base}_error.log`,
-        out_file: `/data/var/nodejs/log/${rootPathObj.base}_access.log`,
+        error_file: `~/logs/${rootPathObj.base}_error.log`,
+        out_file: `~/logs/${rootPathObj.base}_access.log`,
         listen_timeout: 8000,
         kill_timeout: 2000,
         restart_delay: 10000, //异常情况

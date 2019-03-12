@@ -1,7 +1,7 @@
 import chalk from 'chalk'
 const log = console.log
 const error = chalk.bold.red
-const warning = chalk.bold.keyword('orange')
+const warning = chalk.bold.orange
 const info = chalk.bold.green
 const underline = chalk.underline
 

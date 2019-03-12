@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon index.js",
-    "deploy": "pm2 startOrRestart prod.config.js"
+    "deploy": "pm2 startOrGracefulReload prod.config.js & pm2 save"
   },
   "keywords": [],
   "author": "",
