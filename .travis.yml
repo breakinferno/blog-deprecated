@@ -6,6 +6,11 @@ branchs:
   - master
 addons:
   ssh_known_hosts: 47.52.237.61
+install:
+- cd ./client/vue-blog
+- npm i
+- cd ../../server/koa2
+- npm i
 script:
 - cd ./client/vue-blog
 - npm run build
