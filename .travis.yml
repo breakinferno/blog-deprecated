@@ -1,3 +1,4 @@
+# 主要是为了自动部署， 构建和测试现在不太注意
 language: node_js
 node_js:
 - '8'
@@ -9,10 +10,9 @@ addons:
 install:
 - cd ./client/vue-blog
 - npm i
-- cd ../../server/koa2
-- npm i
+# - cd ../../server/koa2
+# - npm i
 script:
-- cd ./client/vue-blog
 - npm run build
 - cd ../..
 after_success:
