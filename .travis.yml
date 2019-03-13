@@ -1,4 +1,3 @@
-# 主要是为了自动部署， 构建和测试现在不太注意
 language: node_js
 node_js:
 - '8'
@@ -7,19 +6,15 @@ branchs:
   - master
 addons:
   ssh_known_hosts: 47.52.237.61
-install:
-# - cd ./client/vue-blog
-# - npm i
-# - cd ../../server/koa2
-# - npm i
+install: 
 script:
 - npm run test
-# - npm run skip
-# - cd ../..
 after_success:
-- chmod 600 ~/.ssh/travis
+- chmod 600 ~/.ssh/id_rsa
 - ssh root@real.breakinferno.cn -o StrictHostKeyChecking=no 'cd ~/work/blog && git
   pull && ./ci.bash'
 before_install:
 - openssl aes-256-cbc -K $encrypted_274299933b7c_key -iv $encrypted_274299933b7c_iv
-  -in travis.enc -out ~/.ssh/travis -d
+  -in id_rsa.enc -out ~/.ssh/id_rsa -d
+#- openssl aes-256-cbc -K $encrypted_274299933b7c_key -iv $encrypted_274299933b7c_iv
+#  -in travis.enc -out ~/.ssh/travis -d
