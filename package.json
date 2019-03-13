@@ -4,7 +4,7 @@
   "description": "the blog for myself, and to check what i've learned!",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \"Just skip the test and only for deploy\" && exit 0",
     "prod": "pm2 startOrRestart prod.config.js"
   },
   "repository": {

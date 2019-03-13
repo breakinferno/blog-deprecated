@@ -8,15 +8,15 @@ branchs:
 addons:
   ssh_known_hosts: 47.52.237.61
 install:
-- cd ./client/vue-blog
-- npm i
+# - cd ./client/vue-blog
+# - npm i
 # - cd ../../server/koa2
 # - npm i
 script:
-- npm run build
-- cd ../..
+- npm run skip
+# - cd ../..
 after_success:
-- chmod 600 ~/.ssh/travis_rsa
+- chmod 600 ~/.ssh/travis
 - ssh root@real.breakinferno.cn -o StrictHostKeyChecking=no 'cd ~/work/blog && git
   pull && ./ci.bash'
 before_install:
