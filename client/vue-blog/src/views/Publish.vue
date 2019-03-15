@@ -1,5 +1,12 @@
 <template>
-    <div class="publish" :style="{height: `${height -220}px`}">
+    <div class="publish">
+        <blog-header></blog-header>
+        <div class="title-wrapper">
+          <p id="title"><input /></p>
+          <label for="title">
+
+          </label>
+        </div>
         <el-tooltip placement="top end">
           <div slot="content">dbclick here to change preview style!</div>
           <editor ref="tuiEditor"
@@ -21,6 +28,8 @@
 
 <script>
 import { mapMutations } from 'vuex'
+import BlogHeader from '@/components/Header'
+
 // const methodNames = ['focus', 'getValue', 'getHtml', 'getSelectedText', 'reset', 'moveCursorToStart', 'moveCursorToEnd']
 const initText = 'Say what you want to say...<h3>You can also write html!!!</h3>'
 const noop = () => {}
@@ -146,25 +155,28 @@ export default {
   }),
   mounted () {
     window.addEventListener('resize', () => {
-      this.height = document.documentElement.clientHeight || window.innerHeight
+      // this.height = document.documentElement.clientHeight || window.innerHeight
     }, false)
+  },
+  components: {
+    BlogHeader
   }
 }
 </script>
 <style lang="less" scoped>
 .publish{
     // position: fixed;
-    top: 150px;
+    // top: 150px;
     // left: 65px;
     // right: 65px;
     // bottom: 70px;
     display: flex;
     flex-direction: column;
     opacity: 0.7;
-    width: 80%;
+    width: 100%;
     margin: 0 auto;
     position: relative;
-    height: 220px;
+    height: inherit;
     .publish-header{
       margin-bottom: 20px;
       &.hide{
@@ -179,7 +191,8 @@ export default {
       flex-grow: 1;
       display: flex;
       flex-direction: column;
-
+      padding: 100px;
+      padding-bottom: 40px;
       .tui-editor-defaultUI{
             height: 100%;
             flex-grow: 1;
@@ -191,6 +204,67 @@ export default {
 
     & /deep/ .te-preview{
       background: #fbfbfb !important;
+    }
+
+    #blog-header.timeout{
+      transform: none;
+    }
+
+    .title-wrapper{
+        position: fixed;
+        top: 60px;
+        width: 100%;
+        padding: 0 100px;
+        box-sizing: border-box;
+    }
+    #title{
+      display: inline-block;
+      vertical-align: top;
+      height: 40px;
+      outline: none;
+      border: none;
+      padding: 0px;
+      width: 100%;
+      padding-left: 20px;
+      box-sizing: border-box;
+      background: none;
+      position: relative;
+      &::before{
+        content: '';
+        display: block;
+        width: 100%;
+        height: 1px;
+        background: red;
+        position: absolute;
+        left: 0px;
+        bottom: 0px;
+        transition: width 1s;
+      }
+      & + label{
+        top: 2px;
+        display: inline-block;
+        height: 36px;
+        outline: none;
+        width: 36px;
+        border-radius: 50%;
+        border: none;
+        padding: 0px;
+        background: red;
+        transform: scale(1);
+        transition: all 0.5s;
+        position: absolute;
+        left: 100px;
+        transform-origin: center center;
+      }
+
+      &>input:focus + label{
+        transform: scale(0);
+        // left: 300px;
+      }
+
+      // &:focus::after{
+      //   width: 100%;
+      // }
     }
 }
 </style>

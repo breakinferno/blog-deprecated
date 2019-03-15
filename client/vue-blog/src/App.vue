@@ -12,7 +12,7 @@ export default {
 #app{
   min-height: 100%;
   width: 100%;
-
+  height: inherit;
   // height: 100%;
 }
 </style>
