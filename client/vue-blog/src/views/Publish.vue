@@ -2,10 +2,9 @@
     <div class="publish">
         <blog-header></blog-header>
         <div class="title-wrapper">
-          <p id="title"><input /></p>
-          <label for="title">
-
-          </label>
+          <p id="title"><input @focus="titleFocus = true" @blur="titleFocus = false" id="title-input" v-model="title" /></p>
+          <label for="title-input" :class="{focus: titleFocus || title}"></label>
+          <span ref="publishBtn" class="publish-btn" @click="handlePublishBtnClick">发表</span>
         </div>
         <el-tooltip placement="top end">
           <div slot="content">dbclick here to change preview style!</div>
@@ -37,8 +36,22 @@ const onEditorFocus = function () {
   if (this.editorText === initText) {
     this.editorText = ''
   }
+  if (this.draftTimer) {
+    return
+  }
+  this.draftTimer = setInterval(() => {
+    if (this.editorText) {
+      this.updateDraft()
+    }
+  }, 3000)
 }
-const onEditorBlur = noop
+const onEditorBlur = function () {
+  if (this.draftTimer) {
+    clearInterval(this.draftTimer)
+    this.draftTimer = null
+  }
+  this.updateDraft()
+}
 const onEditorChange = noop
 const onEditorStateChange = noop
 
@@ -60,6 +73,8 @@ export default {
   data () {
     return {
       height: document.documentElement.clientHeight || window.innerHeight,
+      titleFocus: false,
+      title: '',
       isHide: false,
       tag: '',
       category: '',
@@ -106,7 +121,8 @@ export default {
       editorHtml: '',
       editorMode: 'markdown',
       editorVisible: true,
-      editorPreviewStyle: 'vertical'
+      editorPreviewStyle: 'vertical',
+      draftTimer: null
     }
   },
   computed: {
@@ -151,6 +167,14 @@ export default {
     },
     handleSelectStar (item) {
       console.log(item)
+    },
+    handlePublishBtnClick (btn) {
+      if (this.title && this.editorText) {
+        // 请求
+      }
+    },
+    updateDraft () {
+      console.log('update draft')
     }
   }),
   mounted () {
@@ -216,6 +240,18 @@ export default {
         width: 100%;
         padding: 0 100px;
         box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        .publish-btn{
+          position: absolute;
+          right: 100px;
+          border: 1px solid gray;
+          cursor: pointer;
+          padding: 5px;
+          border-radius: 5px;
+          font-size: 14px;
+          background: #c3d3ef;
+        }
     }
     #title{
       display: inline-block;
@@ -250,21 +286,29 @@ export default {
         border: none;
         padding: 0px;
         background: red;
-        transform: scale(1);
-        transition: all 0.5s;
+        transform: scale(1) translateX(0) rotateZ(0deg);
+        transition: all 2.5s ease;
         position: absolute;
         left: 100px;
         transform-origin: center center;
+        cursor: pointer;
+        &.focus{
+            transform: translateX(300px);
+        }
       }
 
+      & > input {
+        border: none;
+        outline: none;
+        height: 100%;
+        background: none;
+        font-size: 22px;
+        font-weight: bold;
+      }
       &>input:focus + label{
         transform: scale(0);
         // left: 300px;
       }
-
-      // &:focus::after{
-      //   width: 100%;
-      // }
     }
 }
 </style>
