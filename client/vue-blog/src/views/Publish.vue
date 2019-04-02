@@ -28,7 +28,7 @@
 <script>
 import { mapMutations } from 'vuex'
 import BlogHeader from '@/components/Header'
-
+import { post } from '../utils/request.js'
 // const methodNames = ['focus', 'getValue', 'getHtml', 'getSelectedText', 'reset', 'moveCursorToStart', 'moveCursorToEnd']
 const initText = 'Say what you want to say...<h3>You can also write html!!!</h3>'
 const noop = () => {}
@@ -171,6 +171,21 @@ export default {
     handlePublishBtnClick (btn) {
       if (this.title && this.editorText) {
         // 请求
+        post('/posts', {
+          title: this.title,
+          content: this.editorText
+        }).then(res => {
+          console.log(res)
+        }).catch(err => {
+          console.log(err)
+        })
+      } else {
+        const h = this.$createElement
+        this.$notify({
+          title: '标题名称',
+          duration: 300,
+          message: h('i', { style: 'color: teal' }, '这是提示文案这是提示文案这是提示文案这是提示文案这是提示文案这是提示文案这是提示文案这是提示文案')
+        })
       }
     },
     updateDraft () {

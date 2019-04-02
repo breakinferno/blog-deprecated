@@ -21,7 +21,7 @@ module.exports = {
       .plugin('html')
       .tap(args => {
         // console.log(config.html)
-        // console.log(process.env) // webpack中可以这样使用
+        console.log(process.env.NODE_ENV) // webpack中可以这样使用
         args[0].title = Config.html.title
         return args
       })
@@ -42,7 +42,7 @@ module.exports = {
   pluginOptions: {
     'style-resources-loader': {
       preProcessor: 'less',
-      patterns:  [path.resolve(__dirname, './public/global.less')]
+      patterns: [path.resolve(__dirname, './public/global.less')]
     },
     apollo: {
       enableMocks: true,

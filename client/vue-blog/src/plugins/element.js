@@ -46,5 +46,7 @@ Vue.prototype.$alert = MsgBox.alert
 Vue.prototype.$confirm = MsgBox.confirm
 Vue.prototype.$prompt = MsgBox.prompt
 
-Vue.prototype.$notify = Notification
-Vue.prototype.$message = Message
+const notify = Notification
+Vue.prototype.$notify = notify
+const message = Message
+Vue.prototype.$message = message
