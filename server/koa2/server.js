@@ -7,6 +7,7 @@ import auth from './middleware/auth'
 import { System } from './config'
 import db from './db'
 import routes from './router'
+const cors = require('@koa/cors');
 
 const app = new Koa()
 // 应用graphql
@@ -23,6 +24,8 @@ if (env === 'development') { // logger
         })
     })
 }
+
+app.use(cors());
 // app.use(auth())
 // 使用 bodyParser 和 KoaStatic 中间件
 app.use(bodyParser());

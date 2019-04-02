@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken'
 import fs from 'fs'
 import path from "path"
 import validatePermission from './permission'
+import httpStatus from '../constant/httpStatus'
 const key = fs.readFileSync(path.resolve(__dirname, '../keys/key.pub'))
 export default () => {
     // 以后可能会有其他需求
@@ -16,18 +17,20 @@ export default () => {
                     console.log('validate permission success!')
                     await next()
                 } else {
-                    return ctx.body = {
-                        msg: "No permission to access!"
-                    }
+                    ctx.status = httpStatus.FORBIDDEN;
+                    ctx.body = "No permission to access!";
+                    return;
                 }
             } catch (err) {
                 // 验证失败
                 console.log('your token verify is not valid ', err)
                 // 重定向到登录界面
-                return ctx.redirect('/login')
+                ctx.status = httpStatus.UNAUTHORIZED;
+                return;
             }
         } else {
-            return ctx.redirect('/login')
+            ctx.status = httpStatus.UNAUTHORIZED;
+            return;
         }
     }
 }
