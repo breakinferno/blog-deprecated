@@ -14,7 +14,11 @@ import {
   MenuItem,
   MessageBox,
   Tooltip,
-  Autocomplete
+  Autocomplete,
+  Form,
+  FormItem,
+  Dialog,
+  Input
 } from 'element-ui'
 
 const tModules = [
@@ -29,7 +33,11 @@ const tModules = [
   Menu,
   MenuItem,
   Tooltip,
-  Autocomplete
+  Autocomplete,
+  Form,
+  FormItem,
+  Dialog,
+  Input
 ]
 
 tModules.forEach((m) => {
