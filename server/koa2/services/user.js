@@ -64,6 +64,11 @@ async function GetByNick(nick = '') {
 }
 
 
+/**
+ * 校验密码是否正确
+ * @param {*} [{ nick, password = "" }={}] 昵称 密码
+ * @returns Promise
+ */
 async function validAuth({ nick, password = "" } = {}) {
     try {
         if (nick) {

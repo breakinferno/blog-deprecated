@@ -38,6 +38,15 @@ export function errorHandler(err) {
     console.log("[ErrorHanlder]:" + err);
 }
 
+
+
+/**
+ * 请求处理通用函数
+ * @export
+ * @param {*} ctx koa请求上下文
+ * @param {string} [type=['body']] 处理请求部分，默认处理请求体body，也可传query 和 params
+ * @returns
+ */
 export function paramHandler(ctx, type = ['body']) {
     let data // 请求数据
     try {

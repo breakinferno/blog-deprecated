@@ -4,16 +4,18 @@ import jwt from 'jsonwebtoken'
 import fs from 'fs'
 import path from 'path'
 async function Login(ctx) {
-    let data
+    let data, ret
     try {
         data = paramHandler(ctx)
+        ret = await UserServices.validAuth(data)
+        ctx.body = ret
     } catch (err) {
-        return console.log(err)
-    }
-    let ret = await UserServices.validAuth(data).catch(err => {
+
         ctx.body = err.payload
         ctx.response.status = err.code
-    })
+        return console.log(err)
+    }
+
     if (!ret) {
         // 出错逻辑
         return
