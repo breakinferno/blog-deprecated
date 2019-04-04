@@ -4,10 +4,11 @@ import path from "path"
 import validatePermission from './permission'
 import httpStatus from '../constant/httpStatus'
 const key = fs.readFileSync(path.resolve(__dirname, '../keys/key.pub'))
+let tokenName = 'access-token'
 export default () => {
     // 以后可能会有其他需求
     return async (ctx, next) => {
-        let token = ctx.header['access-token']
+        let token = ctx.header[tokenName]
         if (token) {
             try {
                 ctx.decodedToken = jwt.verify(token, key);

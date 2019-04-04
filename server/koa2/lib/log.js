@@ -1,4 +1,5 @@
 import chalk from 'chalk'
+import status from '../constant/log'
 const log = console.log
 const error = chalk.bold.red
 const warning = chalk.bold.orange
@@ -16,13 +17,15 @@ const underline = chalk.underline
 export default function(level, process, message) {
     process = `[${process}]:`
     switch (level.toUpperCase()) {
-        case 'ERROR':
+        case status.ERROR :
             log(error('Error in ') + underline(process) + chalk.magenta(message))
             break
-        case 'WARNING':
+        case status.WARNING :
             log(warning('Warning in ') + underline(process) + chalk.blue(message))
             break
-        case 'INFO':
+        case status.INFO :
             log(info('Just Tip in ') + underline(process) + chalk.cyan(message))
     }
 }
+
+export const LoggerStatus = status

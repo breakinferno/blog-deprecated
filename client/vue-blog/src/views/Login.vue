@@ -64,6 +64,8 @@
 
 <script>
 import { validUsername } from '@/utils/validate'
+import memory from '@/utils/localstorage'
+import Config from '../../config'
 // import SocialSign from './socialsignin'
 import { post } from '@/utils/request'
 export default {
@@ -78,16 +80,16 @@ export default {
       }
     }
     const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
+      if (value.length < 4) {
+        callback(new Error('The password can not be less than 4 digits'))
       } else {
         callback()
       }
     }
     return {
       loginForm: {
-        username: 'admin',
-        password: '111111'
+        username: '',
+        password: ''
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -111,6 +113,10 @@ export default {
     // window.addEventListener('storage', this.afterQRScan)
   },
   mounted () {
+    // this.$notify({
+    //   title: 'Tip',
+    //   message: 'test'
+    // })
     if (this.loginForm.username === '') {
       this.$refs.username.focus()
     } else if (this.loginForm.password === '') {
@@ -139,9 +145,23 @@ export default {
             nick: this.loginForm.username,
             password: this.loginForm.password
           }).then((result) => {
-            console.log(result)
+            // 登录成功
+            if (+result.code === 200) {
+              // 设置token
+              memory.setLocalStorage(Config.baseDataName, JSON.stringify(result.data))
+              // 一秒后跳转
+              setTimeout(() => {
+                this.$router.push('/')
+              }, 1000)
+            }
+            this.$message({
+              message: result.message,
+              center: true
+            })
           }).catch((err) => {
             console.log(err)
+          }).then(_ => {
+            this.loading = false
           })
         //   console.log(this.loginForm)
         //   this.$store.dispatch('user/login', this.loginForm)

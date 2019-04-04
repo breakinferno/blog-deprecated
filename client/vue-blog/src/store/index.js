@@ -13,6 +13,7 @@ export default new Vuex.Store({
       main: '',
       rightSide: []
     },
+    isLogin: false,
     showLeftSide: true,
     showRigthSide: true,
     headerover: false,
@@ -47,6 +48,12 @@ export default new Vuex.Store({
     },
     hideAnimationPage (state) {
       state.showAnimationBeforeEnter = false
+    },
+    login (state) {
+      state.isLogin = true
+    },
+    logout (state) {
+      state.isLogin = false
     }
   },
   actions: {

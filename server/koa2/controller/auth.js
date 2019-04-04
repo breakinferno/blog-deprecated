@@ -1,5 +1,6 @@
 import UserServices from '../services/user'
 import { paramHandler } from '../lib'
+import logger, {LoggerStatus} from '../lib/log'
 import jwt from 'jsonwebtoken'
 import fs from 'fs'
 import path from 'path'
@@ -8,11 +9,10 @@ async function Login(ctx) {
     try {
         data = paramHandler(ctx)
         ret = await UserServices.validAuth(data)
-        ctx.body = ret
+        logger(LoggerStatus.INFO, '[authController/Login]', '登录成功');
     } catch (err) {
-
-        ctx.body = err.payload
-        ctx.response.status = err.code
+        logger(LoggerStatus.ERROR, '[authController/Login]', '登录失败');
+        ctx.body = err
         return console.log(err)
     }
 

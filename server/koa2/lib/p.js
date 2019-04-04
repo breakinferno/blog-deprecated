@@ -4,36 +4,28 @@ export function successPromise(code = { code: 200, payload: { msg: "Successfully
     if (msg) {
         code = {
             code: code,
-            payload: {
-                msg: msg,
-                data: data
-            }
+            message: msg || 'Successfully',
+            data: data 
         }
     }
     return Promise.resolve({
         code: code.code || Code.OK,
-        payload: {
-            msg: getObjValue(code, 'payload.msg') || "Successfully",
-            data: getObjValue(code, 'payload.data') || null
-        }
+        message: getObjValue(code, 'message') || "Successfully",
+        data: getObjValue(code, 'data') || null
     })
 }
 
-export function failedPromise(code = { code: 500, payload: { msg: 'Internal Error' } }, msg, data) {
+export function failedPromise(code = { code: 500,  msg: 'Internal Error'  }, msg, data) {
     if (msg) {
         code = {
             code: code,
-            payload: {
-                msg: msg,
-                data: data
-            }
+            message: msg || 'Internal Error',
+            data
         }
     }
     return Promise.reject({
         code: code.code || Code.INTERNAL_ERROR,
-        payload: {
-            msg: getObjValue(code, 'payload.msg') || "Successfully",
-            data: getObjValue(code, 'payload.data') || null
-        }
+        message: getObjValue(code, 'message') || "Internal Error",
+        data: getObjValue(code, 'data') || null
     })
 }

@@ -1,6 +1,7 @@
 import axios from 'axios'
 import QS from 'qs' // 引入qs模块，用来序列化post类型的数据，后面会提到
-
+import { getLocalStorage } from './localstorage'
+import Config from '../../config'
 // 环境的切换
 if (process.env.NODE_ENV === 'development') {
   console.log('当前环境变量为development')
@@ -14,6 +15,10 @@ if (process.env.NODE_ENV === 'development') {
 axios.defaults.timeout = 10000
 
 axios.interceptors.request.use(config => {
+  let baseInfo = getLocalStorage(Config.baseDataName)
+  if (baseInfo) {
+    config.headers['access-token'] = JSON.parse(baseInfo).token
+  }
   return config
 }, err => {
   return Promise.reject(err)

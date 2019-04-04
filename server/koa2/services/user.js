@@ -79,14 +79,20 @@ async function validAuth({ nick, password = "" } = {}) {
             const info = transformDocToObj(userdoc, ['password']);
             const isMatched = await userdoc.comparePassword(password)
             if (isMatched) {
+                // 删除部分不必要信息
+                delete info.posts
+                delete info.updatedAt
+                delete info.createdAt
+                delete info.id
                 let token = jwt.sign({
                     ...info
-                }, key, { expiresIn: '24h' })
+                }, key, { expiresIn: '48h' })
                 // 去掉权限参数
                 delete info.privilege
                 return successPromise(Code.OK, 'Valid Successfully', {
                     ...info,
-                    token
+                    token,
+                    duration: +(Date.now() + 48 * 60 * 60 * 1000)
                 })
             } else {
                 return failedPromise(Code.ACCEPTED, "Incorrect Password!")
