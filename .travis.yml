@@ -16,5 +16,4 @@ after_success:
 before_install:
 - openssl aes-256-cbc -K $encrypted_274299933b7c_key -iv $encrypted_274299933b7c_iv
   -in id_rsa.enc -out ~/.ssh/id_rsa -d
-#- openssl aes-256-cbc -K $encrypted_274299933b7c_key -iv $encrypted_274299933b7c_iv
-#  -in travis.enc -out ~/.ssh/travis -d
+
