@@ -65,6 +65,7 @@ query{
 ```
 
 ### mutation
+
 ```
 mutation {
   addUser(input: {
