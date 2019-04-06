@@ -148,7 +148,7 @@ export default {
             // 登录成功
             if (+result.code === 200) {
               // 设置token
-              memory.setLocalStorage(Config.baseDataName, JSON.stringify(result.data))
+              memory.setItem(Config.baseDataName, JSON.stringify(result.data))
               // 一秒后跳转
               setTimeout(() => {
                 this.$router.push('/')

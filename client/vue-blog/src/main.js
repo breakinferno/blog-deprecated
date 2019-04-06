@@ -9,13 +9,10 @@ import 'tui-editor/dist/tui-editor.css'
 import 'tui-editor/dist/tui-editor-contents.css'
 import 'codemirror/lib/codemirror.css'
 import './Icons'
-import Config from '../config'
-import memory from './utils/localstorage'
 import {
   Editor,
   Viewer
 } from '@toast-ui/vue-editor'
-import { mapMutations } from 'vuex'
 
 import {
   createProvider
@@ -43,24 +40,7 @@ new Vue({
   router,
   store,
   apolloProvider: createProvider(),
-  render: h => h(App),
-  methods: {
-    ...mapMutations(['login', 'logout']),
-    checkLogin () {
-      let baseInfo = JSON.parse(memory.getLocalStorage(Config.baseDataName))
-      if (!baseInfo) {
-        this.logout()
-        // this.$router.push('/login')
-      } else {
-        // 是否过期
-        if (+baseInfo.duration > Date.now()) {
-          this.login()
-        } else {
-          this.logout()
-        }
-      }
-    }
-  }
+  render: h => h(App)
 }).$mount('#app')
 
 // console.log(process.env)

@@ -173,6 +173,8 @@ export default {
         // 请求
         post('/posts', {
           title: this.title,
+          category: 'test',
+          tags: ['test', 'dev'],
           content: this.editorText
         }).then(res => {
           console.log(res)

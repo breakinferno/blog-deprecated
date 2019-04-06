@@ -1,6 +1,8 @@
 import PostServices from '../services/post'
 import { paramHandler } from '../lib'
 import Code from '../constant/httpStatus'
+import {getLogger} from '../lib/log'
+
 // 删除
 async function Delete(target) {
 
@@ -50,25 +52,25 @@ async function GetByQuery(ctx) {
 
 // 新建资源
 async function Post(ctx, next) {
+    const logger = getLogger(ctx);
     let data
     try {
         data = paramHandler(ctx)
-    } catch (err) {
-        return console.log(err)
-    }
-    const { nick } = ctx.decodedToken
-    if (!nick) {
-        return ctx.body = {
-            msg: 'invalid token'
+        const { nick } = ctx.decodedToken
+        if (!nick) {
+            // return ctx.body = {
+            //     code: 
+            //     msg: 'invalid token'
+            // }
+            return ctx.rspns.error(Code.BAD_REQUEST, 'invalid token')
         }
+        data.author = nick
+        await PostServices.Create(data)
+        logger.info('[PostController/Post]', '成功创建文章')
+    } catch (err) {
+        logger.error('[PostController/Post]', JSON.stringify(err))
+        return ctx.rspns.error(err)
     }
-    data.author = nick
-    await PostServices.Create(data).then(ret => {
-        ctx.body = ret.payload
-    }).catch(err => {
-        ctx.body = err.payload
-        ctx.response.status = err.code
-    })
 }
 
 // 部分更改

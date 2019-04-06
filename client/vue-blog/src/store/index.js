@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import header from './modules/header'
+import Config from '../../config'
+import memory from '../utils/localstorage'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -54,6 +56,7 @@ export default new Vuex.Store({
     },
     logout (state) {
       state.isLogin = false
+      memory.removeItem(Config.baseDataName)
     }
   },
   actions: {

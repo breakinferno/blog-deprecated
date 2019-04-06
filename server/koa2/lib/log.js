@@ -14,7 +14,7 @@ const underline = chalk.underline
  * @param {*} process 日志发生的程序方法
  * @param {*} message 日志内容
  */
-export default function(level, process, message) {
+const baseLog = function(level, process, message) {
     process = `[${process}]:`
     switch (level.toUpperCase()) {
         case status.ERROR :
@@ -25,6 +25,18 @@ export default function(level, process, message) {
             break
         case status.INFO :
             log(info('Just Tip in ') + underline(process) + chalk.cyan(message))
+    }
+}
+
+
+export default baseLog
+
+
+export const getLogger = (ctx) => {
+    return {
+        error: baseLog.bind(ctx, LoggerStatus.ERROR),
+        warning: baseLog.bind(ctx, LoggerStatus.WARNING),
+        info: baseLog.bind(ctx, LoggerStatus.INFO),
     }
 }
 

@@ -130,6 +130,7 @@ export default {
     window.onresize = () => {
       this.ch = document.documentElement.clientHeight || window.innerHeight
     }
+    // this.$
   }
 }
 </script>

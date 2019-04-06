@@ -22,6 +22,9 @@
   </div>
 </template>
 <script>
+import { mapState, mapMutations } from 'vuex'
+import memory from '@/utils/localstorage'
+import Config from '../../config'
 // import router from '@/router'
 const menus = {
   home: {
@@ -59,15 +62,13 @@ export default {
   },
   created () {
     this.scroll()
+    this.checkLogin()
   },
   computed: {
-    isLogin () {
-      let flag = sessionStorage.getItem('username')
-      let flag02 = true // this.$store.state.user.isLogin;
-      return !!(flag && flag02)
-    }
+    ...mapState(['isLogin'])
   },
   methods: {
+    ...mapMutations(['login', 'logout']),
     scroll () {
       let beforeScrollTop =
         document.documentElement.scrollTop ||
@@ -88,12 +89,26 @@ export default {
         }
       }
     },
+    checkLogin () {
+      let baseInfo = JSON.parse(memory.getItem(Config.baseDataName))
+      if (!baseInfo) {
+        this.logout()
+      } else {
+        // 是否过期
+        if (+baseInfo.duration > Date.now()) {
+          this.login()
+        } else {
+          this.logout()
+        }
+      }
+    },
     handleLogout () {
       this.$message({
         message: '成功登出',
         type: 'success',
         center: true
       })
+      this.logout()
       // this.$store.dispatch('logoutUser')
       // router.push({ name: 'Index' })
       // this.$message({

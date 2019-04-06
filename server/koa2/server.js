@@ -3,7 +3,7 @@ import Koa from 'koa'
 import KoaStatic from 'koa-static'
 import bodyParser from 'koa-bodyparser'
 import apolloServer from './graphql'
-import auth from './middleware/auth'
+import baseContext from './middleware/baseContext'
 import { System } from './config'
 import db from './db'
 import routes from './router'
@@ -24,7 +24,7 @@ if (env === 'development') { // logger
         })
     })
 }
-
+app.use(baseContext);
 app.use(cors());
 // app.use(auth())
 // 使用 bodyParser 和 KoaStatic 中间件
