@@ -5,11 +5,11 @@ import Config from '../../config'
 // 环境的切换
 if (process.env.NODE_ENV === 'development') {
   console.log('当前环境变量为development')
-  axios.defaults.baseURL = 'http://127.0.0.1:8888'
+  axios.defaults.baseURL = 'http://127.0.0.1:8888/api'
 } else if (process.env.NODE_ENV === 'production') {
-  axios.defaults.baseURL = 'https://real.breakinferno.cn'
+  axios.defaults.baseURL = 'http://real.breakinferno.cn/api'
 } else {
-  axios.defaults.baseURL = '127.0.0.1:8888'
+  axios.defaults.baseURL = '127.0.0.1:8888/api'
 }
 
 axios.defaults.timeout = 10000

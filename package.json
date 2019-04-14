@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Just skip the test and only for deploy\" && exit 0",
-    "prod": "pm2 startOrRestart prod.config.js"
+    "client:dev": "cd ./client/vue-blog && npm run serve",
+    "serve:dev": "cd ./server/koa2 && npm run dev",
+    "dev": "run-p client:dev serve:dev"
   },
   "repository": {
     "type": "git",
@@ -29,5 +31,8 @@
   "dependencies": {
     "bcrypt": "^3.0.3",
     "vue-smooth-dnd": "^0.2.8"
+  },
+  "devDependencies": {
+    "npm-run-all": "^4.1.5"
   }
 }

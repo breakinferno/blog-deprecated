@@ -12,24 +12,24 @@ self.__precacheManifest = [
     "url": "/img/edit.82ad92eb.svg"
   },
   {
-    "revision": "05fb8f78633bfaca434d",
-    "url": "/js/app.5403921f.js"
+    "revision": "cfdc5f40584e8cc41e00",
+    "url": "/js/app.958f921f.js"
   },
   {
     "revision": "70e24e7259889d27a958",
     "url": "/js/chunk-vendors.05e0c043.js"
   },
   {
-    "revision": "4003334f7db45c592be78e3cb26c1202",
-    "url": "/reset.css"
+    "revision": "b6216d61c03e6ce0c9aea6ca7808f7ca",
+    "url": "/robots.txt"
   },
   {
     "revision": "a9ad2f68f12232fc9da8",
     "url": "/js/home.998bdd3a.js"
   },
   {
-    "revision": "b6216d61c03e6ce0c9aea6ca7808f7ca",
-    "url": "/robots.txt"
+    "revision": "4003334f7db45c592be78e3cb26c1202",
+    "url": "/reset.css"
   },
   {
     "revision": "4b8df4d17f5096d5d73a",
@@ -184,12 +184,12 @@ self.__precacheManifest = [
     "url": "/img/tui-editor-2x.b4361244.png"
   },
   {
-    "revision": "2fad952a20fbbcfd1bf2ebb210dccf7a",
-    "url": "/fonts/element-icons.2fad952a.woff"
-  },
-  {
     "revision": "6f0a76321d30f3c8120915e57f7bd77e",
     "url": "/fonts/element-icons.6f0a7632.ttf"
+  },
+  {
+    "revision": "2fad952a20fbbcfd1bf2ebb210dccf7a",
+    "url": "/fonts/element-icons.2fad952a.woff"
   },
   {
     "revision": "91c105621589f0234ddf4954a7fe5e00",
@@ -224,12 +224,12 @@ self.__precacheManifest = [
     "url": "/img/2.70a4f7e0.jpg"
   },
   {
-    "revision": "8a372a26199a9b7b4153f045555b1977",
-    "url": "/iconfont.css"
-  },
-  {
     "revision": "09769e65990d8141e138988a5f5da594",
     "url": "/global.less"
+  },
+  {
+    "revision": "8a372a26199a9b7b4153f045555b1977",
+    "url": "/iconfont.css"
   },
   {
     "revision": "fa5e07a154ce94ed29123047ddfd43f8",
@@ -428,7 +428,7 @@ self.__precacheManifest = [
     "url": "/img/4.5bd2c072.jpg"
   },
   {
-    "revision": "54de7fa2e2c02ba59222b3d4067a7324",
+    "revision": "427a7598fdbd8761d8deab4fa6179d8c",
     "url": "/index.html"
   },
   {
@@ -448,7 +448,7 @@ self.__precacheManifest = [
     "url": "/css/chunk-vendors.81d83492.css"
   },
   {
-    "revision": "05fb8f78633bfaca434d",
+    "revision": "cfdc5f40584e8cc41e00",
     "url": "/css/app.45ee9342.css"
   }
 ];

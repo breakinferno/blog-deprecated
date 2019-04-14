@@ -3,7 +3,7 @@ import controllers from '../controller/draft.js'
 import validator from '../middleware/auth'
 
 const router = new KoaRouter({
-    prefix: '/draft'
+    prefix: '/api/draft'
 })
 router
     .get('/:id', controllers.Post.GetById)

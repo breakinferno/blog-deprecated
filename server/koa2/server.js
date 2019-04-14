@@ -1,12 +1,14 @@
 // 引入模块
 import Koa from 'koa'
 import KoaStatic from 'koa-static'
+import KoaViews from 'koa-views';
 import bodyParser from 'koa-bodyparser'
 import apolloServer from './graphql'
 import baseContext from './middleware/baseContext'
 import { System } from './config'
 import db from './db'
 import routes from './router'
+import site from './router/site'
 const cors = require('@koa/cors');
 
 const app = new Koa()
@@ -29,9 +31,12 @@ app.use(cors());
 // app.use(auth())
 // 使用 bodyParser 和 KoaStatic 中间件
 app.use(bodyParser());
-app.use(KoaStatic(__dirname + '/public'));
+// console.log(require('path').resolve(__dirname, '../../client/vue-blog/dist/'))
+app.use(KoaViews(require('path').resolve(__dirname, '../../client/vue-blog/dist/')));
+app.use(KoaStatic(require('path').resolve(__dirname, '../../client/vue-blog/dist')));
 // console.log(routes)
 app.use(routes)
+app.use(site.routes())
 app.use(function(ctx, next) {
     // console.log(ctx)
     switch (ctx.status) {

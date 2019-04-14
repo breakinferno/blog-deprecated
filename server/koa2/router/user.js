@@ -2,7 +2,7 @@ import KoaRouter from 'koa-router'
 import controllers from '../controller/index.js'
 import validator from '../middleware/auth'
 const router = new KoaRouter({
-    prefix: '/users'
+    prefix: '/api/users'
 })
 router
     .post('/', validator(), controllers.User.Post)

@@ -2,7 +2,7 @@ import KoaRouter from 'koa-router'
 import controllers from '../controller/index.js'
 import validator from '../middleware/auth'
 const router = new KoaRouter({
-    prefix: '/tags'
+    prefix: '/api/tags'
 })
 router
     .post('/', validator(), controllers.Tag.Post)
