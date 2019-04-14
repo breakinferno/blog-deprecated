@@ -7,7 +7,7 @@ if (process.env.NODE_ENV === 'development') {
   console.log('当前环境变量为development')
   axios.defaults.baseURL = 'http://127.0.0.1:8888'
 } else if (process.env.NODE_ENV === 'production') {
-  axios.defaults.baseURL = 'https://real.breakinferno.com'
+  axios.defaults.baseURL = 'https://real.breakinferno.cn'
 } else {
   axios.defaults.baseURL = '127.0.0.1:8888'
 }
