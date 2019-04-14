@@ -4,8 +4,19 @@
   </div>
 </template>
 <script>
-export default {
 
+import { mapActions } from 'vuex'
+export default {
+  created () {
+    this.getCategories()
+    this.getTags()
+  },
+  methods: {
+    ...mapActions({
+      getCategories: 'getCategoriesReq', // 将 `this.add()` 映射为 `this.$store.dispatch('increment')`,
+      getTags: 'getTagsReq'
+    })
+  }
 }
 </script>
 <style lang="less" scoped>

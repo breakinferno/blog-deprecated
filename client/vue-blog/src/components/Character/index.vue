@@ -506,7 +506,7 @@ export default {
   }
   .mc-bg {
     background: red;
-    background-image: url('../../assets/mc-character.png');
+    background-image: url('../../assets/mc-character.jpg');
   }
 
   @keyframes HeadAnimation {

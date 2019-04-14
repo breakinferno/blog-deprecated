@@ -3,8 +3,8 @@ import Vuex from 'vuex'
 import header from './modules/header'
 import Config from '../../config'
 import memory from '../utils/localstorage'
+import { get } from '../utils/request'
 Vue.use(Vuex)
-
 export default new Vuex.Store({
   modules: {
     header: header
@@ -15,11 +15,18 @@ export default new Vuex.Store({
       main: '',
       rightSide: []
     },
+    loadings: {
+      tagsLoading: true,
+      categoryLoading: true,
+      postLoading: true
+    },
     isLogin: false,
     showLeftSide: true,
     showRigthSide: true,
     headerover: false,
-    showHeader: false
+    showHeader: false,
+    categories: [],
+    tags: []
   },
   mutations: {
     triggerHeader (state, flag) {
@@ -57,9 +64,37 @@ export default new Vuex.Store({
     logout (state) {
       state.isLogin = false
       memory.removeItem(Config.baseDataName)
+    },
+    setCategories (state, categories) {
+      state.categories = categories
+    },
+    setTags (state, tags) {
+      state.tags = tags
+    },
+    showLoading (state, name) {
+      name = `${name}Loading`
+      state.loadings[name] && (state.loadings[name] = true)
+    },
+    hideLoading (state, name) {
+      name = `${name}Loading`
+      state.loadings[name] && (state.loadings[name] = false)
     }
   },
   actions: {
-
+    getCategoriesReq ({ commit }) {
+      get('/categories').then(res => {
+        commit('setCategories', res.data)
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    getTagsReq ({ commit }) {
+      get('/tags').then(res => {
+        console.log(res)
+        commit('setTags', res.data)
+      }).catch(err => {
+        console.log(err)
+      })
+    }
   }
 })

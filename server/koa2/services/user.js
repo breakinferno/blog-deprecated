@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken'
 import fs from 'fs'
 import path from 'path'
 const key = fs.readFileSync(path.resolve(__dirname, '../keys/key.pub'))
-import Code from '../constant/httpStatus'
+import httpStatus from '../constant/httpStatus';
 
 // 新建资源
 async function Create(data) {
@@ -17,18 +17,18 @@ async function Create(data) {
                 .where('nick').equals(nick)
                 .exec()
             if (userDoc) {
-                return failedPromise(Code.EXISTED, 'The user has already exist')
+                return failedPromise(httpStatus.EXISTED, 'The user has already exist')
             }
             let model = generateUser(data)
             let ret = await model.save().then(ret => {
-                return successPromise(Code.OK, "Create User Successfully!", transformDocToObj(ret, ['password', 'privilege']))
+                return successPromise(httpStatus.OK, "Create User Successfully!", transformDocToObj(ret, ['password', 'privilege']))
             }, err => {
                 errorHandler(err)
                 return failedPromise()
             })
             return ret
         } else {
-            return failedPromise(Code.BAD_REQUEST, 'require necessary field')
+            return failedPromise(httpStatus.BAD_REQUEST, 'require necessary field')
         }
     } catch (err) {
         errorHandler(err);
@@ -41,9 +41,9 @@ async function GetByID(id) {
     try {
         if (id) {
             const userdoc = await User.findById(id).exec()
-            return successPromise(Code.OK, "Get User Successfully", transformDocToObj(userdoc, ['password', 'privilege']))
+            return successPromise(httpStatus.OK, "Get User Successfully", transformDocToObj(userdoc, ['password', 'privilege']))
         }
-        return failedPromise(Code.BAD_REQUEST, "Invalid Parameter")
+        return failedPromise(httpStatus.BAD_REQUEST, "Invalid Parameter")
     } catch (err) {
         errorHandler(err);
         return failedPromise()
@@ -54,9 +54,9 @@ async function GetByNick(nick = '') {
     try {
         if (nick) {
             const userdoc = await User.findOne().where('nick').equals(nick).exec()
-            return successPromise(Code.OK, "Get User Successfully", transformDocToObj(userdoc, ['password', 'privilege']))
+            return successPromise(httpStatus.OK, "Get User Successfully", transformDocToObj(userdoc, ['password', 'privilege']))
         }
-        return failedPromise(Code.BAD_REQUEST, "Invalid Parameter")
+        return failedPromise(httpStatus.BAD_REQUEST, "Invalid Parameter")
     } catch (err) {
         errorHandler(err);
         return failedPromise()
@@ -74,7 +74,7 @@ async function validAuth({ nick, password = "" } = {}) {
         if (nick) {
             const userdoc = await User.findOne().where('nick').equals(nick).exec()
             if (!userdoc) {
-                return failedPromise(Code.NOT_FOUND, 'no user found!')
+                return failedPromise(httpStatus.NOT_FOUND, 'No user found!')
             }
             const info = transformDocToObj(userdoc, ['password']);
             const isMatched = await userdoc.comparePassword(password)
@@ -89,16 +89,16 @@ async function validAuth({ nick, password = "" } = {}) {
                 }, key, { expiresIn: '48h' })
                 // 去掉权限参数
                 delete info.privilege
-                return successPromise(Code.OK, 'Valid Successfully', {
+                return successPromise(httpStatus.OK, 'Valid Successfully', {
                     ...info,
                     token,
                     duration: +(Date.now() + 48 * 60 * 60 * 1000)
                 })
             } else {
-                return failedPromise(Code.ACCEPTED, "Incorrect Password!")
+                return failedPromise(httpStatus.ACCEPTED, "Incorrect Password!")
             }
         }
-        return failedPromise(Code.BAD_REQUEST, "Invalid Parameter")
+        return failedPromise(httpStatus.BAD_REQUEST, "Invalid Parameter")
     } catch (err) {
         errorHandler(err);
         return failedPromise()
@@ -110,9 +110,9 @@ async function DeleteById(id) {
     try {
         if (id) {
             const userdoc = await User.findByIdAndRemove(id).exec()
-            return successPromise(Code.OK, "Delete User Successfully", transformDocToObj(userdoc, ['password', 'privilege']))
+            return successPromise(httpStatus.OK, "Delete User Successfully", transformDocToObj(userdoc, ['password', 'privilege']))
         }
-        return failedPromise(Code.BAD_REQUEST, "Invalid Parameter")
+        return failedPromise(httpStatus.BAD_REQUEST, "Invalid Parameter")
     } catch (err) {
         errorHandler(err);
         return failedPromise()

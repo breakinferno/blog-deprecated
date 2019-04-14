@@ -10,17 +10,15 @@ async function Login(ctx) {
         data = paramHandler(ctx)
         ret = await UserServices.validAuth(data)
         logger(LoggerStatus.INFO, '[authController/Login]', '登录成功');
+        if (!ret) {
+            // 出错逻辑
+            return
+        }
+        return ctx.rspns.success(ret.data)
     } catch (err) {
         logger(LoggerStatus.ERROR, '[authController/Login]', '登录失败');
-        ctx.body = err
-        return console.log(err)
+        return ctx.rspns.error(err)
     }
-
-    if (!ret) {
-        // 出错逻辑
-        return
-    }
-    ctx.body = ret
 }
 async function Sign(target) {
 

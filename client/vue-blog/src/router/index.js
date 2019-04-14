@@ -39,7 +39,7 @@ export default new Router({
     path: '/publish',
     name: 'publish',
     props: { forceFullScreen: true },
-    component: () => import(/* webpackChunkName: "publish" */ '@/views/Publish.vue')
+    component: () => import(/* webpackChunkName: "publish" */ '@/views/Publish/index.vue')
   }, {
     path: '/login',
     name: 'login',

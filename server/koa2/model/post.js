@@ -10,6 +10,7 @@ const PostSchema = new Schema({
     overview: String,
     category: String,
     tags: [String],
+    banner: String,
     meta: {
         like: {
             type: Number,
@@ -51,7 +52,7 @@ PostSchema.pre('save', function(next) {
         }
         if (this.isNew || this.isModified('title') || this.isModified('content')) {
             this.length = this.content.length + this.title.length
-            this.overview = this.content.length > Common.post_overview_length ? this.content.slice(Common.post_overview_length) : this.content
+            this.overview = this.content.length > Common.post_overview_length ? this.content.slice(0, Common.post_overview_length) : this.content
         }
     } catch (e) {
         console.log('[mongoose]:ArticleSchema pre save failed!')

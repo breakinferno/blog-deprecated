@@ -146,7 +146,7 @@ export default {
             password: this.loginForm.password
           }).then((result) => {
             // 登录成功
-            if (+result.code === 200) {
+            if (+result.code === 0) {
               // 设置token
               memory.setItem(Config.baseDataName, JSON.stringify(result.data))
               // 一秒后跳转

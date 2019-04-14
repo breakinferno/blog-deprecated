@@ -1,9 +1,9 @@
 <template>
   <article class="blog-card"
-           @click="handleCard({path: '/posts/mdzz'})">
+           @click="handleCard({path: `/posts/${item.id}`})">
     <div class="card-header"
          v-if="!imgUrl">
-      <h3 class="card-header-title">this is title</h3>
+      <h3 class="card-header-title">{{title}}</h3>
     </div>
     <div class="card-img"
          v-if="imgUrl"
@@ -15,7 +15,7 @@
     <div class="card-content">
       <div class="card-detail">
         <div class="card-detail-content">
-          &emsp;{{item.content}}
+          <viewer :value="item.overview"></viewer>
         </div>
         <span class="card-header-tag">
           <span>阅读全文
@@ -26,19 +26,19 @@
         </span>
         <div class="card-detail-info">
           <el-button type="primary"
-                     icon="el-icon-view">{{item.view}}</el-button>
+                     icon="el-icon-view">{{item.meta.views}}</el-button>
           <el-button type="primary"
-                     icon="el-icon-search">{{item.comment}}</el-button>
+                     icon="el-icon-search">{{item.meta.downloads}}</el-button>
           <el-button type="primary"
-                     icon="el-icon-star-on">{{item.star}}</el-button>
+                     icon="el-icon-star-on">{{item.meta.like}}</el-button>
           <el-button type="primary"
-                     icon="el-icon-share">{{item.share}}</el-button>
+                     icon="el-icon-share">{{item.meta.shares}}</el-button>
         </div>
       </div>
     </div>
     <div class="card-date">
-      <div class="date-month">{{extractDate(item.time, 'm')}}月</div>
-      <div class="date-day">{{extractDate(item.time, 'd')}}</div>
+      <div class="date-month">{{extractDate(item.updatedAt, 'm')}}月</div>
+      <div class="date-day">{{extractDate(item.updatedAt, 'd')}}</div>
     </div>
     <div class="card-category"
          v-if="item.category">
@@ -48,21 +48,39 @@
   </article>
 </template>
 <script>
+import { Viewer } from '@toast-ui/vue-editor'
+import 'tui-editor/dist/tui-editor-contents.css'
+import 'highlight.js/styles/github.css'
+import getter from '../../utils/getter.js'
+// 生成随机图片函数
+function generateImg () {
+  return {
+    img: '../../assets/images/7.jpg'
+  }
+}
 export default {
+  components: {
+    Viewer
+  },
+  props: {
+    data: {
+      type: Object,
+      required: true,
+      validator: function (value) {
+        // 这个值必须匹配下列字符串中的一个
+        // return ['success', 'warning', 'danger'].indexOf(value) !== -1
+        let mustKeys = ['overview', 'tags', 'category', 'title', 'updatedAt', 'id', 'meta.downloads', 'meta.views', 'meta.like', 'meta.shares']
+        return mustKeys.every(key => {
+          return getter(value, key) !== 'undefined'
+        })
+      }
+    }
+  },
   data () {
     return {
       item: {
-        title: 'mdzz this is title',
-        tags: ['science', 'technology', 'game'],
-        content: '测试内容测试内容测试内容测试内容测试内容测试内容内容测试内容测试内容测试内容内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测内容试内容测内容试测内容试测试测试',
-        img: '../../assets/images/7.jpg',
-        avatar: '',
-        time: '2018-2-23',
-        view: 233,
-        comment: 23,
-        star: 22,
-        share: 232,
-        category: 'test'
+        ...this.data,
+        ...generateImg()
       }
     }
   },
@@ -81,7 +99,7 @@ export default {
       return {
         'm': d[1],
         'y': d[0],
-        'd': d[2]
+        'd': d[2].slice(0, 2)
       }[flag] || 1
     },
     handleCard (route) {
@@ -144,6 +162,7 @@ export default {
   }
   .card-img {
     width: 100%;
+    min-height: 240px;
     // height: 0;
     // padding-bottom: 40%;
     position: relative;

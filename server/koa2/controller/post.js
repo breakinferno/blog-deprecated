@@ -1,6 +1,7 @@
 import PostServices from '../services/post'
 import { paramHandler } from '../lib'
-import Code from '../constant/httpStatus'
+import httpStatus from '../constant/httpStatus'
+import Code  from '../constant/code'
 import {getLogger} from '../lib/log'
 
 // 删除
@@ -9,45 +10,42 @@ async function Delete(target) {
 }
 // 获取资源
 async function GetById(ctx) {
+    const logger = getLogger(ctx);
     let data
     try {
         data = paramHandler(ctx, ['params'])
+        const { id } = data
+        if (!id) {
+            return ctx.rspns.error(Code.PARAMS_INVALID, '不存在文章ID')
+        }
+        let ret = await PostServices.GetByID(id)
+        logger.info('[PostController/GetById]', '获取文章成功')
+        // console.log(ret)
+        return ctx.rspns.success(ret.data)
     } catch (err) {
+        logger.error('[PostController/GetById]', '获取文章成功')
         return console.log(err)
     }
-    const { id } = data
-    if (!id) {
-        ctx.response.status = Code.BAD_REQUEST
-        return ctx.body = {
-            msg: 'Invalid Parameter!'
-        }
-    }
-    await PostServices.GetByID(id).then(ret => {
-        ctx.body = ret.payload
-    }).catch(err => {
-        ctx.body = err.payload
-        ctx.response.status = err.code
-    })
+    
 }
 
 async function GetByQuery(ctx) {
+    const logger = getLogger(ctx);
     let data
     try {
         data = paramHandler(ctx, ['query'])
+        if (!data) {
+            //默认pageSize 10
+            data = { page: 1, size: 10 }
+        }
+        let ret = await PostServices.GetByQuery(data)
+        // console.log(ret)
+        logger.info('[PostController/GetByQuery]', '获取文章列表成功')
+        return ctx.rspns.success(ret.data)
     } catch (err) {
-        return console.log(err)
+        logger.error('[PostController/GetByQuery]', '获取文章列表失败')
+        return ctx.rspns.error(err)        
     }
-    if (!data) {
-        //默认pageSize 10
-        data = { page: 1, size: 10 }
-    }
-    await PostServices.GetByQuery(data).then(ret => {
-        ctx.body = ret.payload
-    }).catch(err => {
-        console.log(err)
-        ctx.body = err.payload
-        ctx.response.status = err.code
-    })
 }
 
 // 新建资源
@@ -62,11 +60,12 @@ async function Post(ctx, next) {
             //     code: 
             //     msg: 'invalid token'
             // }
-            return ctx.rspns.error(Code.BAD_REQUEST, 'invalid token')
+            return ctx.rspns.error(httpStatus.BAD_REQUEST, 'invalid token')
         }
         data.author = nick
-        await PostServices.Create(data)
+        let ret = await PostServices.Create(data)
         logger.info('[PostController/Post]', '成功创建文章')
+        return ctx.rspns.success(ret.data)
     } catch (err) {
         logger.error('[PostController/Post]', JSON.stringify(err))
         return ctx.rspns.error(err)
@@ -84,7 +83,7 @@ async function Patch(ctx) {
     }
     const { id } = data
     if (!id || payload.tags || payload.category) {
-        ctx.response.status = Code.BAD_REQUEST
+        ctx.response.status = httpStatus.BAD_REQUEST
         return ctx.body = {
             msg: 'Invalid Parameter!'
         }
@@ -106,7 +105,7 @@ async function DeleteById(ctx) {
     }
     const { id } = data
     if (!id) {
-        ctx.response.status = Code.BAD_REQUEST
+        ctx.response.status = httpStatus.BAD_REQUEST
         return ctx.body = {
             msg: 'Invalid Parameter!'
         }
@@ -129,7 +128,7 @@ async function DeleteByCategory(ctx) {
     }
     const { name } = data
     if (!name) {
-        ctx.response.status = Code.BAD_REQUEST
+        ctx.response.status = httpStatus.BAD_REQUEST
         return ctx.body = {
             msg: 'Invalid Parameter!'
         }
@@ -152,7 +151,7 @@ async function DeleteByTag(ctx) {
     }
     const { name } = data
     if (!name) {
-        ctx.response.status = Code.BAD_REQUEST
+        ctx.response.status = httpStatus.BAD_REQUEST
         return ctx.body = {
             msg: 'Invalid Parameter!'
         }

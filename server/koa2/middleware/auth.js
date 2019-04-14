@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken'
+import Code from '../constant/code'
 import fs from 'fs'
 import path from "path"
 import validatePermission from './permission'
@@ -19,19 +20,18 @@ export default () => {
                     await next()
                 } else {
                     ctx.status = httpStatus.FORBIDDEN;
-                    ctx.body = "No permission to access!";
-                    return;
+                    return ctx.rspns.error(Code.PERMISSION_DENIED, "No permission to access!");
                 }
             } catch (err) {
                 // 验证失败
                 console.log('your token verify is not valid ', err)
                 // 重定向到登录界面
                 ctx.status = httpStatus.UNAUTHORIZED;
-                return;
+                return ctx.rspns.error(Code.VARIFY_FAILED, "token verify invalid");
             }
         } else {
             ctx.status = httpStatus.UNAUTHORIZED;
-            return;
+            return ctx.rspns.error(Code.PARAMS_INVALID, 'no permission');
         }
     }
 }

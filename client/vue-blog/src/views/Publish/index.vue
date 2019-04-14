@@ -2,6 +2,7 @@
     <div class="publish">
         <blog-header></blog-header>
         <div class="title-wrapper">
+          <panel @publish="submit" v-show="readyToPublish"></panel>
           <p id="title"><input @focus="titleFocus = true" @blur="titleFocus = false" id="title-input" v-model="title" /></p>
           <label for="title-input" :class="{focus: titleFocus || title}"></label>
           <span ref="publishBtn" class="publish-btn" @click="handlePublishBtnClick">发表</span>
@@ -28,7 +29,8 @@
 <script>
 import { mapMutations } from 'vuex'
 import BlogHeader from '@/components/Header'
-import { post } from '../utils/request.js'
+import Panel from './Panel'
+import { post } from '../../utils/request.js'
 // const methodNames = ['focus', 'getValue', 'getHtml', 'getSelectedText', 'reset', 'moveCursorToStart', 'moveCursorToEnd']
 const initText = 'Say what you want to say...<h3>You can also write html!!!</h3>'
 const noop = () => {}
@@ -72,6 +74,7 @@ const eventListenr = {
 export default {
   data () {
     return {
+      readyToPublish: false,
       height: document.documentElement.clientHeight || window.innerHeight,
       titleFocus: false,
       title: '',
@@ -169,12 +172,18 @@ export default {
       console.log(item)
     },
     handlePublishBtnClick (btn) {
+      this.readyToPublish = !this.readyToPublish
+    },
+    submit ({ category, tags }) {
+      console.log(category)
+      console.log(tags)
+      //   return
       if (this.title && this.editorText) {
         // 请求
         post('/posts', {
           title: this.title,
-          category: 'test',
-          tags: ['test', 'dev'],
+          category: category,
+          tags: tags,
           content: this.editorText
         }).then(res => {
           console.log(res)
@@ -200,7 +209,8 @@ export default {
     }, false)
   },
   components: {
-    BlogHeader
+    BlogHeader,
+    Panel
   }
 }
 </script>
@@ -259,15 +269,18 @@ export default {
         box-sizing: border-box;
         display: flex;
         align-items: center;
+        z-index: 1;
         .publish-btn{
-          position: absolute;
-          right: 100px;
-          border: 1px solid gray;
-          cursor: pointer;
-          padding: 5px;
-          border-radius: 5px;
-          font-size: 14px;
-          background: #c3d3ef;
+            position: absolute;
+            right: 165px;
+            border: 1px solid gray;
+            padding: 5px;
+            border-radius: 5px;
+            font-size: 14px;
+            background: #c3d3ef;
+            white-space: nowrap;
+            cursor: pointer;
+            user-select: none;
         }
     }
     #title{

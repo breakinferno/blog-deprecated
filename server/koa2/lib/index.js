@@ -1,6 +1,8 @@
 //一些共有的工具方法
 import { Common } from '../config'
-import Code from '../constant/httpStatus'
+import httpStatus from '../constant/httpStatus'
+import Code from '../constant/code'
+
 export function getObjValue(obj, path) {
     const arrayRegx = /(\[)(\d+)(\])/g;
     path = Array.isArray(path) ? path.join('.') : path;
@@ -72,11 +74,11 @@ export function paramHandler(ctx, type = ['body']) {
             }
         }
     } catch (e) {
-        ctx.response.status = Code.BAD_REQUEST
-        ctx.body = {
-            msg: 'Invalid Parameter!'
+        throw {
+            code: httpStatus.BAD_REQUEST,
+            msg: '请求参数出错',
+            data: null
         }
-        throw new Error('Invalid Parameter!')
     }
     return data;
 }
@@ -138,7 +140,7 @@ export function mapRequestAction(method) {
 }
 
 export function graphqlHanlder(ret) {
-    if (ret.code === Code.OK) {
+    if (ret.code === httpStatus.OK) {
         return ret.payload.data || {}
     } else {
         throw new Error('Interval Error')

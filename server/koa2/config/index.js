@@ -25,7 +25,7 @@ export const System = {
 }
 
 export const Common = {
-    post_overview_length: 200,
+    post_overview_length: 80,
     privileges: {
         level: {
             admin: 'admin',
