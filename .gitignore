@@ -5,5 +5,4 @@ db.json
 **/node_modules/
 .deploy*/
 **/webpack-inspect.js
-dist
 server/koa2/config/index.js
