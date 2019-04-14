@@ -12,7 +12,7 @@
         <card v-for="(data, index) in dataList" :key="index" :data="data"></card>
     </template>
     <div class="no-post" v-else>
-        <img src="../assets/empty.png" alt="懒">
+        <img src="../assets/empty.png" alt="没有博客内容">
         <p>博主很懒，还没有写博客哟~~~</p>
     </div>
   </div>
