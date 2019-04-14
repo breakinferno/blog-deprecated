@@ -20,16 +20,16 @@ self.__precacheManifest = [
     "url": "/js/about.9b249c69.js"
   },
   {
-    "revision": "01e22251341f2dbfb273",
-    "url": "/js/app.8aca17c7.js"
+    "revision": "4003334f7db45c592be78e3cb26c1202",
+    "url": "/reset.css"
   },
   {
     "revision": "a9ad2f68f12232fc9da8",
     "url": "/js/home.998bdd3a.js"
   },
   {
-    "revision": "4003334f7db45c592be78e3cb26c1202",
-    "url": "/reset.css"
+    "revision": "9ac9081320b8131b7811",
+    "url": "/js/app.610aa257.js"
   },
   {
     "revision": "4b8df4d17f5096d5d73a",
@@ -184,12 +184,12 @@ self.__precacheManifest = [
     "url": "/img/tui-editor-2x.b4361244.png"
   },
   {
-    "revision": "6f0a76321d30f3c8120915e57f7bd77e",
-    "url": "/fonts/element-icons.6f0a7632.ttf"
-  },
-  {
     "revision": "2fad952a20fbbcfd1bf2ebb210dccf7a",
     "url": "/fonts/element-icons.2fad952a.woff"
+  },
+  {
+    "revision": "6f0a76321d30f3c8120915e57f7bd77e",
+    "url": "/fonts/element-icons.6f0a7632.ttf"
   },
   {
     "revision": "91c105621589f0234ddf4954a7fe5e00",
@@ -252,7 +252,7 @@ self.__precacheManifest = [
     "url": "/img/3.8cdd6749.jpg"
   },
   {
-    "revision": "5e47385215f3cf0d3ea480c33082e347",
+    "revision": "5630f4d4acd890ec8242d9423b2e788e",
     "url": "/index.html"
   },
   {
@@ -448,7 +448,7 @@ self.__precacheManifest = [
     "url": "/css/chunk-vendors.81d83492.css"
   },
   {
-    "revision": "01e22251341f2dbfb273",
+    "revision": "9ac9081320b8131b7811",
     "url": "/css/app.45ee9342.css"
   }
 ];
