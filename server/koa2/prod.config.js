@@ -18,6 +18,7 @@ module.exports = {
         },
         exec_mode: 'cluster',
         max_memory_restart: '2G',
+        log_date_format:'YYYY-MM-DD HH:mm:ss.SSSZ',
         //日志地址
         error_file: `~/logs/${rootPathObj.base}_error.log`,
         out_file: `~/logs/${rootPathObj.base}_access.log`,
