@@ -15,9 +15,15 @@
         <router-link class="nav-item"
                      :to="{name: 'login'}">登录</router-link>
       </el-menu-item>
-      <el-menu-item v-else
+      <el-menu-item v-if="isLogin" index="manage">
+            <router-link class="nav-item"
+                to="/manage">管理</router-link>
+      </el-menu-item>
+
+      <el-menu-item v-if="isLogin"
                     @click="handleLogout"
                     index="logout">注销</el-menu-item>
+
     </el-menu>
   </div>
 </template>

@@ -4,7 +4,7 @@
         <div class="title-wrapper">
           <panel @publish="submit" v-show="readyToPublish"></panel>
           <p id="title"><input @focus="titleFocus = true" @blur="titleFocus = false" id="title-input" v-model="title" /></p>
-          <label for="title-input" :class="{focus: titleFocus || title}"></label>
+          <label for="title-input" :class="{focus: titleFocus || title}"><i class="fas fa-heading"></i></label>
           <span ref="publishBtn" class="publish-btn" @click="handlePublishBtnClick">发表</span>
         </div>
         <el-tooltip placement="top end">
@@ -315,12 +315,13 @@ export default {
         border-radius: 50%;
         border: none;
         padding: 0px;
-        background: red;
         transform: scale(1) translateX(0) rotateZ(0deg);
         transition: all 2.5s ease;
         position: absolute;
         left: 100px;
         transform-origin: center center;
+        text-align: center;
+        line-height: 36px;
         cursor: pointer;
         &.focus{
             transform: translateX(300px);

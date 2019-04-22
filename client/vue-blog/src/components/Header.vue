@@ -5,6 +5,7 @@
        @mouseleave.prevent="hoverHeader(false)">
     <!--导航栏-->
     <blog-nav></blog-nav>
+    <div class="roop"></div>
   </div>
 </template>
 <script>
@@ -86,6 +87,21 @@ export default {
   height: 60px;
   &.timeout {
     transform: translateY(-60px);
+  }
+
+  .roop {
+    background-image: url('../assets/roop.jpg');
+    background-repeat: no-repeat;
+    background-origin: content-box;
+    background-position: center center;
+    background-size: cover;
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    top: 60px;
+    right: 0px;
+    cursor: pointer;
   }
 }
 </style>

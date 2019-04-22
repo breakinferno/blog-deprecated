@@ -37,6 +37,8 @@ module.exports = {
       .use('raw-loader')
       .loader('raw-loader')
       .end()
+    // alias
+    config.resolve.alias.set('@mixins', path.resolve(__dirname, 'src/mixins'))
   },
 
   pluginOptions: {

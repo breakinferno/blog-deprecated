@@ -25,6 +25,7 @@
       <span v-for="(geek, index) in geeks"
             :key="index"
             @click="handleUrl(geek.url)">
+        <i :class="`fa${geek.fab?'b':''} fa-${geek.code}`"></i>
         {{geek.name}}
       </span>
     </div>
@@ -38,22 +39,31 @@ export default {
       geeks: [
         {
           name: 'Leetcode',
-          url: '/'
+          url: '/',
+          code: 'code'
         }, {
           name: 'Github',
-          url: '/'
+          url: '/',
+          code: 'github',
+          fab: true
         }, {
           name: 'QQ',
-          url: '/'
+          url: '/',
+          code: 'qq',
+          fab: true
         }, {
           name: 'E-Mail',
-          url: '/'
+          url: '/',
+          code: 'at'
         }, {
           name: 'Weibo',
-          url: '/'
+          url: '/',
+          code: 'weibo',
+          fab: true
         }, {
-          name: 'NetEaseMusic',
-          url: '/'
+          name: 'Music',
+          url: '/',
+          code: 'music'
         }
       ]
     }
@@ -131,12 +141,22 @@ export default {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    margin-top: 20px;
     span {
+      height: 30px;
       display: inline-block;
       color: black;
       width: 50%;
       cursor: pointer;
       font-size: 14px;
+      line-height: 30px;
+      &:nth-child(2n+1){
+          padding-left: 10px;
+      }
+      &:nth-child(2n){
+        //   text-align: right;
+          padding-left: 10px;
+      }
     }
   }
 }

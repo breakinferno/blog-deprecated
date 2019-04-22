@@ -45,6 +45,10 @@ export default new Router({
     name: 'login',
     props: { forceFullScreen: true },
     component: () => import(/* webpackChunkName: "login"  */ '@/views/Login.vue')
+  }, {
+    path: '/manage',
+    name: 'manage',
+    component: () => import(/* webpackChunkName: "manage" */ '@/views/Manage.vue')
   }
   ]
 })

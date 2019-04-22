@@ -20,6 +20,7 @@ export default {
   computed: {
     iconName () {
       return `#icon-${this.iconClass}`
+    //   return '#icon-user  '
     },
     svgClass () {
       if (this.className) {
