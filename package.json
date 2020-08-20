@@ -29,7 +29,7 @@
   },
   "homepage": "https://github.com/breakinferno/blog#readme",
   "dependencies": {
-    "bcrypt": "^3.0.3",
+    "bcrypt": "^5.0.0",
     "vue-smooth-dnd": "^0.2.8"
   },
   "devDependencies": {
