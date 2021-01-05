@@ -14,7 +14,7 @@
     },
     "dependencies": {
         "@toast-ui/vue-editor": "^1.0.2",
-        "axios": "^0.18.0",
+        "axios": "^0.21.1",
         "classlist-polyfill": "^1.2.0",
         "element-ui": "^2.7.2",
         "graphql-type-json": "^0.2.1",
